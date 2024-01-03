@@ -1,1 +1,30 @@
-<p>item-view works!</p>
+<div class="product-card" >
+
+  <div *ngIf="product.isNew && !product.isPopular" class="sticker">
+    <img src="assets/new.png" class="sticker-img"/>
+  </div>
+  <div *ngIf="product.isPopular" class="sticker">
+    <img src="assets/hit.png" class="sticker-img"/>
+  </div>
+  <a href="{{productInfoLink}}" class="product-card-image">
+    <img *ngIf="productImage; else elseBlock"  [src]="productImage" class="image"/>
+
+    <ng-template #elseBlock>
+        <img src="assets/no-mage-found.png" class="image"/>
+    </ng-template>
+
+
+  </a>
+  <div class="product-card-info">
+    <div class="product-card-name">{{product.name}}</div>
+    <div class="product-card-author">{{product.author}}</div>
+    <div class="product-card-category">{{product.genres}}</div>
+    <div class="product-card-price">
+
+      <span *ngIf="product.discount" class="discount"> {{product.retailPrice +  ' \u20AC'}}</span>
+      {{product.discountPrice +  ' \u20AC'}}
+    </div>
+  </div>
+
+
+</div>

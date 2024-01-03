@@ -1,0 +1,71 @@
+@import "src/styles/color";
+
+:host {
+  .products-list {
+    margin-left: 15px;
+    text-align: center;
+
+    //border-top: 1px solid @shadowColor;
+    //border-left: 1px solid @shadowColor;
+
+    @media (max-width: 1000px) {
+      --grid-column-count: 3;
+    }
+    @media (max-width: 600px) {
+      --grid-column-count: 2;
+    }
+    @media (max-width: 400px) {
+      --grid-column-count: 1;
+    }
+    --grid-column-count: 4;
+    --grid-item--min-width: 100px;
+
+    --grid-item--max-width: calc((100%) / var(--grid-column-count));
+
+    display: grid;
+    row-gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+
+
+  }
+
+
+  .products-list > .product-item {
+    height: 100%;
+    margin-right: 15px;
+
+    //border : 1px solid @fontColorBright;
+    //border-radius: 15px;
+  }
+
+
+  .product-item:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+
+  }
+
+  .pagination {
+    width: max-content;
+    text-align: center;
+    .ngx-pagination {
+      padding-left: 0px !important;
+    }
+
+    .pagination /deep/ .ngx-pagination .current {
+      background: red !important;
+    }
+  }
+
+
+
+  @media (max-width: 600px) {
+    .pagination {
+      width: 100%;
+    }
+
+  }
+
+
+}
