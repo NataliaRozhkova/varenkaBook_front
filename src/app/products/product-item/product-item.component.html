@@ -1,24 +1,25 @@
-<div class="product-card" >
+<div class="product-card"  (click)="openInfo(product)">
 
   <div *ngIf="product.isNew && !product.isPopular" class="sticker">
-    <img src="assets/new.png" class="sticker-img"/>
+    <img src="../../../assets/new.png" class="sticker-img"/>
   </div>
   <div *ngIf="product.isPopular" class="sticker">
-    <img src="assets/hit.png" class="sticker-img"/>
+    <img src="../../../assets/hit.png" class="sticker-img"/>
   </div>
-  <a href="{{productInfoLink}}" class="product-card-image">
+  <div class="product-card-image">
     <img *ngIf="productImage; else elseBlock"  [src]="productImage" class="image"/>
 
     <ng-template #elseBlock>
-        <img src="assets/no-mage-found.png" class="image"/>
+        <img src="../../../assets/no-mage-found.png" class="image-not-found"/>
     </ng-template>
 
 
-  </a>
+  </div>
   <div class="product-card-info">
     <div class="product-card-name">{{product.name}}</div>
     <div class="product-card-author">{{product.author}}</div>
-    <div class="product-card-category">{{product.genres}}</div>
+    <div class="product-card-category">
+      <span *ngFor="let i of product.genres">{{i.genre}}, </span></div>
     <div class="product-card-price">
 
       <span *ngIf="product.discount" class="discount"> {{product.retailPrice +  ' \u20AC'}}</span>

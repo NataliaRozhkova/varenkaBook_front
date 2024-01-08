@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {HttpService} from "../services/http.service";
 import {Availability, Product} from "../model/product";
 import {Subject, take, takeUntil, lastValueFrom, switchMap, map} from "rxjs";
@@ -6,16 +6,26 @@ import {ProductService} from "../services/product.service";
 
 @Component({
   selector: 'products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.less']
+  templateUrl: './products-list.component.html',
+  styleUrls: ['./products-list.component.less']
 })
-export class ProductsComponent implements OnDestroy {
+export class ProductsListComponent implements OnDestroy {
+
+  @Input()
+  productsCountOnPage: number = 12;
+  @Input()
+  productTypeId: number;
+  @Input()
+  genres:string;
+  @Input()
+  availability:string = 'in_stock'
+
 
   products: Product[];
   pageSize: number;
   page: number = 1;
   total: number = 0;
-  productsCountOnPage: number = 12;
+
   productStatuses: Availability[];
 
   filters: any = {};
@@ -35,11 +45,18 @@ export class ProductsComponent implements OnDestroy {
     this.filters.limit = this.productsCountOnPage;
     this.filters.offset = 0;
 
+    if(this.genres) {
+      this.filters.genres = this.genres;
+    }
+    if (this.productTypeId) {
+      this.filters.productType = this.productTypeId;
+    }
+
     this.productService.getAvailabilities().pipe(
       takeUntil(this.destroySubject),
       switchMap((statuses: any) => {
           this.productStatuses = statuses?.results;
-          this.filters.availability = this.productStatuses.find(av => av.status == 'in_stock')?.id
+          this.filters.availability = this.productStatuses.find(av => av.status == this.availability)?.id
           return this.http.get('api/products/', this.filters)}
         ),
           map((response:any) =>{

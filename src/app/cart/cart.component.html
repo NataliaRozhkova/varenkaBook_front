@@ -1,0 +1,9 @@
+<div class="filters">
+  <div *ngFor="let i of genres" (click)="chooseGenre(i)">
+    <div class="filter-item">
+      <img src="assets/new.png" class="filter-item-image">
+      <div class="filter-text"> {{i.genre}}</div>
+
+    </div>
+  </div>
+</div>
