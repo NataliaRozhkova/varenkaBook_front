@@ -1,27 +1,31 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {map, Subject, switchMap, takeUntil} from "rxjs";
-import {ProductService} from "../services/product.service";
-import {Genre, Product} from "../model/product";
-import {FrontParam} from "../model/service-information";
+import {Component, Input, Output} from '@angular/core';
+import { Subject} from "rxjs";
 import {Router} from "@angular/router";
-import {CartItem, CartService} from "../services/cart.service";
+import {CartItem, CartService} from "../../services/cart.service";
+import {Product} from "../../model/product";
 
 @Component({
-  selector: 'cart',
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.less']
+  selector: 'cart-item',
+  templateUrl: './cart-item.component.html',
+  styleUrls: ['./cart-item.component.less']
 })
 export class CartItemComponent {
 
   private destroySubject: Subject<void> = new Subject();
-  products: CartItem[] = [];
+
+  @Input()
+  product: Product;
+
+  @Input()
+  count: number;
+
+  // @Output()
+  // changeCount: number;
 
   constructor(
     private cartService: CartService,
     private router: Router,
   ) {
-    this.products = this.cartService.getProducts();
-
   }
 
   ngOnInit() {
@@ -49,6 +53,17 @@ export class CartItemComponent {
     //     });
     //   })
     // ).subscribe()
+  }
+
+  increaseCount() {
+    this.cartService.addToCart(this.product);
+  }
+
+   decreaseCount() {
+    this.cartService.deleteFromCart(this.product);
+  }
+  changeCount() {
+
   }
 
 

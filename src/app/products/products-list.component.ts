@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy} from '@angular/core';
 import {HttpService} from "../services/http.service";
-import {Availability, Product} from "../model/product";
-import {Subject, take, takeUntil, lastValueFrom, switchMap, map} from "rxjs";
+import {Availability, Genre, Product} from "../model/product";
+import {Subject, takeUntil, switchMap, map, } from "rxjs";
 import {ProductService} from "../services/product.service";
 
 @Component({
@@ -14,17 +14,18 @@ export class ProductsListComponent implements OnDestroy {
   @Input()
   productsCountOnPage: number = 12;
   @Input()
-  productTypeId: number;
+  productType: string;
   @Input()
-  genres:string;
+  genres: Genre | null;
   @Input()
-  availability:string = 'in_stock'
+  availability: string = 'in_stock'
 
 
-  products: Product[];
+  products: Product[] = [];
   pageSize: number;
   page: number = 1;
   total: number = 0;
+  order: string = '-priority,-is_new,-is_popular'
 
   productStatuses: Availability[];
 
@@ -36,62 +37,63 @@ export class ProductsListComponent implements OnDestroy {
   constructor(
     private http: HttpService,
     private productService: ProductService,
+    // private route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
+    this.products  = [];
     this.pageSize = this.productsCountOnPage;
 
     this.filters.limit = this.productsCountOnPage;
     this.filters.offset = 0;
+    this.filters.ordering = this.order;
 
-    if(this.genres) {
-      this.filters.genres = this.genres;
-    }
-    if (this.productTypeId) {
-      this.filters.productType = this.productTypeId;
+    if (this.genres) {
+      this.filters.genres = this.genres.id;
     }
 
-    this.productService.getAvailabilities().pipe(
+    this.productService.getProductTypes().pipe(
       takeUntil(this.destroySubject),
-      switchMap((statuses: any) => {
-          this.productStatuses = statuses?.results;
-          this.filters.availability = this.productStatuses.find(av => av.status == this.availability)?.id
-          return this.http.get('api/products/', this.filters)}
-        ),
-          map((response:any) =>{
-            this.products = response?.results;
-            this.total = response?.count;
+      switchMap((types: any) => {
+        this.filters.product_type = types?.results?.find((av: any) => av.type == this.productType)?.id;
 
+        return this.productService.getAvailabilities()
+      }),
+      map((response: any) => {
+        this.productStatuses = response?.results;
+        this.filters.availability = this.productStatuses.find(av => av.status == this.availability)?.id
 
-          })
-
-      ).subscribe()
-
-
+        this.change(1);
+      })
+    ).subscribe()
   }
 
-  changePage($event: any) {
+
+  change($event: any) {
+    this.products  = []
 
     this.filters.offset = ($event - 1) * this.productsCountOnPage
 
+    if (this.genres) {
+      this.filters.genres = this.genres.id;
+    } else {
+      delete this.filters['genres'];
+    }
 
-    this.http.get('api/products/',
-      this.filters)
+    this.productService.getProducts(this.filters)
       .pipe(
-        takeUntil(this.destroySubject)
+        takeUntil(this.destroySubject),
       )
       .subscribe((res: any) => {
-          this.products = res.results;
+        this.products = res.results;
           this.total = res.count;
           this.page = $event;
         }
       )
-
   }
 
   ngOnDestroy() {
-    // Unsubscribe from all observables
     this.destroySubject.next();
   }
 

@@ -1,46 +1,60 @@
-import { Component } from '@angular/core';
-import {map, Subject, switchMap, takeUntil} from "rxjs";
+import {Component, OnDestroy, ViewChild} from '@angular/core';
+import { Subject, takeUntil} from "rxjs";
 import {ProductService} from "../services/product.service";
+import {Genre} from "../model/product";
+import {ActivatedRoute} from "@angular/router";
+import {ProductsListComponent} from "../products/products-list.component";
 
 @Component({
-  selector: 'books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.less']
+  selector: 'arts-play',
+  templateUrl: './arts-play.component.html',
+  styleUrls: ['./arts-play.component.less']
 })
-export class ArtsPlayComponent {
+export class ArtsPlayComponent implements OnDestroy {
 
   private destroySubject: Subject<void> = new Subject();
 
-  productType:string = 'books';
-  productTypeId:number;
+  productType: string = 'games';
 
+  filterName: string = "gamesGenres"
+  productsOnPage: number = 12;
 
+  filterGenre: Genre | null;
+  @ViewChild('products')
+  products: ProductsListComponent;
 
   constructor(
     private productService: ProductService,
+    private route: ActivatedRoute
   ) {
   }
 
   ngOnInit() {
-
-
-    this.productService.getProductTypes().pipe(
+    this.route.queryParams?.pipe(
       takeUntil(this.destroySubject),
-      map((response:any) => {
+    ).subscribe((params: any) => {
 
-        this.productTypeId = response.result?.find((av:any) => av.type == this.productType)?.id
-      })
-    ).subscribe()
+        if (params.genre == 'all') {
+          this.filterGenre = null;
+          this.changeCategory(null)
+        }
+      }
+    );
 
 
+  }
+
+  changeCategory($event: Genre | null) {
+    this.filterGenre = $event
+    if (this.products) {
+      this.products.genres = $event;
+      this.products.change(1);
+    }
   }
 
 
   ngOnDestroy() {
-    // Unsubscribe from all observables
     this.destroySubject.next();
   }
-
-
 
 }

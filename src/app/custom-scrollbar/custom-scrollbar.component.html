@@ -1,5 +1,3 @@
-<div>
-  <product-filters  *ngIf="!filterGenre"  [filterName]="filterName" (selectedGenre)="changeCategory($event)"></product-filters>
-  <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
-  <products [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre"></products>
+<div class="scroller" #scroller1>
+  <ng-content></ng-content>
 </div>

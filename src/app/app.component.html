@@ -1,9 +1,13 @@
-<div class="app-page">
-  <div class="page">
+<div class="container">
+  <div class="header">
     <nav>
       <header></header>
     </nav>
-<!--    <products></products>-->
-    <router-outlet class="info"></router-outlet>
+  </div>
+  <scrollbar class="scroller" #scroller1>
+    <router-outlet></router-outlet>
+  </scrollbar>
+  <div class="footer">
+    FOOTER
   </div>
 </div>

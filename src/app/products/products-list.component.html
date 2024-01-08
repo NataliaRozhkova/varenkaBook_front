@@ -1,24 +1,14 @@
 <div class="products-list">
-  <div *ngFor="let product of products | paginate:  { itemsPerPage: pageSize, currentPage: page, totalItems: total }" class="product-item">
+  <div *ngFor="let product of products | paginate:  { itemsPerPage: productsCountOnPage, currentPage: page, totalItems: total }" class="product-item">
 
     <product-item [product]="product"></product-item>
 
   </div>
 
-<!--      <product-item [product]="item" *ngFor="let item of products | paginate: { id: 'foo',-->
-<!--                                                      itemsPerPage: pageSize,-->
-<!--                                                      currentPage: page,-->
-<!--                                                      totalItems: total }" ></product-item>-->
-
-
-
-
-
-
 </div>
-<pagination-controls  class="pagination" previousLabel="Предыдущаяя"
+<pagination-controls  *ngIf="products &&  total > productsCountOnPage" class="pagination" previousLabel="Предыдущаяя"
                       nextLabel="Следующая"
-                      (pageChange)="changePage($event);upPage()"
+                      (pageChange)="change($event);upPage()"
 >
 
 </pagination-controls>

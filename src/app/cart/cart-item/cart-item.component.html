@@ -1,9 +1,25 @@
-<h1>Товары в корзине</h1>
+<div class="cart-item">
+  <img *ngIf="product.previewPhoto; else elseBlock"  [src]="product.previewPhoto" class="image"/>
 
-<table class="table">
-  <th></th>
-  <th></th>
-  <th></th>
-</table>
+  <ng-template #elseBlock>
+    <img src="../../../assets/no-mage-found.png" class="image-not-found"/>
+  </ng-template>
 
-<div *ngFor="let pr of products">{{pr.product.name}}    {{pr.count}}</div>
+  <div class="product-info">
+    <div class="author">{{product.author}}</div>
+    <div>{{product.name}}</div>
+
+    <div class="buttons-block">
+      <button class="decrease" (click)="decreaseCount()">-</button>
+      <input class="count-area" (change)="changeCount()" [value]="count">
+      <button class="increase" (click)="increaseCount()">+</button>
+    </div>
+  </div>
+  <div class="cost-info">
+    <span *ngIf="product.discount" class="discount"> {{product.retailPrice*count + ' \u20AC'}}</span>
+    {{product.discountPrice*count + ' \u20AC'}}
+  </div>
+
+
+
+</div>

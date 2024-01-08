@@ -5,8 +5,8 @@ import {HeaderComponent} from './header/header.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ProductItemComponent} from "./product-item/product-item.component";
-import {ProductsComponent} from "./products/products.component";
+import {ProductItemComponent} from "./products/product-item/product-item.component";
+import {ProductsListComponent} from "./products/products-list.component";
 import {PageMenuItemComponent} from "./page-menu/page-menu-item/page-menu-item.component";
 import {PageMenuComponent} from "./page-menu/page-menu.component";
 import {HttpClientModule} from "@angular/common/http";
@@ -16,12 +16,27 @@ import {ContactsComponent} from "./contacts/contacts.component";
 import {NewsComponent} from "./news/news.component";
 import {MainComponent} from "./main/main.component";
 import {NgxPaginationModule} from "ngx-pagination";
+import {BooksComponent} from "./books/books.component";
+import {ArtsPlayComponent} from "./arts-play/arts-play.component";
+import {ProductFiltersComponent} from "./product-filters/product-filters.component";
+import {CustomScrollbarComponent} from "./custom-scrollbar/custom-scrollbar.component";
+import {ProductInfoComponent} from "./product-info/product-info.component";
+import {CartComponent} from "./cart/cart.component";
+import {MenuPanelComponent} from "./menu-panel/menu-panel.component";
+import {CartItemComponent} from "./cart/cart-item/cart-item.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
   {path: 'news', component: NewsComponent},
-  {path: 'products', component: ProductsComponent},
+  {path: 'books', component: BooksComponent},
+  {path: 'books/:genre', component: BooksComponent},
+  {path: 'arts-play/:genre', component: ArtsPlayComponent},
+  {path: 'arts-play', component: ArtsPlayComponent},
+  {path: 'foreign', component: BooksComponent},
   {path: 'main', component: MainComponent},
+  {path: '', component: MainComponent},
+  {path: 'product-info/:id', component: ProductInfoComponent},
+  {path: 'cart', component: CartComponent},
 ];
 
 
@@ -30,13 +45,20 @@ const appRoutes: Routes = [
     AppComponent,
     HeaderComponent,
     ProductItemComponent,
-    ProductsComponent,
+    ProductsListComponent,
     PageMenuItemComponent,
     PageMenuComponent,
     ContactsComponent,
     NewsComponent,
-    MainComponent
-
+    MainComponent,
+    BooksComponent,
+    ArtsPlayComponent,
+    ProductFiltersComponent,
+    CustomScrollbarComponent,
+    ProductInfoComponent,
+    CartComponent,
+    MenuPanelComponent,
+    CartItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,9 +66,9 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(
-      appRoutes, {enableTracing: true}
+      appRoutes, {enableTracing: false}
     ),
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

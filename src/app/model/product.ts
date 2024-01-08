@@ -12,7 +12,7 @@ export class Product {
   discount: number;
   discountPrice: number;
   format: Format;
-  genres: string[];
+  genres: Genre[];
   illustrator: string;
   isNew: boolean;
   isPopular: boolean;
@@ -66,4 +66,10 @@ export class ProductType {
 export class Format {
   id: string;
   format: string;
+}
+
+export class Genre {
+  id: string;
+  genre: string;
+  image: string;
 }

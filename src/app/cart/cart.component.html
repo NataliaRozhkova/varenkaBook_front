@@ -1,9 +1,4 @@
-<div class="filters">
-  <div *ngFor="let i of genres" (click)="chooseGenre(i)">
-    <div class="filter-item">
-      <img src="assets/new.png" class="filter-item-image">
-      <div class="filter-text"> {{i.genre}}</div>
-
-    </div>
-  </div>
+<h1>Товары в корзине</h1>
+<div *ngFor="let pr of products">
+  <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
 </div>

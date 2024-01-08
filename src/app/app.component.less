@@ -2,16 +2,32 @@
 
 :host {
   background: @baseBackgroundColor;
-  .app-page {
+
+  .container {
+    width: 100%;
+    height: 100%;
     display: flex;
-
-    .page {
-      width: 100%;
-
-      header {
-        width: 100%;
-      }
-    }
-
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
+
+  .header {
+    flex-shrink: 0;
+  }
+
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 2000px;
+  }
+
+  .footer {
+    flex-shrink: 0;
+  }
+
+   .scroller .scroller {
+    height: 80vh !important;
+  }
+
+
 }

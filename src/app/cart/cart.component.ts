@@ -1,64 +1,40 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
-import {ProductService} from "../services/product.service";
-import {Genre} from "../model/product";
-import {FrontParam} from "../model/service-information";
 import {Router} from "@angular/router";
+import {CartItem, CartService} from "../services/cart.service";
 
 @Component({
-  selector: 'product-filters',
-  templateUrl: './product-filters.component.html',
-  styleUrls: ['./product-filters.component.less']
+  selector: 'cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.less']
 })
 export class CartComponent {
 
   private destroySubject: Subject<void> = new Subject();
-
-  @Input()
-  filterName: string;
-
-  genres: Genre[];
-  genresList: string[] = [];
-  @Output()
-  selectedGenre = new EventEmitter<Genre>();
+  products: CartItem[] = [];
+  productsCount: number;
 
   constructor(
-    private productService: ProductService,
-    private router: Router
+    private cartService: CartService,
+    private router: Router,
   ) {
+    this.productsCount = this.cartService.getCartCount();
+    this.products = this.cartService.getProducts();
+
   }
 
   ngOnInit() {
 
-    this.productService.getFrontParams().pipe(
-      takeUntil(this.destroySubject),
-      switchMap((res: any) => {
-        const frontParams: FrontParam[] = res?.results;
-        const bookFilters = frontParams.find(par => par.name == this.filterName)?.value
-
-        if (bookFilters) {
-          let list = bookFilters?.replace(" ", "").split(',');
-          list.forEach((i) => {
-            this.genresList.push(i.trim());
-          })
-        }
-        return this.productService.getGenres()
-      }),
-      map((response: any) => {
-
-        this.genres = response?.results?.filter((genre: any) => {
-          return this.genresList.includes(genre.genre)
-        });
+    this.cartService.cartChange.pipe(
+      takeUntil(this.destroySubject))
+      .subscribe((next) => {
+        this.productsCount = this.cartService.getCartCount();
       })
-    ).subscribe()
+
+
+
   }
 
-
-  chooseGenre($event: Genre) {
-
-    this.selectedGenre.emit($event);
-    this.router.navigate([], {queryParams: {genre: $event.genre}})
-  }
 
   ngOnDestroy() {
     this.destroySubject.next();

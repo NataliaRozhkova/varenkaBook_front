@@ -1,6 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MenuService} from "../services/menu.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'header',
@@ -9,8 +10,8 @@ import {MenuService} from "../services/menu.service";
   animations: [
     trigger('expandedPanel', [
       state('initial', style({height: 0, overflow: "hidden" })),
-      state('expanded', style({height: '150px'})),
-      transition('initial <=> expanded', animate('0.5s')),
+      state('expanded', style({height: 200})),
+      transition('initial <=> expanded', animate('0.2s')),
     ]),
 
   ],
@@ -22,7 +23,10 @@ export class HeaderComponent implements OnInit {
   isExpanded: boolean = false
 
   state: string = 'initial';
-  constructor(private menuService: MenuService) {
+  constructor(
+    private menuService: MenuService,
+    private router: Router
+  ) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -47,8 +51,15 @@ export class HeaderComponent implements OnInit {
   }
 
   showMenu() {
+    console.log("")
     this.isExpanded = !this.isExpanded;
     this.state = this.isExpanded ? 'expanded' : 'initial'
+
+  }
+
+  navigate($event:any) {
+    this.showMenu();
+    this.router.navigate([$event], {queryParams:  {genre: 'all'}  }   )
 
   }
 

@@ -14,12 +14,15 @@
 
 
 html, body {
+  //height: 100%;
   padding: 0;
   margin: 0;
   font-family: Inter, "Inter", Verdana, sans-serif;
+  overflow: hidden;
 
   .pagination   .ngx-pagination .current {
     background:  #012e76 ;
   }
+
 
 }

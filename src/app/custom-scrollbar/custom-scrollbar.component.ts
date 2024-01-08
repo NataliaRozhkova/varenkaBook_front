@@ -1,53 +1,27 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
-import {ProductService} from "../services/product.service";
-import {Genre} from "../model/product";
-import {ActivatedRoute} from "@angular/router";
+import {Component, ElementRef, ViewChild} from '@angular/core';
 
 @Component({
-  selector: 'books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.less']
+  selector: 'scrollbar',
+  templateUrl: './custom-scrollbar.component.html',
+  styleUrls: ['./custom-scrollbar.component.less']
 })
-export class CustomScrollbarComponent implements OnDestroy{
-
-  private destroySubject: Subject<void> = new Subject();
-
-  productType:string = 'book';
-  filterName: string = "bookGenres"
-
-  productsOnPage: number = 12;
-
-  filterGenre: Genre | null;
-
-  constructor(
-    private productService: ProductService,
-    private route: ActivatedRoute
-  ) {
-  }
-
-  ngOnInit() {
-    this.route.queryParams?.pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((params: any) => {
-
-        if (params.genre == 'all') {
-          this.filterGenre = null;
-          this.changeCategory(null)
-        }
-      }
-    );
+export class CustomScrollbarComponent {
 
 
-  }
-
-  changeCategory($event: Genre | null) {
-    this.filterGenre = $event
-  }
+  @ViewChild('scroller1') scroller: ElementRef;
 
 
-  ngOnDestroy() {
-    this.destroySubject.next();
+  ngOnInit(): void {
+    const div = this.scroller?.nativeElement as HTMLDivElement;
+    if (div) {
+      div.addEventListener('mouseover', e => {
+        console.log('Mouse Over');
+      });
+      div.addEventListener('mouseout', e => {
+        console.log('Mouse Out');
+      });
+    }
+
   }
 
 

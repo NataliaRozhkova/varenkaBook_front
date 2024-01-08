@@ -13,7 +13,7 @@ import {CartService} from "../services/cart.service";
 })
 export class MenuPanelComponent {
 
-  // private destroySubject: Subject<void> = new Subject();
+  private destroySubject: Subject<void> = new Subject();
   productsCount: number = 0;
 
   constructor(
@@ -26,34 +26,20 @@ export class MenuPanelComponent {
 
   ngOnInit() {
 
-
-
-    // this.productService.getFrontParams().pipe(
-    //   takeUntil(this.destroySubject),
-    //   switchMap((res: any) => {
-    //     const frontParams: FrontParam[] = res?.results;
-    //     const bookFilters = frontParams.find(par => par.name == this.filterName)?.value
-    //
-    //     if (bookFilters) {
-    //       let list = bookFilters?.replace(" ", "").split(',');
-    //       list.forEach((i) => {
-    //         this.genresList.push(i.trim());
-    //       })
-    //     }
-    //     return this.productService.getGenres()
-    //   }),
-    //   map((response: any) => {
-    //
-    //     this.genres = response?.results?.filter((genre: any) => {
-    //       return this.genresList.includes(genre.genre)
-    //     });
-    //   })
-    // ).subscribe()
+    this.cartService.cartChange.pipe(
+        takeUntil(this.destroySubject))
+      .subscribe((next) => {
+      this.productsCount = this.cartService.getCartCount();
+    })
   }
 
+  openCartPage() {
+    this.router.navigate(['cart' ])
+
+  }
 
   ngOnDestroy() {
-    // this.destroySubject.next();
+    this.destroySubject.next();
   }
 
 

@@ -1,5 +1,12 @@
-<div>
-  <product-filters  *ngIf="!filterGenre"  [filterName]="filterName" (selectedGenre)="changeCategory($event)"></product-filters>
-  <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
-  <products [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre"></products>
+<div class="product-info">
+
+  <img src="{{product.mainPhoto}}" class="main-image"/>
+
+  <div>{{product.name}}</div>
+
+  <div></div>
+  <div></div>
+
+  <button (click)="addToCart()">Add</button>
+  <button (click)="deleteFromCart()">Delete</button>
 </div>

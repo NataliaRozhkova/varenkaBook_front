@@ -1,4 +1,9 @@
-<div>
+<div class="filters">
+  <div *ngFor="let i of genres" (click)="chooseGenre(i)">
+    <div class="filter-item">
+      <img src="assets/new.png" class="filter-item-image">
+      <div class="filter-text"> {{i.genre}}</div>
 
-  <products [productsCountOnPage]="12" [productType]="this.productType"></products>
+    </div>
+  </div>
 </div>

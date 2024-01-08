@@ -1,4 +1,5 @@
 <div>
-
-  <products [productsCountOnPage]="12" [productTypeId]="this.productTypeId"></products>
+  <product-filters  *ngIf="!filterGenre"  [filterName]="filterName" (selectedGenre)="changeCategory($event)"></product-filters>
+  <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
+  <products [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre" #products></products>
 </div>

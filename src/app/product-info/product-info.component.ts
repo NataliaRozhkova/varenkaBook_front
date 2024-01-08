@@ -1,53 +1,51 @@
 import {Component, OnDestroy} from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
+import {map, Subject, switchMap} from "rxjs";
 import {ProductService} from "../services/product.service";
-import {Genre} from "../model/product";
-import {ActivatedRoute} from "@angular/router";
+import { Product} from "../model/product";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {CartService} from "../services/cart.service";
 
 @Component({
-  selector: 'books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.less']
+  selector: 'product-info',
+  templateUrl: './product-info.component.html',
+  styleUrls: ['./product-info.component.less']
 })
-export class ProductInfoComponent implements OnDestroy{
+export class ProductInfoComponent implements OnDestroy {
 
   private destroySubject: Subject<void> = new Subject();
-
-  productType:string = 'book';
-  filterName: string = "bookGenres"
-
-  productsOnPage: number = 12;
-
-  filterGenre: Genre | null;
+  product: Product = new Product();
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService,
   ) {
   }
 
   ngOnInit() {
-    this.route.queryParams?.pipe(
-      takeUntil(this.destroySubject),
-    ).subscribe((params: any) => {
 
-        if (params.genre == 'all') {
-          this.filterGenre = null;
-          this.changeCategory(null)
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+          return this.productService.getProductInfo(params?.get('id'));
         }
-      }
-    );
-
-
+      ),
+      map((res: Product) => {
+        this.product = res;
+      })
+    )
+      .subscribe();
   }
-
-  changeCategory($event: Genre | null) {
-    this.filterGenre = $event
-  }
-
 
   ngOnDestroy() {
     this.destroySubject.next();
+  }
+
+  addToCart(){
+    this.cartService.addToCart(this.product)
+  }
+
+  deleteFromCart(){
+    this.cartService.deleteFromCart(this.product)
   }
 
 

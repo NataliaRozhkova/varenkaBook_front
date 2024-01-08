@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npx kill-port 4200; ng serve --proxy-config proxy.conf.json",
+    "start": "npx kill-port 4200; ng serve --proxy-config proxy.conf.json --host 192.168.1.134",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -21,6 +21,7 @@
     "@angular/router": "^15.2.0",
     "change-case": "^5.3.0",
     "change-case-keys": "0.0.4",
+    "imagekitio-angular": "^3.0.0",
     "kill-port": "^2.0.1",
     "ngx-pagination": "^6.0.3",
     "rxjs": "^7.8.1",
