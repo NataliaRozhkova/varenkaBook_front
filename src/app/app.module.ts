@@ -24,6 +24,14 @@ import {ProductInfoComponent} from "./product-info/product-info.component";
 import {CartComponent} from "./cart/cart.component";
 import {MenuPanelComponent} from "./menu-panel/menu-panel.component";
 import {CartItemComponent} from "./cart/cart-item/cart-item.component";
+import {DialogComponent} from "./dialog/dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatIconModule} from "@angular/material/icon";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonModule} from "@angular/material/button";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -59,9 +67,11 @@ const appRoutes: Routes = [
     CartComponent,
     MenuPanelComponent,
     CartItemComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
+    MatDialogModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -69,6 +79,13 @@ const appRoutes: Routes = [
       appRoutes, {enableTracing: false}
     ),
     NgxPaginationModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

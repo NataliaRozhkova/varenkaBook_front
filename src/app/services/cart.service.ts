@@ -23,7 +23,6 @@ export class CartService {
   }
 
   addToCart(product: Product, count: number = 1) {
-
     let item = this.products.find((pr) => pr.product.id == product.id);
     if (item) {
       item.count += count;
@@ -40,7 +39,7 @@ export class CartService {
   deleteFromCart(product: Product, count: number = 1) {
     let item = this.products.find((pr) => pr.product.id == product.id);
 
-    if (item && item?.count > 0  && this.productsCount > 0) {
+    if (item && item?.count > 0 && this.productsCount > 0) {
       let index = this.products.indexOf(item)
 
       if (item.count > count) {
@@ -49,15 +48,23 @@ export class CartService {
 
       } else {
         item.count = 0;
-        console.log('!!!!!!!!!!!',index,  this.products)
-        this.products.splice(index,  1);
-        console.log('!!!!!!!!!!!', this.products)
-        this.productsCount  = this.productsCount -  count > 0 ? this.productsCount -  count : 0;
+        this.products.splice(index, 1);
+        this.productsCount = this.productsCount - count > 0 ? this.productsCount - count : 0;
       }
 
     }
     this.syncItems();
 
+  }
+
+  setCount(product: Product, count: number) {
+    let item = this.products.find((pr) => pr.product.id == product.id);
+    if (item) {
+      item.count = count;
+    }
+    this.productsCount = 0;
+    this.products.forEach((item) => this.productsCount += item.count)
+    this.syncItems();
   }
 
   getCartCount(): number {
@@ -76,6 +83,7 @@ export class CartService {
 
   syncItems() {
     this.cartChange.emit();
+
     sessionStorage.setItem('products', JSON.stringify(this.products));
     sessionStorage.setItem('productsCount', JSON.stringify(this.productsCount));
   }

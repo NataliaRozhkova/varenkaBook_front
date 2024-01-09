@@ -14,7 +14,6 @@ export class ProductItemComponent {
   @Input()
   product: Product;
 
-  productInfoLink: string;
   productImage: string;
 
   constructor(
@@ -23,10 +22,7 @@ export class ProductItemComponent {
   }
 
   ngOnInit(): void {
-
     this.productImage = this.product.previewPhoto ? this.product.previewPhoto : this.product.mainPhoto;
-
-
   }
 
   openInfo($event: Product){

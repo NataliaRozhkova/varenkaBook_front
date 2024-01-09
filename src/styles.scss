@@ -1,28 +1,52 @@
 @import 'assets/iconmoon/style.css';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 
 @font-face {
   font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Medium.ttf')  format('truetype');
+  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
   font-weight: normal;
 }
+
 @font-face {
   font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Bold.ttf')  format('truetype');
+  src: url('/assets/fonts/Inter-Bold.ttf') format('truetype');
   font-weight: bold;
 }
 
 
 html, body {
-  //height: 100%;
   padding: 0;
   margin: 0;
   font-family: Inter, "Inter", Verdana, sans-serif;
   overflow: hidden;
 
-  .pagination   .ngx-pagination .current {
-    background:  #012e76 ;
+
+  .pagination .ngx-pagination .current {
+    background: #012e76;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
 
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  input[type="number"]:hover,
+  input[type="number"]:focus {
+    -moz-appearance: number-input;
+  }
+
+  .mat-badge-content {
+    background: #EE204D;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin: 30px;
+  }
 }

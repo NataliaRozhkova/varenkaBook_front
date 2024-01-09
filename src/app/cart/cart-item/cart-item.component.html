@@ -1,5 +1,5 @@
 <div class="cart-item">
-  <img *ngIf="product.previewPhoto; else elseBlock"  [src]="product.previewPhoto" class="image"/>
+  <img *ngIf="product.previewPhoto; else elseBlock" [src]="product.previewPhoto" class="image"/>
 
   <ng-template #elseBlock>
     <img src="../../../assets/no-mage-found.png" class="image-not-found"/>
@@ -10,16 +10,28 @@
     <div>{{product.name}}</div>
 
     <div class="buttons-block">
-      <button class="decrease" (click)="decreaseCount()">-</button>
-      <input class="count-area" (change)="changeCount()" [value]="count">
-      <button class="increase" (click)="increaseCount()">+</button>
+      <button class="decrease" [disabled]="count < 2" (click)="decreaseCount()">-</button>
+
+      <input type="number" class="count-area"
+             [(ngModel)]="count"
+             (ngModelChange)="changeCount($event)">
+      <button class="increase" [disabled]="count >= product.countInStock" (click)="increaseCount()">+</button>
     </div>
+    <button class="menu-button-cart" (click)="deleteAll()">
+      <span class="icon-trash"></span>
+    </button>
   </div>
   <div class="cost-info">
-    <span *ngIf="product.discount" class="discount"> {{product.retailPrice*count + ' \u20AC'}}</span>
-    {{product.discountPrice*count + ' \u20AC'}}
+    <span *ngIf="product.discount" class="discount"> {{product.retailPrice * count + ' \u20AC'}}</span>
+    {{product.discountPrice * count + ' \u20AC'}}
   </div>
-
-
-
 </div>
+
+<ng-template #dialog class="delete-dialog">
+  <h2 mat-dialog-title>Удалить товар из корзины?</h2>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="true">Да</button>
+    <button mat-button mat-dialog-close [mat-dialog-close]="false">Нет</button>
+  </div>
+</ng-template>
+

@@ -35,6 +35,13 @@ export class CartComponent {
 
   }
 
+  continueShopping() {
+    this.router.navigate(['books'])
+  }
+
+  createOrder() {
+    this
+  }
 
   ngOnDestroy() {
     this.destroySubject.next();

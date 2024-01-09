@@ -1,4 +1,15 @@
 <h1>Товары в корзине</h1>
-<div *ngFor="let pr of products">
-  <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
+<div class="cart-view">
+
+  <div class="cart-info">
+    <div *ngFor="let pr of products" class="products">
+      <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
+    </div>
+  </div>
+  <div class="cart-buttons">
+    <button class="order-button" (click)="createOrder()">Оформить заказ</button>
+    <button class="back-button" (click)="continueShopping()">Продолжить покупки</button>
+  </div>
+
+
 </div>

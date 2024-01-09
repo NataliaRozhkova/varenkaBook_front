@@ -10,6 +10,9 @@
     min-height: 150px;
     padding: 15px;
 
+    box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.3);
+
+
     .product-info {
       flex: 1;
       margin: 0 15px 0 15px;
@@ -29,6 +32,7 @@
 
     .image {
       max-height: 100%;
+      max-width: 25%;
       object-fit: contain;
     }
 
@@ -41,14 +45,68 @@
   }
 
   .buttons-block {
-    width: 100px;
-    height: 30px;
-    border-radius: 6px;
-    background-color: rgb(243, 244, 245);
-    font-size: 16px;
-    line-height: 100%;
-    font-weight: 400;
-    letter-spacing: -0.24px;
+    margin: 10px;
+
+    width: 120px;
+    height: 40px;
+    display: flex;
+    border: #EE204D;
+    box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+
+    .decrease, .increase {
+      outline: none;
+      border: none;
+      background-color: @baseBackgroundColor;
+      cursor: pointer;
+      width: 40px;
+    }
+
+    .count-area {
+      outline: none;
+      border: none;
+      background-color: @baseBackgroundColor;
+      width: 40px;
+    }
+
+    .decrease:hover, .increase:hover, .count-area:hover {
+      background-color: @fontColorBright;
+    }
+
+    .decrease {
+      border-radius: 10px 0 0 10px;
+    }
+
+    .count-area {
+      width: 40px;
+      text-align: center;
+    }
+
+    .increase {
+      border-radius: 0 10px 10px 0;
+
+    }
   }
+
+  .discount {
+    color: @fontColorBright;
+    margin-right: 10px;
+    text-decoration: line-through;
+  }
+
+  .menu-button-cart {
+    margin: 10px;
+    font-size: 25px;
+    background: none;
+    width: 50px;
+    height: 50px;
+    border: none;
+  }
+
+  .menu-button-cart:hover {
+    font-size: 27px;
+    color: @hoverColorMenu;
+  }
+
 
 }
