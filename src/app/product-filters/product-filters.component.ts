@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {ProductService} from "../services/product.service";
 import {Genre} from "../model/product";
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
   templateUrl: './product-filters.component.html',
   styleUrls: ['./product-filters.component.less']
 })
-export class ProductFiltersComponent {
+export class ProductFiltersComponent implements OnDestroy,OnInit {
 
   private destroySubject: Subject<void> = new Subject();
 

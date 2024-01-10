@@ -15,9 +15,8 @@ export class HttpService {
     return this.http.get( url,  {params: params })
   }
 
-  getTest() {
-    // return this.http.get<Availability[]>("");
-
+  post(url:string, params:any):Observable<any> {
+    return this.http.post( url,  params )
   }
 
 

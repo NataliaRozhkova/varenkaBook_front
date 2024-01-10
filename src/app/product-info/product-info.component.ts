@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {map, Subject, switchMap} from "rxjs";
 import {ProductService} from "../services/product.service";
 import { Product} from "../model/product";
@@ -10,7 +10,7 @@ import {CartService} from "../services/cart.service";
   templateUrl: './product-info.component.html',
   styleUrls: ['./product-info.component.less']
 })
-export class ProductInfoComponent implements OnDestroy {
+export class ProductInfoComponent implements OnDestroy,OnInit  {
 
   private destroySubject: Subject<void> = new Subject();
   product: Product = new Product();

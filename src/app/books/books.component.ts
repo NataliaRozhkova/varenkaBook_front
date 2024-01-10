@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject, takeUntil} from "rxjs";
 import {ProductService} from "../services/product.service";
 import {Genre} from "../model/product";
@@ -10,7 +10,7 @@ import {ProductsListComponent} from "../products/products-list.component";
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.less']
 })
-export class BooksComponent implements OnDestroy {
+export class BooksComponent implements OnDestroy,OnInit  {
 
   private destroySubject: Subject<void> = new Subject();
 

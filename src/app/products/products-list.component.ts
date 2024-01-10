@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpService} from "../services/http.service";
 import {Availability, Genre, Product} from "../model/product";
 import {Subject, takeUntil, switchMap, map, } from "rxjs";
@@ -9,7 +9,7 @@ import {ProductService} from "../services/product.service";
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.less']
 })
-export class ProductsListComponent implements OnDestroy {
+export class ProductsListComponent implements OnDestroy,OnInit  {
 
   @Input()
   productsCountOnPage: number = 12;

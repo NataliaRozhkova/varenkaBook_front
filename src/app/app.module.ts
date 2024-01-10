@@ -32,6 +32,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {OrderComponent} from "./order/order.component";
+import {MatInputModule} from "@angular/material/input";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -45,6 +48,8 @@ const appRoutes: Routes = [
   {path: '', component: MainComponent},
   {path: 'product-info/:id', component: ProductInfoComponent},
   {path: 'cart', component: CartComponent},
+  {path: 'order/:id', component: OrderComponent},
+  {path: 'order', component: OrderComponent},
 ];
 
 
@@ -68,6 +73,7 @@ const appRoutes: Routes = [
     MenuPanelComponent,
     CartItemComponent,
     DialogComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +91,9 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatGridListModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatInputModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

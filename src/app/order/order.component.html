@@ -1,0 +1,90 @@
+<div>
+  <h1>Оформление заказа</h1>
+  <div>
+
+    <form>
+      <h2>Информация о получателе</h2>
+
+      <div class="field">
+        <mat-label for="name">ФИО:</mat-label>
+
+        <input id="name" name="name" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
+        <mat-error *ngIf="nameControl.errors">{{nameControl.errors }}</mat-error>
+      </div>
+
+      <div class="field">
+        <mat-label for="email">email:</mat-label>
+        <input id="email" name="email" type="email" [(ngModel)]="order.email" [formControl]="emailControl">
+        <mat-error
+          *ngIf="emailControl.errors">{{emailControl.errors | json}}</mat-error>
+      </div>
+
+      <div class="field">
+        <mat-label for="phone">Телефон:</mat-label>
+        <input id="phone" name="phone" type="text" [(ngModel)]="order.phoneNumber" [formControl]="phoneControl">
+        <mat-error *ngIf="phoneControl.errors">{{phoneControl.errors | json}}</mat-error>
+      </div>
+
+      <h2>Тип доствки</h2>
+      <ng-select [(ngModel)]="deliveryType" name="deliveryType">
+        <ng-option *ngFor="let i of deliveryTypes" [value]="i.type">{{deliveryTypeNames[i.type]}}</ng-option>
+
+      </ng-select>
+
+      <!--      <select id="deliveryType" name="deliveryType" [(ngModel)]="order.deliveryType" [formControl]="deliveryTypeControl">-->
+      <!--        <option value="volvo">Volvo</option>-->
+      <!--        <option value="saab">Saab</option>-->
+      <!--        <option value="mercedes">Mercedes</option>-->
+      <!--        <option value="audi">Audi</option>-->
+      <!--      </select>-->
+      <mat-error *ngIf="deliveryTypeControl.errors">{{deliveryTypeControl.errors | json}}</mat-error>
+
+
+      <h2>Адрес доставки</h2>
+      <div class="field">
+        <mat-label for="postalCode">Индекс:</mat-label>
+        <input id="postalCode" name="postalCode" type="email" [(ngModel)]="order.deliveryAddress.postalCode"
+               [formControl]="postalCodeControl">
+        <mat-error *ngIf="postalCodeControl.errors">{{postalCodeControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-label for="country">Страна:</mat-label>
+        <input id="country" name="country" type="text" [(ngModel)]="order.deliveryAddress.country"
+               [formControl]="countryControl">
+        <mat-error *ngIf="countryControl.errors">{{countryControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-label for="region">Регион:</mat-label>
+        <input id="region" name="region" type="text" [(ngModel)]="order.deliveryAddress.region">
+      </div>
+      <div class="field">
+        <mat-label for="city">Город:</mat-label>
+        <input id="city" name="city" type="text" [(ngModel)]="order.deliveryAddress.city" [formControl]="cityControl">
+        <mat-error *ngIf="cityControl.errors">{{cityControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-label for="street">Улица:</mat-label>
+        <input id="street" name="street" type="text" [(ngModel)]="order.deliveryAddress.street"
+               [formControl]="streetControl">
+        <mat-error *ngIf="streetControl.errors">{{streetControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-label for="buildingNumber">Дом:</mat-label>
+        <input id="buildingNumber" name="buildingNumber" type="text" [(ngModel)]="order.deliveryAddress.buildingNumber"
+               [formControl]="buildingNumberControl">
+        <mat-error *ngIf="buildingNumberControl.errors">{{buildingNumberControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-label for="appartmentNumber">Квартира:</mat-label>
+        <input id="appartmentNumber" name="appartmentNumber" type="text"
+               [(ngModel)]="order.deliveryAddress.appartmentNumber"
+               [formControl]="appartmentNumberControl">
+        <mat-error *ngIf="appartmentNumberControl.errors">{{appartmentNumberControl.errors | json}}</mat-error>
+      </div>
+
+
+    </form>
+  </div>
+
+  <button type="submit" (click)="onSubmit()">ОТправить</button>
+</div>

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
 import {CartItem, CartService} from "../services/cart.service";
@@ -8,7 +8,7 @@ import {CartItem, CartService} from "../services/cart.service";
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.less']
 })
-export class CartComponent {
+export class CartComponent implements OnDestroy,OnInit {
 
   private destroySubject: Subject<void> = new Subject();
   products: CartItem[] = [];
@@ -40,7 +40,7 @@ export class CartComponent {
   }
 
   createOrder() {
-    this
+    this.router.navigate(['order']);
   }
 
   ngOnDestroy() {
