@@ -27,6 +27,12 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
   total: number = 0;
   order: string = '-priority,-is_new,-is_popular'
 
+  @Input()
+  offset: number = 0;
+
+  @Input()
+  showPagination: boolean = true;
+
   productStatuses: Availability[];
 
   filters: any = {};
@@ -35,9 +41,7 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
 
 
   constructor(
-    private http: HttpService,
     private productService: ProductService,
-    // private route: ActivatedRoute
   ) {
   }
 
@@ -46,7 +50,7 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
     this.pageSize = this.productsCountOnPage;
 
     this.filters.limit = this.productsCountOnPage;
-    this.filters.offset = 0;
+    this.filters.offset = this.offset;
     this.filters.ordering = this.order;
 
     if (this.genres) {
@@ -73,7 +77,7 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
   change($event: any) {
     this.products  = []
 
-    this.filters.offset = ($event - 1) * this.productsCountOnPage
+    this.filters.offset = ($event - 1) * this.productsCountOnPage + this.offset;
 
     if (this.genres) {
       this.filters.genres = this.genres.id;

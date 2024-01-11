@@ -1,4 +1,4 @@
-<div class="product-card"  (click)="openInfo(product)">
+<div class="product-card" (click)="openInfo(product)">
 
   <div *ngIf="product.isNew && !product.isPopular" class="sticker">
     <img src="../../../assets/new.png" class="sticker-img"/>
@@ -7,11 +7,8 @@
     <img src="../../../assets/hit.png" class="sticker-img"/>
   </div>
   <div class="product-card-image">
-    <img *ngIf="productImage; else elseBlock"  [src]="productImage" class="image"/>
 
-    <ng-template #elseBlock>
-        <img src="../../../assets/no-mage-found.png" class="image-not-found"/>
-    </ng-template>
+    <image [imageLink]="productImage" class="image"></image>
 
 
   </div>
@@ -22,8 +19,8 @@
       <span *ngFor="let i of product.genres">{{i.genre}}, </span></div>
     <div class="product-card-price">
 
-      <span *ngIf="product.discount" class="discount"> {{product.retailPrice +  ' \u20AC'}}</span>
-      {{product.discountPrice +  ' \u20AC'}}
+      <span *ngIf="product.discount" class="discount"> {{product.retailPrice + ' \u20AC'}}</span>
+      {{product.discountPrice + ' \u20AC'}}
     </div>
   </div>
 

@@ -17,7 +17,7 @@ export class CartService {
   cartChange: EventEmitter<any> = new EventEmitter();
 
   constructor() {
-    // sessionStorage.clear();
+    sessionStorage.clear();
     this.products = JSON.parse(sessionStorage.getItem('products') || '[]');
     this.productsCount = JSON.parse(sessionStorage.getItem('productsCount') || '0');
   }

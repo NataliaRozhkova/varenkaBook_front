@@ -35,6 +35,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {OrderComponent} from "./order/order.component";
 import {MatInputModule} from "@angular/material/input";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {SliderComponent} from "./slider/slider.component";
+import {ImageComponent} from "./image/image.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -73,7 +76,9 @@ const appRoutes: Routes = [
     MenuPanelComponent,
     CartItemComponent,
     DialogComponent,
-    OrderComponent
+    OrderComponent,
+    SliderComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +98,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    NgSelectModule
+    NgSelectModule,
+    MatCheckboxModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

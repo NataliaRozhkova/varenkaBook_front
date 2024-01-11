@@ -6,7 +6,7 @@
   </div>
 
 </div>
-<pagination-controls  *ngIf="products &&  total > productsCountOnPage" class="pagination" previousLabel="Предыдущаяя"
+<pagination-controls  *ngIf="products && showPagination &&  total > productsCountOnPage" class="pagination" previousLabel="Предыдущаяя"
                       nextLabel="Следующая"
                       (pageChange)="change($event);upPage()"
 >

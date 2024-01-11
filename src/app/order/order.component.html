@@ -30,13 +30,6 @@
         <ng-option *ngFor="let i of deliveryTypes" [value]="i.type">{{deliveryTypeNames[i.type]}}</ng-option>
 
       </ng-select>
-
-      <!--      <select id="deliveryType" name="deliveryType" [(ngModel)]="order.deliveryType" [formControl]="deliveryTypeControl">-->
-      <!--        <option value="volvo">Volvo</option>-->
-      <!--        <option value="saab">Saab</option>-->
-      <!--        <option value="mercedes">Mercedes</option>-->
-      <!--        <option value="audi">Audi</option>-->
-      <!--      </select>-->
       <mat-error *ngIf="deliveryTypeControl.errors">{{deliveryTypeControl.errors | json}}</mat-error>
 
 
@@ -81,7 +74,19 @@
                [formControl]="appartmentNumberControl">
         <mat-error *ngIf="appartmentNumberControl.errors">{{appartmentNumberControl.errors | json}}</mat-error>
       </div>
-
+      <div class="field">
+        <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentDataProcessing"
+                      [formControl]="concentDataProcessingControl"> Подтверждаю согласие на обработку персональных
+          данных
+        </mat-checkbox>
+        <mat-error
+          *ngIf="concentDataProcessingControl.errors">{{concentDataProcessingControl.errors | json}}</mat-error>
+      </div>
+      <div class="field">
+        <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentNewsletters"> Хочу подписаться на рассылку
+        </mat-checkbox>
+        <mat-error *ngIf="concentNewslettersControl.errors">{{concentNewslettersControl.errors | json}}</mat-error>
+      </div>
 
     </form>
   </div>

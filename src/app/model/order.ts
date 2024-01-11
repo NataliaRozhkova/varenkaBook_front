@@ -1,19 +1,20 @@
+import {constructorChecks} from "@angular/cdk/schematics";
+
 export class Order {
 
   name: string;
   email: string;
   phoneNumber: string;
-  deliveryType: DeliveryType;
-  orderType:OrderType;
-  orderStatus:OrderStatus;
-  concentDataProcessing: boolean;
-  concentNewsletters: boolean;
-  pickPoint: PickPoint;
-  deliveryAddress:Address;
-  productsInOrder: ProductInOrder;
+  deliveryType: DeliveryType = new DeliveryType();
+  orderType:OrderType = new OrderType();
+  orderStatus:OrderStatus = new OrderStatus();
+  concentDataProcessing: boolean = false;
+  concentNewsletters: boolean = false;
+  pickPoint: PickPoint = new PickPoint();
+  deliveryAddress:Address = new Address();
+  productsInOrder: ProductInOrder = new ProductInOrder();
 
 }
-
 export class DeliveryType {
   type: string;
 }

@@ -21,7 +21,8 @@ html, body {
   margin: 0;
   font-family: Inter, "Inter", Verdana, sans-serif;
   overflow: hidden;
-
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   .pagination .ngx-pagination .current {
     background: #012e76;

@@ -8,7 +8,7 @@ import {
 } from "@angular/forms";
 import {ProductService} from "../services/product.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {NgSelectModule, NgOption} from '@ng-select/ng-select';
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
   selector: 'order',
@@ -38,6 +38,8 @@ export class OrderComponent implements OnDestroy, OnInit {
   streetControl = new FormControl('');
   buildingNumberControl = new FormControl('');
   appartmentNumberControl = new FormControl('');
+  concentDataProcessingControl = new FormControl('');
+  concentNewslettersControl = new FormControl('');
 
   orderControls = new FormGroup({
     name: this.nameControl,
@@ -50,6 +52,8 @@ export class OrderComponent implements OnDestroy, OnInit {
     street: this.streetControl,
     buildingNumber: this.buildingNumberControl,
     appartmentNumber: this.appartmentNumberControl,
+    concentDataProcessing: this.concentNewslettersControl,
+    concentNewsletters: this.concentNewslettersControl,
   })
 
   deliveryTypeNames: any = {
@@ -68,14 +72,16 @@ export class OrderComponent implements OnDestroy, OnInit {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
     this.order = JSON.parse(sessionStorage.getItem('order') || '{}');
-    console.log('*-*-*-* --*--**  ', this.order.deliveryType)
-    this.deliveryType = this.order.deliveryType.type;
 
-    if (this.order.deliveryAddress) {
-      this.deliveryAddress = this.order.deliveryAddress;
-    } else {
-      this.order.deliveryAddress = new Address()
-    }
+    // if (this.order.deliveryAddress) {
+    //   this.deliveryAddress = this.order.deliveryAddress;
+    // } else {
+    //   this.order.deliveryAddress = new Address()
+    // }
+
+    // if (!this.order.concentDataProcessing) {
+    //    this.order.concentDataProcessing = false;
+    // }
 
 
   }
@@ -101,12 +107,10 @@ export class OrderComponent implements OnDestroy, OnInit {
     if (this.validate()) {
       this.order.deliveryType = new DeliveryType();
       this.order.deliveryType.type = this.deliveryType;
-      console.log('*-*-*-* --*--**  ', this.deliveryType)
       this.productService.createOrder(this.order).pipe(
         takeUntil(this.destroySubject),
       )
         .subscribe(resp => {
-            console.log('***************   ', resp)
           },
           err => {
             this.resolveErrors(err)

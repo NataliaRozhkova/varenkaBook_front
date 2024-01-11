@@ -4,6 +4,7 @@ import {ProductService} from "../services/product.service";
 import { Product} from "../model/product";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {CartService} from "../services/cart.service";
+import {ImageService} from "../services/image.service";
 
 @Component({
   selector: 'product-info',
@@ -19,6 +20,7 @@ export class ProductInfoComponent implements OnDestroy,OnInit  {
     private productService: ProductService,
     private route: ActivatedRoute,
     private cartService: CartService,
+    public imageService: ImageService,
   ) {
   }
 

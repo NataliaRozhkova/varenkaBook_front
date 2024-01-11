@@ -1,3 +1,7 @@
 <div>
-  MainComponent
+<slider [slides]="sliderImages"></slider>
+
+  <products [productsCountOnPage]="1" [productType]="'book'"  [showPagination]="false" class="single"></products>
+  <products [productsCountOnPage]="2" [productType]="'book'" [offset]="1" [showPagination]="false"class="double"></products>
+  <products [productsCountOnPage]="12" [productType]="'book'" [offset]="3"  [showPagination]="false"></products>
 </div>
