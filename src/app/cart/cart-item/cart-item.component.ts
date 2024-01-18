@@ -3,9 +3,8 @@ import {Subject} from "rxjs";
 import {Router} from "@angular/router";
 import {CartService} from "../../services/cart.service";
 import {Product} from "../../model/product";
-import {DialogComponent} from "../../dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {FormControl, Validators} from "@angular/forms";
+import {ImageService} from "../../services/image.service";
 
 @Component({
   selector: 'cart-item',
@@ -19,6 +18,8 @@ export class CartItemComponent {
   @Input()
   product: Product;
 
+  @ViewChild('dialog') myDialog = {} as TemplateRef<string>;
+
   private dialogRef: any;
 
   @Input()
@@ -28,12 +29,13 @@ export class CartItemComponent {
   constructor(
     private cartService: CartService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public imageService: ImageService,
   ) {
   }
 
   ngOnInit() {
-    console.log(this.product)
+    console.log("!!!!!!!!!!", this.product)
 
   }
 
@@ -53,8 +55,10 @@ export class CartItemComponent {
     this.cartService.setCount(this.product, $event)
   }
 
+  openProductInfo(){
+    this.router.navigate(['product-info', this.product.id ])
+  }
 
-  @ViewChild('dialog') myDialog = {} as TemplateRef<string>;
 
   deleteAll() {
 

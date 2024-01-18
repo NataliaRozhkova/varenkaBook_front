@@ -5,14 +5,18 @@
 
       <button class="menu-button">
 
-        <span class="icon-align-center" *ngIf="state == 'initial'" (click)="showMenu()"></span>
-        <span class="icon-close" *ngIf="state == 'expanded'" (click)="showMenu()"></span>
+        <span class="icon-align-center_" *ngIf="state == 'initial'" (click)="showMenu()">
+          <img src="assets/icons/text-align-justify.svg" class="icon-menu">
+        </span>
+        <span class="icon-close_" *ngIf="state == 'expanded'" (click)="showMenu()">
+           <img src="assets/icons/cross.svg" class="icon-menu">
+        </span>
       </button>
 
-      <img src="assets/logo.svg" class="logo" routerLink="/main" routerLinkActive="active"
+      <img src="assets/logo_small.png" class="logo" routerLink="/main" routerLinkActive="active"
            ariaCurrentWhenActive="page"/>
 
-      <menu-panel></menu-panel>
+      <menu-panel class="menu-panel"></menu-panel>
     </div>
 
     <div [@expandedPanel]="!menuActive ? state : ''" [ngClass]="menuActive ?'header-menu':  'hidden-menu' ">

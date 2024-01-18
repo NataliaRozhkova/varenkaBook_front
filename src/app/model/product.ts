@@ -22,11 +22,12 @@ export class Product {
   mainPhoto: string;
   panoramaPhoto: string;
   previewPhoto: string;
-  photos: string[];
+  photos: Photo[];
   productType: ProductType;
   publisher: Publisher;
   retailPrice: number;
   shortDescription: string;
+  year: string;
   soldAmount: number;
 
 
@@ -72,4 +73,10 @@ export class Genre {
   id: string;
   genre: string;
   image: string;
+}
+
+export class Photo {
+  id: string;
+  photo: string;
+  productId: string;
 }

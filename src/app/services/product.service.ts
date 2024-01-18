@@ -20,11 +20,6 @@ export class ProductService {
     return this.http.get('api/product_types/', '')
   }
 
-  getFrontParams(): Observable<any> {
-    return this.http.get('api/front_params/', '')
-
-  }
-
   getGenres(): Observable<any> {
     return this.http.get('api/genres/', {'limit':15})
   }

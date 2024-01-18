@@ -4,6 +4,7 @@ import {ProductService} from "../services/product.service";
 import {Genre} from "../model/product";
 import {FrontParam} from "../model/service-information";
 import {Router} from "@angular/router";
+import {InformationService} from "../services/information.service";
 
 @Component({
   selector: 'product-filters',
@@ -24,13 +25,14 @@ export class ProductFiltersComponent implements OnDestroy,OnInit {
 
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private infoService: InformationService,
   ) {
   }
 
   ngOnInit() {
 
-    this.productService.getFrontParams().pipe(
+    this.infoService.getFrontParams().pipe(
       takeUntil(this.destroySubject),
       switchMap((res: any) => {
         const frontParams: FrontParam[] = res?.results;

@@ -3,6 +3,7 @@ import {Product} from "../../model/product";
 import { CurrencyPipe } from "@angular/common";
 import {ProductService} from "../../services/product.service";
 import {Router} from "@angular/router";
+import {ImageService} from "../../services/image.service";
 
 @Component({
   selector: 'product-item',
@@ -17,7 +18,8 @@ export class ProductItemComponent {
   productImage: string;
 
   constructor(
-    private router: Router
+    private router: Router,
+    public imageService: ImageService
   ) {
   }
 

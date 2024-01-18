@@ -38,6 +38,10 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {SliderComponent} from "./slider/slider.component";
 import {ImageComponent} from "./image/image.component";
+import {InformationService} from "./services/information.service";
+import {MatStepperModule} from "@angular/material/stepper";
+import { PhoneMaskDirective} from "./directives/phone-mask.directive";
+import {CdkStepperModule} from "@angular/cdk/stepper";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -78,7 +82,8 @@ const appRoutes: Routes = [
     DialogComponent,
     OrderComponent,
     SliderComponent,
-    ImageComponent
+    ImageComponent,
+    PhoneMaskDirective
   ],
   imports: [
     BrowserModule,
@@ -100,9 +105,12 @@ const appRoutes: Routes = [
     MatInputModule,
     NgSelectModule,
     MatCheckboxModule,
+    MatStepperModule,
+    CdkStepperModule,
+
 
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

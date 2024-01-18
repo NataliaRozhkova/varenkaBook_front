@@ -1,14 +1,22 @@
 <div class="product-card" (click)="openInfo(product)">
 
-  <div *ngIf="product.isNew && !product.isPopular" class="sticker">
-    <img src="../../../assets/new.png" class="sticker-img"/>
+  <div *ngIf="product.isNew && !product.isPopular" class="sticker popular">
+    Хит!
   </div>
-  <div *ngIf="product.isPopular" class="sticker">
-    <img src="../../../assets/hit.png" class="sticker-img"/>
+  <div *ngIf="product.isPopular" class="sticker new">
+    Новинка!
   </div>
   <div class="product-card-image">
 
-    <image [imageLink]="productImage" class="image"></image>
+    <ng-template #noImageFound>
+      <image [imageLink]="'../assets/no-mage-found.png'" class="image-not-found"/>
+    </ng-template>
+
+
+    <div *ngIf="productImage; else noImageFound"   class="image-wrapper">
+      <image [imageLink]="productImage"></image>
+
+    </div>
 
 
   </div>

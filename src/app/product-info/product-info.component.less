@@ -1,7 +1,117 @@
 @import "src/styles/color";
 
 :host {
-  .main-image {
-    max-width: 420px;
+
+  .product-info {
+    display: flex;
+    align-items: flex-start;
   }
+
+
+  .left-block {
+    width: calc(100% - 20vh);
+    min-width: 300px;
+
+  }
+
+  .main-image-section {
+    height: 80%;
+
+    justify-content: center;
+    padding : 3vw 3vw 5vw 3vw;
+    display: flex;
+    //background: @backgroundColor;
+
+
+    .main-image {
+      height: 35vw;
+    }
+  }
+
+  .product-photos {
+    //background: @backgroundColor;
+    justify-content: center;
+    padding : 3vw ;
+    display: flex;
+  }
+  .image-list-photos {
+    height: 35vw;
+    max-height: 70% ;
+    width: 50%;
+  }
+
+  @media (max-width: 850px) {
+    .image-list-photos {
+      height: 25vw;
+    }
+  }
+
+
+  .right-block {
+    height: calc(100vh - 200px);
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .about {
+    margin: 30px;
+  }
+
+  .product-name {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 30px;
+    line-height: 27px;
+    color: @baseFontColor;
+  }
+
+  .short-description {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 27px;
+    color: @baseFontColor;
+  }
+
+  .author {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 27px;
+    color: @fontColorBright;
+  }
+
+  .price {
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: -.01em;
+    color: @baseFontColor;
+    margin-top: 20px;
+  }
+
+  .discount {
+    color: @fontColorBright;
+    margin-right: 20px;
+    font-size: 18px;
+
+    text-decoration: line-through;
+  }
+
+  .section-info {
+    padding: 5vh;
+    .description {
+      font-size: 20px;
+      margin:  5vh 0 5vh 0;
+      line-height: 1.5;
+
+    }
+  }
+
+
 }

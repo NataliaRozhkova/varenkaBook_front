@@ -1,5 +1,11 @@
 <div>
-  <product-filters  *ngIf="!filterGenre"  [filterName]="filterName" (selectedGenre)="changeCategory($event)"></product-filters>
+  <product-filters class="products-filter" *ngIf="!filterGenre" [filterName]="filterName"
+                   (selectedGenre)="changeCategory($event)"></product-filters>
   <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
-  <products [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre" #products></products>
+
+  <scrollbar class="scroller parent" #scroller1 [height]="'68vh'">
+
+    <products class="products-list" [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre"
+              #products></products>
+  </scrollbar>
 </div>

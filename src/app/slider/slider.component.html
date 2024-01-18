@@ -1,7 +1,7 @@
 <div class="navigation-wrapper">
   <div class="keen-slider keen-slider--vertical" #sliderRef>
-      <div *ngFor="let sl of slides" class="keen-slider__slide number-slide{{sl.number + 1}}">
-        <img src="{{sl.image}}" class="slide-image">
+      <div *ngFor="let sl of slidesArray" class="keen-slider__slide number-slide{{sl.number + 1}}">
+        <img src="{{sl.image}}" class="slide-image" >
       </div>
   </div>
   <svg

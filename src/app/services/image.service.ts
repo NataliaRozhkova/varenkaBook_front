@@ -10,7 +10,7 @@ export class ImageService {
 
   changeImageUrl(imageUrl: string): string {
 
-    if (imageUrl.indexOf('media') > 0) {
+    if (imageUrl &&imageUrl.indexOf('media') > 0) {
       return '/api/' + imageUrl.substring(imageUrl.indexOf('media'), imageUrl.length);
     } else return imageUrl;
   }

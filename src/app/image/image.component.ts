@@ -8,7 +8,7 @@ import {ImageService} from "../services/image.service";
 })
 export class ImageComponent implements OnInit {
 
-  imageToShow: string;
+  imageToShow: string = "assets/no-mage-found.png";
 
   @Input()
   imageLink: string;
@@ -16,10 +16,11 @@ export class ImageComponent implements OnInit {
   constructor(private imageService: ImageService) {
   }
 
-  getImage() {
+  getImage(): string {
     if (this.imageLink) {
-      this.imageToShow = '/api/' + this.imageLink.substring(this.imageLink.indexOf('media'), this.imageLink.length);
+      this.imageToShow = this.imageService.changeImageUrl(this.imageLink);
     }
+    return this.imageToShow
   }
 
   ngOnInit(): void {

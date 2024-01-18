@@ -52,25 +52,13 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
     this.filters.limit = this.productsCountOnPage;
     this.filters.offset = this.offset;
     this.filters.ordering = this.order;
-
+    this.filters.product_type = this.productType;
+    this.filters.availability = 'in_stock'
     if (this.genres) {
       this.filters.genres = this.genres.id;
     }
 
-    this.productService.getProductTypes().pipe(
-      takeUntil(this.destroySubject),
-      switchMap((types: any) => {
-        this.filters.product_type = types?.results?.find((av: any) => av.type == this.productType)?.id;
-
-        return this.productService.getAvailabilities()
-      }),
-      map((response: any) => {
-        this.productStatuses = response?.results;
-        this.filters.availability = this.productStatuses.find(av => av.status == this.availability)?.id
-
         this.change(1);
-      })
-    ).subscribe()
   }
 
 

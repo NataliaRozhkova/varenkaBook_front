@@ -1,8 +1,11 @@
 <div class="cart-item">
-  <img *ngIf="product.previewPhoto; else elseBlock" [src]="product.previewPhoto" class="image"/>
+  <img *ngIf="product.previewPhoto; else elseBlock"
+       [src]="imageService.changeImageUrl(product.previewPhoto)"
+       (click)="openProductInfo()"
+       class="image"/>
 
   <ng-template #elseBlock>
-    <img src="../../../assets/no-mage-found.png" class="image-not-found"/>
+    <img src="../../../assets/no-mage-found.png" class="image-not-found" (click)="openProductInfo()"/>
   </ng-template>
 
   <div class="product-info">
@@ -17,13 +20,18 @@
              (ngModelChange)="changeCount($event)">
       <button class="increase" [disabled]="count >= product.countInStock" (click)="increaseCount()">+</button>
     </div>
-    <button class="menu-button-cart" (click)="deleteAll()">
-      <span class="icon-trash"></span>
-    </button>
+
   </div>
-  <div class="cost-info">
-    <span *ngIf="product.discount" class="discount"> {{product.retailPrice * count + ' \u20AC'}}</span>
-    {{product.discountPrice * count + ' \u20AC'}}
+  <div class="right-panel">
+    <div class="cost-info">
+      <span *ngIf="product.discount" class="discount"> {{product.retailPrice * count + ' \u20AC'}}</span>
+      {{product.discountPrice * count + ' \u20AC'}}
+    </div>
+    <button class="menu-button-cart" (click)="deleteAll()">
+      <span class="icon-trash_">
+        <img src="assets/icons/trash.svg" class="icon-menu">
+      </span>
+    </button>
   </div>
 </div>
 

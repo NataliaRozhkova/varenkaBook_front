@@ -1,9 +1,5 @@
 <div class="filters">
-  <div *ngFor="let i of genres" (click)="chooseGenre(i)">
-    <div class="filter-item">
-<!--      <img src="" class="filter-item-image">-->
-      <div class="filter-text"> {{i.genre}}</div>
-
-    </div>
+  <div *ngFor="let i of genres" (click)="chooseGenre(i)" class="filter-item">
+      <div class="fаilter-text"> {{i.genre}}</div>
   </div>
 </div>

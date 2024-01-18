@@ -1,4 +1,7 @@
-<img *ngIf="imageLink; else noImageFound" [src]="imageToShow" class="image"/>
-<ng-template #noImageFound>
-  <img src="assets/no-mage-found.png" class="image-not-found"/>
-</ng-template>
+<div class="image-wrapper">
+  <img src="{{getImage()}}" class="image">
+  <div class="image-cover-wrapper">
+    <img src="{{getImage()}}" class="image-wrapper">
+  </div>
+</div>
+
