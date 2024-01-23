@@ -1,0 +1,51 @@
+@import "src/styles/color";
+
+:host {
+  background: @hoverColorMenu;
+
+  .filters {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+    background: transparent;
+
+
+    @media (max-width: 1000px) {
+      --grid-column-count: 2;
+    }
+    @media (max-width: 500px) {
+      --grid-column-count: 1;
+    }
+    --grid-column-count: 4;
+    --grid-item--min-width: 100px;
+
+    --grid-item--max-width: calc((100%) / var(--grid-column-count));
+
+    display: grid;
+    row-gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+  }
+
+  .filter-item:hover {
+      cursor: pointer;
+    transform: scale(1.1);
+  }
+
+
+  .filter-text {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 20px;
+
+  }
+
+  .filter-item-image:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+
+
+  }
+
+}

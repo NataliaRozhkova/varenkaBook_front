@@ -1,0 +1,92 @@
+@import "src/styles/color";
+
+:host {
+
+  .product-card:hover {
+    cursor: pointer;
+  }
+
+  .product-card {
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    -o-object-fit: contain;
+    object-fit: contain;
+  }
+
+  .image-not-found {
+    height: 150px;
+  }
+  .image-book {
+    max-height: 200px;
+  }
+
+  .product-card-image {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .image-wrapper {
+     height: 200px;
+
+  }
+
+  .product-card-info {
+    padding: 20px;
+  }
+
+  .product-card-name {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    letter-spacing: -.01em;
+    color: @baseFontColor;
+  }
+
+  .product-card-author, .product-card-category {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 27px;
+    letter-spacing: -.01em;
+    color: @fontColorBright;
+  }
+
+  .product-card-price {
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 27px;
+    letter-spacing: -.01em;
+    color: @baseFontColor;
+    margin-top: 20px;
+  }
+
+  .discount {
+    color: @fontColorBright;
+    margin-right: 30px;
+    text-decoration: line-through;
+  }
+
+  .sticker {
+    font-size: 20px;
+    position: absolute;
+    left: 50px;
+    top: -10px;
+  }
+
+  .new {
+    color: @colorTheme8;
+  }
+
+  .popular {
+    color: @colorTheme2;
+  }
+
+
+}

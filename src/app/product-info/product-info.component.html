@@ -1,0 +1,81 @@
+<div class="product-info">
+
+
+  <div class="left-block">
+
+    <div *ngIf="true; else sliderBlock">
+      <div class="main-image-section">
+        <div class="main-image">
+          <image [imageLink]="product.mainPhoto"></image>
+
+        </div>
+      </div>
+
+      <div *ngFor="let im of product.photos" class="product-photos">
+        <image [imageLink]="im.photo" class="image-list-photos"></image>
+      </div>
+    </div>
+    <div class="section-info">
+
+      <div class="tech-info">
+        <div *ngIf="product.isbn">
+          <span>ISBN: </span>
+          <span>{{product.pageAmount}}</span>
+        </div>
+        <div *ngIf="product.pageAmount">
+          <span>Количество страниц: </span>
+          <span>{{product.pageAmount}}</span>
+        </div>
+        <div *ngIf="product.format">
+          <span>Формат: </span>
+          <span>{{product.format.format}}</span>
+        </div>
+        <div *ngIf="product.illustrator">
+          <span>Иллюстратор: </span>
+          <span>{{product.illustrator}}</span>
+        </div>
+        <div *ngIf="product.ageCategory">
+          <span>Возраст: </span>
+          <span>{{product.ageCategory.ageCategory}}</span>
+        </div>
+        <div *ngIf="product.year">
+          <span>Год: </span>
+          <span>{{product.year}}</span>
+        </div>
+      </div>
+
+      <div class="description">
+        {{product.description}}
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="right-block">
+    <div class="about">
+      <div class="author">{{product.author}}</div>
+      <div class="product-name">{{product.name}}</div>
+
+      <div class="short-description" *ngIf="product.shortDescription">{{product.shortDescription}}</div>
+      <div class="price">
+
+        <span *ngIf="product.discount" class="discount"> {{product.retailPrice + ' \u20AC'}}</span>
+        {{product.discountPrice + ' \u20AC'}}
+      </div>
+      <button mat-button class="main-button" (click)="addToCart()">В корзину</button>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<ng-template #sliderBlock>
+  <div *ngIf="product" class="slider">
+    <ng-container  #testBlock></ng-container>
+  </div>
+</ng-template>

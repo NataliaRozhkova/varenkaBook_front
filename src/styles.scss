@@ -1,16 +1,104 @@
 @import 'assets/iconmoon/style.css';
-
-
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~@ng-select/ng-select/themes/material.theme.css";
 
 @font-face {
   font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Medium.ttf')  format('truetype');
+  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/Inter-Bold.ttf') format('truetype');
   font-weight: bold;
 }
 
+
 html, body {
+  background: #ffffff;
   padding: 0;
   margin: 0;
   font-family: Inter, "Inter", Verdana, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
+  .pagination .ngx-pagination .current {
+    background: #e54832;
+  }
+
+  .mat-app-background {
+    background-color: #ffffff;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]:hover,
+  input[type="number"]:focus {
+    -moz-appearance: number-input;
+  }
+
+  .mat-badge-content {
+    background: #e54832;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin: 30px;
+  }
+
+  .mdc-button {
+    font-family: Inter, "Inter", Verdana, sans-serif;
+  }
+
+  .main-button {
+    background-color: #00a189;
+    color: #ffffff !important;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 30px;
+    letter-spacing: normal;
+  }
+
+  .mat-mdc-form-field {
+    background-color: #00a189;
+  }
+
+  .icon-menu {
+    width: 25px;
+    filter: invert(51%) sepia(6%) saturate(10%) hue-rotate(355deg) brightness(96%) contrast(90%);
+  }
+
+  .icon-menu:hover {
+    transform: scale(1.05);
+    filter: invert(48%) sepia(23%) saturate(5564%) hue-rotate(335deg) brightness(87%) contrast(109%);
+  }
+
+  .products-list {
+    margin-top: 25px;
+  }
+
+  .products-filter{
+    //position: absolute;
+    //z-index: 10;
+    //opacity: 0.5;
+    background: #ffffff  ;
+    //background: rgba(255, 0, 0, 0.5);
+    width: 100%;
+
+  }
+  //
+  //.parent {
+  //  //position: relative;
+  //}
 }

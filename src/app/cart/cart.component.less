@@ -1,0 +1,49 @@
+@import "src/styles/color";
+
+:host {
+  padding: 30px;
+
+
+  .cart-view {
+    margin: 30px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+  }
+
+  .cart-info {
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .cart-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+
+    .order-button {
+      font-size: 18px;
+      width: 200px;
+      height: 40px;
+    }
+
+    .back-button {
+      font-size: 18px;
+      width: 200px;
+      height: 40px;
+    }
+  }
+
+  @media(max-width: 800px) {
+    .cart-view {
+      flex-direction: column;
+    }
+  }
+
+
+
+
+}

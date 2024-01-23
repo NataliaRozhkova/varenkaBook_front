@@ -1,0 +1,203 @@
+<div>
+  <h1>Оформление заказа</h1>
+
+
+  <div class="order-form" #form>
+
+    <div class="step" *ngIf="pageIndex == 0">
+      <ng-container *ngTemplateOutlet="firstStep"></ng-container>
+    </div>
+    <div class="step" *ngIf="pageIndex == 1">
+      <ng-container *ngTemplateOutlet="secondStep"></ng-container>
+    </div>
+    <div class="step" *ngIf="pageIndex == 2">
+      <ng-container *ngTemplateOutlet="thirdPage"></ng-container>
+    </div>
+    <div class="step" *ngIf="pageIndex == 3">
+      <ng-container *ngTemplateOutlet="productsListPage"></ng-container>
+    </div>
+    <div class="step" *ngIf="pageIndex == 4">
+      <ng-container *ngTemplateOutlet="submitPage"></ng-container>
+    </div>
+
+
+  </div>
+  <button type="submit" (click)="onSubmit()" [disabled]="!order.concentDataProcessing">ОТправить</button>
+
+</div>
+
+<ng-template #firstStep>
+  <h2>Информация о получателе</h2>
+
+  <div class="field">
+    <mat-label for="name">ФИО:</mat-label>
+
+    <input id="name" name="name" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
+    <mat-error *ngIf="nameControl.errors">{{nameControl.errors.toString()  }}</mat-error>
+  </div>
+
+  <div class="field">
+    <mat-label for="email">email:</mat-label>
+    <input id="email" name="email" type="email" [(ngModel)]="order.email" [formControl]="emailControl">
+    <mat-error
+      *ngIf="emailControl.errors">{{emailControl.errors | json}}</mat-error>
+  </div>
+
+  <div class="field">
+    <mat-label for="phone">Телефон:</mat-label>
+    <input id="phone"
+           name="phone" type="text"
+           [maxLength]="12"
+           phoneMask
+           [preValue]="order.phoneNumber"
+           [phoneControl]="phoneControl"
+           maxlength="15"
+           [(ngModel)]="order.phoneNumber"
+           [formControl]="phoneControl">
+    <mat-error *ngIf="phoneControl.errors">{{phoneControl.errors | json}}</mat-error>
+  </div>
+
+  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
+  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
+
+</ng-template>
+
+<ng-template #secondStep>
+  <h2>Доставка</h2>
+
+  <!--  <h2>Тип доствки</h2>-->
+  <ng-select [(ngModel)]="deliveryType" name="deliveryType" [formControl]="deliveryTypeControl">
+    <ng-option *ngFor="let i of deliveryTypes" [value]="i.type">{{deliveryTypeNames[i.type]}}</ng-option>
+
+  </ng-select>
+  <mat-error *ngIf="deliveryTypeControl.errors">{{deliveryTypeControl.errors | json}}</mat-error>
+
+  <div class="delivery-address" *ngIf="pickPointsShow">
+    <ng-select [(ngModel)]="pickPoint" name="deliveryType" [formControl]="pickPointControl">
+      <ng-option *ngFor="let i of pickPoints" [value]="i.id">{{getStringAddress(i)}}</ng-option>
+
+    </ng-select>
+    <mat-error *ngIf="pickPointControl.errors">{{pickPointControl.errors | json}}</mat-error>
+  </div>
+
+  <div class="delivery-address" *ngIf="showAddress">
+    <h2>Адрес доставки</h2>
+    <div class="field">
+      <mat-label for="postalCode">Индекс:</mat-label>
+      <input id="postalCode" name="postalCode" type="email" [(ngModel)]="order.postalCode"
+             [formControl]="postalCodeControl">
+      <mat-error *ngIf="postalCodeControl.errors">{{postalCodeControl.errors| json}}</mat-error>
+    </div>
+    <div class="field">
+      <mat-label for="country">Страна:</mat-label>
+      <input id="country" name="country" type="text" [(ngModel)]="order.country"
+             [formControl]="countryControl">
+      <mat-error *ngIf="countryControl.errors">{{countryControl.errors | json}}</mat-error>
+    </div>
+    <div class="field">
+      <mat-label for="region">Регион:</mat-label>
+      <input id="region" name="region" type="text" [(ngModel)]="order.region">
+    </div>
+    <div class="field">
+      <mat-label for="city">Город:</mat-label>
+      <input id="city" name="city" type="text" [(ngModel)]="order.city" [formControl]="cityControl">
+      <mat-error *ngIf="cityControl.errors">{{cityControl.errors | json}}</mat-error>
+    </div>
+    <div class="field">
+      <mat-label for="street">Улица:</mat-label>
+      <input id="street" name="street" type="text" [(ngModel)]="order.street"
+             [formControl]="streetControl">
+      <mat-error *ngIf="streetControl.errors">{{streetControl.errors | json}}</mat-error>
+    </div>
+    <div class="field">
+      <mat-label for="buildingNumber">Дом:</mat-label>
+      <input id="buildingNumber" name="buildingNumber" type="text" [(ngModel)]="order.buildingNumber"
+             [formControl]="buildingNumberControl">
+      <mat-error *ngIf="buildingNumberControl.errors">{{buildingNumberControl.errors | json}}</mat-error>
+    </div>
+    <div class="field">
+      <mat-label for="appartmentNumber">Квартира:</mat-label>
+      <input id="appartmentNumber" name="appartmentNumber" type="text"
+             [(ngModel)]="order.appartmentNumber"
+             [formControl]="appartmentNumberControl">
+      <mat-error *ngIf="appartmentNumberControl.errors">{{appartmentNumberControl.errors | json}}</mat-error>
+    </div>
+  </div>
+
+  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
+  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
+
+
+</ng-template>
+
+<ng-template #thirdPage>
+  <div class="field">
+    <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentDataProcessing"
+                  [formControl]="concentDataProcessingControl"> Подтверждаю согласие на обработку персональных
+      данных
+    </mat-checkbox>
+    <mat-error
+      *ngIf="concentDataProcessingControl.errors">{{concentDataProcessingControl.errors | json}}</mat-error>
+  </div>
+  <div class="field">
+    <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentNewsletters"> Хочу подписаться на рассылку
+    </mat-checkbox>
+    <mat-error *ngIf="concentNewslettersControl.errors">{{concentNewslettersControl.errors | json}}</mat-error>
+  </div>
+
+  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
+  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1) ">Далее</button>
+
+</ng-template>
+<ng-template #productsListPage>
+
+  <h2>Заказ товаров в наличии</h2>
+  <div *ngIf="productsInStock" class="products">
+    <div *ngFor="let pr of productsInStock">
+      <div>{{pr.product.name}}  {{pr.product.availability.status}}  {{pr.count}}  {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>
+    </div>
+  </div>
+  <h2>Заказа товаров</h2>
+  <div *ngIf="productsToOrder" class="products">
+    <div *ngFor="let pr of productsToOrder">
+      <div>{{pr.product.name}}  {{pr.product.availability.status}}  {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>
+    </div>
+  </div>
+
+  <h2>
+    <div class="field">
+      <mat-checkbox class="confirm-checkbox" [(ngModel)]="jointDelivery"> Оформить совместную доставку?
+        Оплата за раздельную доставку оплачивается для каждоо заказа отдельно.
+
+      </mat-checkbox>
+      <mat-error *ngIf="concentNewslettersControl.errors">{{concentNewslettersControl.errors | json}}</mat-error>
+    </div>
+  </h2>
+
+
+  <button (click)="changeStep(-1)">Назад</button>
+  <button (click)="changeStep(1) ">Далее</button>
+
+</ng-template>
+
+<ng-template #submitPage>
+  <div class="field">
+    <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentDataProcessing"
+                  [formControl]="concentDataProcessingControl"> Подтверждаю согласие на обработку персональных
+      данных
+    </mat-checkbox>
+    <mat-error
+      *ngIf="concentDataProcessingControl.errors">{{concentDataProcessingControl.errors | json}}</mat-error>
+  </div>
+  <div class="field">
+    <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentNewsletters"> Хочу подписаться на рассылку
+    </mat-checkbox>
+    <mat-error *ngIf="concentNewslettersControl.errors">{{concentNewslettersControl.errors | json}}</mat-error>
+  </div>
+
+  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
+  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
+
+  <button type="submit" (click)="onSubmit()" [disabled]="!order.concentDataProcessing">ОТправить</button>
+
+</ng-template>

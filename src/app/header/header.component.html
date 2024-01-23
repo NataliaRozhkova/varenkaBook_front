@@ -5,19 +5,26 @@
 
       <button class="menu-button">
 
-        <span class="icon-align-center" *ngIf="state == 'initial'" (click)="showMenu()"></span>
-        <span class="icon-close" *ngIf="state == 'expanded'" (click)="showMenu()"></span>
+        <span class="icon-align-center_" *ngIf="state == 'initial'" (click)="showMenu()">
+          <img src="assets/icons/text-align-justify.svg" class="icon-menu">
+        </span>
+        <span class="icon-close_" *ngIf="state == 'expanded'" (click)="showMenu()">
+           <img src="assets/icons/cross.svg" class="icon-menu">
+        </span>
       </button>
 
-      <img src="assets/logo.svg" class="logo"/>
+      <img src="assets/logo_small.png" class="logo" routerLink="/main" routerLinkActive="active"
+           ariaCurrentWhenActive="page"/>
+
+      <menu-panel class="menu-panel"></menu-panel>
     </div>
 
-    <div  [@expandedPanel]="!menuActive ? state : ''" [ngClass]="menuActive ?'header-menu':  'hidden-menu' " >
-      <div class="menu-item">Книги</div>
-      <div class="menu-item">Art&Play</div>
-      <div class="menu-item">Foreign</div>
-      <div class="menu-item">Контакты</div>
-      <div class="menu-item">Новости</div>
+    <div [@expandedPanel]="!menuActive ? state : ''" [ngClass]="menuActive ?'header-menu':  'hidden-menu' ">
+      <div class="menu-item" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">Книги</div>
+      <div class="menu-item" (click)="navigate('/arts-play')" routerLinkActive="active" ariaCurrentWhenActive="page">Art&Play</div>
+      <div class="menu-item" (click)="navigate('/foreign')" routerLinkActive="active" ariaCurrentWhenActive="page">Foreign</div>
+      <div class="menu-item" (click)="navigate('/contacts')" routerLinkActive="active" ariaCurrentWhenActive="page">Контакты </div>
+      <div class="menu-item" (click)="navigate('/news')" routerLinkActive="active" ariaCurrentWhenActive="page">Новости</div>
     </div>
 
 

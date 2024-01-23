@@ -1,0 +1,14 @@
+<div class="products-list">
+  <div *ngFor="let product of products | paginate:  { itemsPerPage: productsCountOnPage, currentPage: page, totalItems: total }" class="product-item">
+
+    <product-item [product]="product"></product-item>
+
+  </div>
+
+</div>
+<pagination-controls  *ngIf="products && showPagination &&  total > productsCountOnPage" class="pagination" previousLabel=""
+                      nextLabel=""
+                      (pageChange)="change($event);upPage()"
+>
+
+</pagination-controls>
