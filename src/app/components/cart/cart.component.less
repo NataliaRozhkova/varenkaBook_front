@@ -1,0 +1,151 @@
+@import "src/styles/color";
+
+:host {
+
+
+  .cart-view {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+  }
+
+  .cart-info {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+
+  }
+
+  .cart-buttons {
+    padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+     width: 400px;
+    position: sticky;
+    top: 0;
+    justify-content: space-between;
+
+    .gift-card {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    .discount {
+      font-size: 14px;
+      color: @fontColorBright;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+
+    }
+
+
+    .order-button, .back-button {
+      font-size: 18px;
+      max-width: 250px;
+      height: 40px;
+      width: 100%;
+    }
+
+    .order-button {
+      margin: 30px 0 30px 0;
+
+    }
+
+  }
+  .promo-input {
+    display: flex;
+    flex-direction: row;
+    .main-button {
+      min-width: 150px;
+      width: 40%;
+    }
+    margin-bottom: 15px;
+  }
+
+  .delete {
+    font-size: 14px;
+    color: @fontColorBright;
+    margin-bottom: 15px;
+
+  }
+  .delete-icon {
+    width: 14px;
+    filter: invert(51%) sepia(6%) saturate(10%) hue-rotate(355deg) brightness(96%) contrast(90%);
+
+  }
+  .delete:hover {
+    color: @colorTheme8;
+    cursor: pointer;
+
+    .delete-icon {
+      transform: scale(1.05);
+      filter: invert(48%) sepia(23%) saturate(5564%) hue-rotate(335deg) brightness(87%) contrast(109%);
+    }
+  }
+
+  .cost-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 14px;
+    align-items: end;
+  }
+  .separate {
+    border-bottom: 2px dotted  @backgroundColor;
+    flex: 1;
+
+  }
+  .discount-count, .error-card {
+    color: @colorTheme8;
+
+  }
+  .promocode {
+    width: 100%;
+  }
+
+  .count {
+    text-align: end;
+  }
+  .full-cost {
+    text-decoration: line-through;
+    color: @fontColorBright;
+    font-size: 18px;
+    margin-right: 10px;;
+  }
+
+  .total {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+
+  }
+
+  @media(max-width: 800px) {
+    .cart-view {
+      flex-direction: column;
+    }
+  }
+  @media(max-width: 950px) {
+    .promo-input {
+      flex-direction: column;
+    }
+  }
+  @media(max-width: 600px) {
+
+    h2, h1 {
+      text-align: center;
+    }
+
+  }
+
+
+
+
+}

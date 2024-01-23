@@ -1,0 +1,90 @@
+<div class="cart-view">
+
+  <div class="cart-info">
+    <h1>Товары в корзине</h1>
+
+    <h2 *ngIf="getProductsInStock().length > 0">Товары в наличии</h2>
+    <div *ngFor="let pr of getProductsInStock()" class="products">
+      <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
+    </div>
+
+    <h2 *ngIf="getProductsToOrder().length > 0">Товары под заказ</h2>
+    <div *ngFor="let pr of getProductsToOrder()" class="products">
+      <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
+    </div>
+  </div>
+  <div class="cart-buttons">
+    <div class="gift-card">
+      <h3>Введите промокод или подарочную карту</h3>
+      <div class="promo-input">
+        <input class="base-input promocode" [(ngModel)]="giftCard"/>
+        <button mat-button class=" main-button" (click)="addGiftCard()">Применить</button>
+      </div>
+
+      <div class="error-card" *ngIf="errorCard">Номер карты не найден</div>
+      <div class="error-card" *ngIf="cardUsed">Данный сертификат уже использован</div>
+
+      <div *ngIf="promocode">
+        <div>Промокод {{promocode.number}} применен</div>
+        <div class="delete" (click)="deletePromo()">
+          <img src="../../../assets/icons/cross.svg" class="delete-icon">
+          Удалить промокод
+        </div>
+      </div>
+      <div *ngIf="cardGifts">
+        <div *ngFor="let card of cardGifts">
+          <div>Подарочный сертификат {{card.number}} применен</div>
+          <div class="delete" (click)="deleteGiftCard(card)">
+            <img src="../../../assets/icons/cross.svg" class="delete-icon">
+            Удалить сертификат
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cost-block">
+      <h3>Стоимость товаров</h3>
+
+      <div class="cost-row">
+        <div>Товары ({{productsCount}}шт):</div>
+        <div class="separate"></div>
+        <div class="count" >{{productService.roundPriceStr(totalValue) + ' \u20AC'}}</div>
+      </div>
+      <div *ngIf="totalValueDiscount<totalValue" class="cost-row">
+        <div>Скидка по акции:</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{productService.roundPriceStr(totalValue - totalValueDiscount) + ' \u20AC'}}</div>
+      </div>
+      <div  *ngIf="giftCardsDiscount > 0"class="cost-row">
+        <div>Подарочные сертификаты</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{productService.roundPriceStr(giftCardsDiscount) + ' \u20AC'}}</div>
+      </div>
+      <div *ngIf="promocodDiscount > 0" class="cost-row">
+        <div>Скидка по промокоду:</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{productService.roundPriceStr(promocodDiscount) + ' \u20AC'}}</div>
+      </div>
+      <div class="cost-row total ">
+        <div>
+          Итого:
+        </div>
+        <div class="count">
+          <span *ngIf="totalValueDiscount<totalValue" class="full-cost">
+            {{productService.roundPriceStr(totalValue) + ' \u20AC'}}
+          </span>
+          {{productService.roundPriceStr(totalValueDiscount - promocodDiscount - giftCardsDiscount) + ' \u20AC'}}</div>
+      </div>
+
+    </div>
+
+
+    <div class="buttons">
+      <button mat-button class="order-button main-button" (click)="createOrder()">Оформить заказ</button>
+      <button mat-button class="back-button main-button" (click)="continueShopping()">Продолжить покупки</button>
+    </div>
+
+  </div>
+
+
+</div>

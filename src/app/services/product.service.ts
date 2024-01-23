@@ -45,5 +45,12 @@ export class ProductService {
     return this.http.get('api/pick_points/', '')
   }
 
+  roundPrice(price: number) : number {
+    return  parseFloat(price.toFixed(2));
+  }
+  roundPriceStr(price: number) : string {
+    return   price.toFixed(2);
+  }
+
 
 }

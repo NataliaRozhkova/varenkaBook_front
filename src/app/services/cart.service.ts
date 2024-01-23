@@ -1,5 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Product} from "../model/product";
+import {StorageService} from "./storage.service";
+import {PromoCode} from "../model/promo";
 
 export interface CartItem {
   product: Product;
@@ -16,10 +18,11 @@ export class CartService {
   productsCount: number = 0;
   cartChange: EventEmitter<any> = new EventEmitter();
 
-  constructor() {
-    // sessionStorage.clear();
-    this.products = JSON.parse(sessionStorage.getItem('products') || '[]');
-    this.productsCount = JSON.parse(sessionStorage.getItem('productsCount') || '0');
+  constructor(
+    private storageService: StorageService,
+  ) {
+    this.products = this.storageService.getItem('products', '[]');
+    this.productsCount = this.storageService.getItem('productsCount', '0');
   }
 
   addToCart(product: Product, count: number = 1) {
@@ -71,8 +74,39 @@ export class CartService {
     return this.productsCount;
   }
 
+  getProductCount(id: string): number {
+    let productCount: number = 0;
+    let product = this.getProducts().find((item) => item.product.id == id);
+
+    if (product) {
+      productCount = product.count
+    }
+    return productCount;
+  }
+
   getProducts() {
     return this.products;
+  }
+
+  setPromocode(promocode: PromoCode) {
+    this.storageService.setItem(promocode, 'promocode');
+  }
+  getPromocode( ): PromoCode {
+    return this.storageService.getItem( 'promocode', 'null');
+  }
+
+  setGiftCards(giftCards: PromoCode[]) {
+    this.storageService.setItem(giftCards, 'giftCards');
+  }
+  getGiftCards( ): PromoCode[] {
+    return this.storageService.getItem( 'giftCards', '[]');
+  }
+
+  deletePromocodeFromStorage() {
+    this.storageService.deleteItem('promocode');
+  }
+  deleteGiftCardsFromStorage() {
+    this.storageService.deleteItem('giftCards');
   }
 
   clearCart() {
@@ -83,8 +117,7 @@ export class CartService {
 
   syncItems() {
     this.cartChange.emit();
-
-    sessionStorage.setItem('products', JSON.stringify(this.products));
-    sessionStorage.setItem('productsCount', JSON.stringify(this.productsCount));
+    this.storageService.setItem(this.products, 'products');
+    this.storageService.setItem(this.productsCount, 'productsCount');
   }
 }
