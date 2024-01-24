@@ -1,0 +1,50 @@
+@import "src/styles/color";
+
+:host {
+
+
+
+  .news-item:hover {
+    cursor: pointer;
+
+    //width: 200px;
+  }
+
+  .news-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  .news-image {
+    height: 30vh;
+  }
+
+  .news-info {
+    margin-left: 20px;
+    flex:1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .description {
+      flex:1;
+      text-align: start;
+    }
+    .date {
+      text-align: end;
+      font-size: 14px;
+      color: @fontColorBright;
+    }
+
+
+  }
+
+}

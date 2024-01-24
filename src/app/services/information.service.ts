@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Observable} from "rxjs";
-import { shareReplay } from 'rxjs/operators';
+import {shareReplay} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +22,10 @@ export class InformationService {
       );
     }
     return this.frontParams;
+  }
+
+  subscribe(params: any): Observable<any> {
+    return this.http.post('api/customers/', params);
   }
 
 }

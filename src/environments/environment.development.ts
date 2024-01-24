@@ -20,6 +20,7 @@ export const environment = {
     countryError:'Поле не может быть пустым',
     cityError:'Поле не может быть пустым',
     pickPointError:'Поле не может быть пустым',
+    customerExist: "Вы уже подписаны на рассылку"
 
 
 

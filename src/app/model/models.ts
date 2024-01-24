@@ -9,3 +9,12 @@ export class Slide {
     this.number = params.number;
   }
 }
+
+export class News {
+  name: string;
+  id: string;
+  shortDescription: string;
+  text: string;
+  date: Date;
+  photo: string;
+}

@@ -38,14 +38,18 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {SliderComponent} from "./components/slider/slider.component";
 import {ImageComponent} from "./components/image/image.component";
-import {InformationService} from "./services/information.service";
 import {MatStepperModule} from "@angular/material/stepper";
 import { PhoneMaskDirective} from "./directives/phone-mask.directive";
 import {CdkStepperModule} from "@angular/cdk/stepper";
+import {NewsItemComponent} from "./components/news/news-item/news-item.component";
+import {NewsInfoComponent} from "./components/news/news-info/news-info.component";
+import {SubscribeComponent} from "./components/sibscribe/subscribe.component";
+import {FindPanelComponent} from "./components/find-panel/find-panel.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
   {path: 'news', component: NewsComponent},
+  {path: 'news-info/:id', component: NewsInfoComponent},
   {path: 'books', component: BooksComponent},
   {path: 'books/:genre', component: BooksComponent},
   {path: 'arts-play/:genre', component: ArtsPlayComponent},
@@ -83,7 +87,11 @@ const appRoutes: Routes = [
     OrderComponent,
     SliderComponent,
     ImageComponent,
-    PhoneMaskDirective
+    PhoneMaskDirective,
+    NewsItemComponent,
+    NewsInfoComponent,
+    SubscribeComponent,
+    FindPanelComponent,
   ],
   imports: [
     BrowserModule,

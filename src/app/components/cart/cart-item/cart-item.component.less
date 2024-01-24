@@ -12,19 +12,24 @@
     min-height: 200px;
     padding: 15px;
 
-    //box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.3);
-
-
 
     .author {
       color: @fontColorBright;
 
     }
+    .image-wrapper {
+       height: 250px;
+      margin-right: 30px;
+    }
+    .image-not-found {
+      height: 150px;
+
+    }
 
 
-    .image-not-found,  .image {
+    .image-not-found,  .image-wrapper {
       max-height: 100%;
-      max-width: 150px;
+      //max-width: 150px;
       object-fit: contain;
       cursor: pointer;
     }
@@ -34,13 +39,10 @@
 
 
   .buttons-block {
-    //margin: 10px;
-
     width: 120px;
     height: 40px;
     display: flex;
     border: #EE204D;
-    //box-shadow: 0px 0px 10.5px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
 
     .decrease, .increase {
