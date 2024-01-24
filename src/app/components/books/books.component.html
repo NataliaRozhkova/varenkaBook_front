@@ -1,4 +1,4 @@
-<div>
+<div class="books-page">
   <product-filters class="products-filter" *ngIf="!filterGenre" [filterName]="filterName"
                    (selectedGenre)="changeCategory($event)"></product-filters>
   <div *ngIf="filterGenre">{{filterGenre.genre}}</div>

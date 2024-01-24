@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {HttpService} from "../../services/http.service";
 import {Availability, Genre, Product} from "../../model/product";
-import {Subject, takeUntil, switchMap, map, } from "rxjs";
+import {Subject, takeUntil  } from "rxjs";
 import {ProductService} from "../../services/product.service";
 
 @Component({

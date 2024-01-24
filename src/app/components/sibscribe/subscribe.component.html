@@ -1,0 +1,15 @@
+<div class="subscribe-block" *ngIf="!subscribed">
+  <h3>Узнавайте о новинках и наших новостях и новинках</h3>
+  <div class="subscribe-input">
+    <input class="base-input subscribe" [(ngModel)]="email" [placeholder]="'email'"[formControl]="emailControl">
+
+    <input class="base-input subscribe" [(ngModel)]="name" [placeholder]="'ФИО'"/>
+    <button mat-button class=" main-button" (click)="subscribe()">Подписаться</button>
+  </div>
+  <mat-error
+    *ngIf="emailControl.errors">{{getErrorText(emailControl.errors)}}</mat-error>
+
+</div>
+<div *ngIf="subscribed" class="subscribe-success">
+  Вы успешно подписались на нашу рассылку!
+</div>

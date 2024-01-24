@@ -5,7 +5,9 @@ import {Slide} from "../../model/models";
 @Component({
   selector: 'slider',
   templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.less']
+  styleUrls: ['./slider.component.less',
+    "../../../../node_modules/keen-slider/keen-slider.min.css",
+  ]
 })
 export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
 
@@ -17,17 +19,23 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
   @Input()
   slidesArray: Slide[] = []
   loaded: boolean[] = [true]
+  hideSlider: boolean = true;
 
   @Input()
   timeOut: number = 10;
 
   ngOnInit() {
+    window.dispatchEvent(new Event('resize'));
+    // this.initSlider();
+    // this.hideSlider = false;
 
   }
 
 
   ngAfterViewInit(): void {
     this.initSlider();
+    // this.hideSlider = false;
+
   }
 
 
@@ -37,21 +45,17 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
     setTimeout(() => {
       this.slider = new KeenSlider(this.sliderRef.nativeElement, {
         initial: 0,
-        // mode: "free",
-        //
+        mode: "snap",
+
         slideChanged: (s) => {
           this.currentSlide = s.details().relativeSlide
         },
-
-        // animationEnded: (s) => {
-        //   const idx = s.track.details.rel
-        //   this.loaded[idx] = true
-        // },
         loop: true,
 
-
-      })
+      });
+      console.log("***********   this.initSlides ",   this.hideSlider)
       this.dotHelper = [...Array(this.slider.details().size).keys()]
+
     }, this.timeOut)
   }
 

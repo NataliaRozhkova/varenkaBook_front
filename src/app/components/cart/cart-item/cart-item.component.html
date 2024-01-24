@@ -1,11 +1,20 @@
 <div class="cart-item">
-  <img *ngIf="product.previewPhoto; else elseBlock"
-       [src]="imageService.changeImageUrl(product.previewPhoto)"
-       (click)="openProductInfo()"
-       class="image"/>
+  <!--  <img *ngIf="product.previewPhoto; else elseBlock"-->
+  <!--       [src]="imageService.changeImageUrl(product.previewPhoto)"-->
+  <!--       (click)="openProductInfo()"-->
+  <!--       class="image"/>-->
 
+  <div class="image-wrapper">
+
+    <image *ngIf="product.previewPhoto; else elseBlock"
+           [imageLink]="product.previewPhoto"
+           (click)="openProductInfo()"></image>
+  </div>
   <ng-template #elseBlock>
-    <img src="../../../assets/no-mage-found.png" class="image-not-found" (click)="openProductInfo()"/>
+    <div class="image-not-found">
+
+      <image [imageLink]="'../../../assets/no-mage-found.png'" class="image-not-found" (click)="openProductInfo()"/>
+    </div>
   </ng-template>
 
   <div class="product-info">
@@ -20,10 +29,12 @@
 
         <input type="number" class="count-area"
                [ngModel]="count"
-               [disabled] =true
+               [disabled]=true
                (ngModelChange)="changeCount($event)">
 
-        <button class="increase" [disabled]="count >= product.countInStock && product.availability.status =='in_stock'" (click)="increaseCount()">+</button>
+        <button class="increase" [disabled]="count >= product.countInStock && product.availability.status =='in_stock'"
+                (click)="increaseCount()">+
+        </button>
 
       </div>
 
@@ -33,7 +44,8 @@
   </div>
   <div class="right-panel">
     <div class="cost-info">
-      <div *ngIf="product.discount" class="discount"> {{productService.roundPriceStr(product.retailPrice * count) + ' \u20AC'}}</div>
+      <div *ngIf="product.discount"
+           class="discount"> {{productService.roundPriceStr(product.retailPrice * count) + ' \u20AC'}}</div>
       {{productService.roundPriceStr(product.discountPrice * count) + ' \u20AC'}}
     </div>
     <button class="menu-button-cart" (click)="deleteAll()">

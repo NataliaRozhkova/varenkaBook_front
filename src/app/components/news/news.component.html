@@ -1,3 +1,14 @@
-<div>
-ImageComponent
+<div class="news-list">
+  <div *ngFor="let newsItem of news | paginate:  { itemsPerPage: newsCountOnPage, currentPage: page, totalItems: total }" class="product-item">
+
+    <news-item [news]="newsItem"></news-item>
+
+  </div>
+
 </div>
+<pagination-controls  *ngIf="news &&  total > newsCountOnPage" class="pagination" previousLabel=""
+                      nextLabel=""
+                      (pageChange)="change($event);upPage()"
+>
+
+</pagination-controls>
