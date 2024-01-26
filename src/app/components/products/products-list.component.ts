@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Availability, Genre, Product} from "../../model/product";
-import {Subject, takeUntil  } from "rxjs";
+import {find, Subject, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
 
 @Component({
@@ -8,7 +8,7 @@ import {ProductService} from "../../services/product.service";
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.less']
 })
-export class ProductsListComponent implements OnDestroy,OnInit  {
+export class ProductsListComponent implements OnDestroy, OnInit {
 
   @Input()
   productsCountOnPage: number = 12;
@@ -32,9 +32,14 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
   @Input()
   showPagination: boolean = true;
 
-  productStatuses: Availability[];
+  @Input()
+  productStatus: string = 'in_stock';
+
+  @Input()
+  search: string;
 
   filters: any = {};
+  loading: boolean = true;
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -45,24 +50,30 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
   }
 
   ngOnInit() {
-    this.products  = [];
+    this.products = [];
     this.pageSize = this.productsCountOnPage;
 
     this.filters.limit = this.productsCountOnPage;
     this.filters.offset = this.offset;
     this.filters.ordering = this.order;
-    this.filters.product_type = this.productType;
-    this.filters.availability = 'in_stock'
+    if (this.productType) {
+      this.filters.product_type = this.productType;
+    }
+    if (this.search) {
+      this.filters.search = this.search;
+    }
+    this.filters.availability = this.productStatus;
     if (this.genres) {
       this.filters.genres = this.genres.id;
     }
 
-        this.change(1);
+    this.change(1);
   }
 
 
   change($event: any) {
-    this.products  = []
+
+    this.products = []
 
     this.filters.offset = ($event - 1) * this.productsCountOnPage + this.offset;
 
@@ -72,16 +83,29 @@ export class ProductsListComponent implements OnDestroy,OnInit  {
       delete this.filters['genres'];
     }
 
-    this.productService.getProducts(this.filters)
-      .pipe(
-        takeUntil(this.destroySubject),
-      )
-      .subscribe((res: any) => {
-        this.products = res.results;
-          this.total = res.count;
-          this.page = $event;
-        }
-      )
+    if (this.search) {
+      this.filters.search = this.search;
+    }
+    this.filters.availability = this.availability;
+    this.loading = true;
+
+      this.productService.getProducts(this.filters)
+        .pipe(
+          takeUntil(this.destroySubject),
+        )
+        .subscribe((res: any) => {
+            this.products = res.results;
+            this.total = res.count;
+            this.page = $event;
+            this.loading = false;
+          }
+        )
+
+
+  }
+
+  getProductsLength(): number {
+    return this.products ? this.products.length : 0;
   }
 
   ngOnDestroy() {

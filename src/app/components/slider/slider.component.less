@@ -1,6 +1,6 @@
-@import  'keen-slider/keen-slider.min.css';
+@import 'keen-slider/keen-slider.min.css';
 
-:host{
+:host {
   [class^="number-slide"],
   [class*=" number-slide"] {
     background: none;
@@ -10,7 +10,7 @@
     font-size: 50px;
     color: #fff;
     font-weight: 500;
-    height:  fit-content;
+    height: fit-content;
     min-height: auto;
   }
 
@@ -67,10 +67,32 @@
     fill: rgba(255, 255, 255, 0.5);
   }
 
-  .slide-image{
-      width: 100%;
-      height: 100%;
-     object-fit: cover;
+  .slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 
+  }
+
+  .slide-image-container {
+    //width: 80vw;
+    height: 50vh;
+    padding-top: 30px;
+
+    .slide-image-shadow {
+      width: 80vw;
+      height: 40vh;
+
+    }
+  }
+
+  @media (max-width: 500px) {
+    .slide-image-container {
+      height: 40vh;
+
+      .slide-image-shadow {
+        height: 30vh;
+      }
+    }
   }
 }

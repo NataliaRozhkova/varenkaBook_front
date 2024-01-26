@@ -1,7 +1,11 @@
 <div class="navigation-wrapper" >
   <div class="keen-slider keen-slider--vertical" #sliderRef [hidden]="hideSlider" >
       <div *ngFor="let sl of slidesArray" class="keen-slider__slide number-slide{{sl.number + 1}}" >
-        <img src="{{sl.image}}" class="slide-image"  >
+
+        <div class="slide-image-container" *ngIf="shadow">
+          <image [imageLink]="sl.image" class="slide-image-shadow"></image>
+        </div>
+        <img *ngIf="!shadow" src="{{sl.image}}" class="slide-image"  >
       </div>
   </div>
   <svg

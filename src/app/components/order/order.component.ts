@@ -1,14 +1,14 @@
 import {
   ChangeDetectorRef,
-  Component,
+  Component, HostListener,
   inject, isDevMode,
   OnDestroy,
-  OnInit,
+  OnInit, TemplateRef,
   ViewChild
 } from '@angular/core';
 import {CartItem, CartService} from "../../services/cart.service";
 import {Router} from "@angular/router";
-import {map, Subject, switchMap, takeUntil} from "rxjs";
+import {map, Observable, Subject, switchMap, takeUntil} from "rxjs";
 import {DeliveryType, Order, OrderType, PickPoint, ProductID, ProductInOrder} from "../../model/order";
 import {
   FormBuilder,
@@ -18,6 +18,8 @@ import {ProductService} from "../../services/product.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatStepper} from "@angular/material/stepper";
 import {environment} from '../../../environments/environment';
+import {MatDialog} from "@angular/material/dialog";
+import {ComponentCanDeactivate} from "../../directives/guard";
 
 
 @Component({
@@ -25,7 +27,7 @@ import {environment} from '../../../environments/environment';
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.less']
 })
-export class OrderComponent implements OnDestroy, OnInit {
+export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate {
 
   order: Order = new Order();
   preorder: Order = new Order();
@@ -86,6 +88,9 @@ export class OrderComponent implements OnDestroy, OnInit {
 
   @ViewChild('stepper')
   stepper: MatStepper;
+  @ViewChild('dialog') myDialog = {} as TemplateRef<string>;
+  private dialogRef: any;
+
 
   pageIndex = 0;
   pageCount = 4;
@@ -97,6 +102,8 @@ export class OrderComponent implements OnDestroy, OnInit {
     private router: Router,
     private productService: ProductService,
     private _formBuilder: FormBuilder,
+    public dialog: MatDialog,
+
   ) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
@@ -379,7 +386,6 @@ export class OrderComponent implements OnDestroy, OnInit {
   }
 
   clearControls() {
-    console.log("--- clearControls----")
     this.orderControls.markAsPristine();
 
   }
@@ -387,7 +393,11 @@ export class OrderComponent implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.destroySubject.next();
+
     sessionStorage.setItem('order', JSON.stringify(this.order))
+
+
+
   }
 
   resolveErrors(httpErrorResponse: HttpErrorResponse) {
@@ -427,7 +437,6 @@ export class OrderComponent implements OnDestroy, OnInit {
   getErrorText(errors: any): string {
     let errorText = '';
 
-    console.log("******  ", errors)
     Object.keys(errors).forEach((err) => {
       errorText += environment.errors[err as keyof typeof environment.errors]
 
@@ -448,6 +457,19 @@ export class OrderComponent implements OnDestroy, OnInit {
   setOrder() {
 
     const saveOrder = JSON.parse(sessionStorage.getItem('order') || '{}');
+
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> {
+
+    this.dialogRef = this.dialog.open(this.myDialog,
+      {
+        data: 123, height: '350px', width: '250px',
+      });
+
+    return this.dialogRef.afterClosed() ;
+
 
   }
 

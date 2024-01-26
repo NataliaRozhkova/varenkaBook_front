@@ -20,15 +20,9 @@ export class DialogComponent {
   }
 
   ngOnInit() {
-
-    console.log('**************  DialogComponent')
-
   }
 
   openDialog() {
-    console.log('**************  DialogComponent')
-
-
   }
 
   onCancelUserDialog(): void {

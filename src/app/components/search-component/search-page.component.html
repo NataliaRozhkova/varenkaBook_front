@@ -1,0 +1,19 @@
+<div class="search-page">
+
+  <h1>Поиск</h1>
+
+  <div class="find-panel"  >
+    <input #searchInput  class="base-input" id="search" [hidden]="false"
+           class="  subscribe"
+           [(ngModel)]="search"
+           [placeholder]="'Введите название или автора'"
+           (keyup.enter)="find('in_stock')">
+  </div>
+
+    <products class="products-list" [productsCountOnPage]="productsOnPage"
+              [availability]="availability"
+              [search]="search"
+              #products></products>
+
+  <h2>Если не нашли ничего подходящего, можете оформить книги под заказ</h2>
+</div>

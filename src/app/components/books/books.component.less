@@ -3,13 +3,44 @@
 :host {
 
   .books-page {
-    height: 100%;
+    justify-content: center;
+
   }
 
-  .parent {
-    background: #EE204D;
-    .scroller ::ng-deep {
-      max-height: 50vh !important;
+  .products-filter {
+    position: absolute;
+    z-index: 5;
+    top: 134px;
+    width: calc(100vw - 15px);
+
+  }
+
+  .products-list-cont {
+    margin-top: 220px;
+  }
+
+  @media(max-width: 550px){
+
+    .products-filter {
+      top: 60px;
+      width: calc(100vw - 15px);
+      display: flex;
+      justify-content: center;
+      position: fixed;
+      background: transparent;
+
+
+    }
+
+    .products-list-cont {
+      margin-top: 50px;
+    }
+
+  }
+
+  @media (min-width: 1000px) {
+    .products-list-cont {
+      margin-top: 150px;
     }
   }
 

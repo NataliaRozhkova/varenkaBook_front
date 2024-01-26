@@ -19,5 +19,9 @@ export class HttpService {
     return this.http.post( url,  params )
   }
 
+  patch(url:string, params:any):Observable<any> {
+    return this.http.patch( url,  params )
+  }
+
 
 }

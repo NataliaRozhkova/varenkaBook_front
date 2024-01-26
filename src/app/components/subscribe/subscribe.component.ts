@@ -7,6 +7,8 @@ import {environment} from "../../../environments/environment";
 import {InformationService} from "../../services/information.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StorageService} from "../../services/storage.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'subscribe',
@@ -30,24 +32,29 @@ export class SubscribeComponent implements OnDestroy, OnInit {
     private newsService: NewsService,
     private informationService: InformationService,
     private storageService: StorageService,
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) {
 
     this.subscribed = this.storageService.getItem('subscribed', 'false')
   }
 
   ngOnInit(): void {
+
+
   }
 
   subscribe() {
     this.clearControl();
     if (this.validate()) {
-      this.informationService.subscribe({
+      this.informationService.subscribeNewsletters({
         name: this.name,
         // concent_data_processing: true,
         email: this.email
       }).subscribe((res: any) => {
           this.subscribed = true;
           this.storageService.setItem(true, 'subscribed');
+          this.openSnackBar();
 
 
         },
@@ -57,6 +64,24 @@ export class SubscribeComponent implements OnDestroy, OnInit {
           this.resolveErrors(err)
         })
     }
+  }
+
+  openSnackBar() {
+    let snackBarRef = this.snackBar.open('Вы успешно подписались на нашу рассылку', 'Отписаться', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+    });
+    snackBarRef._open();
+    snackBarRef.onAction().pipe(
+      takeUntil(this.destroySubject),
+    ).subscribe((event) =>{
+      this.unsubscribe();
+    })
+  }
+
+  unsubscribe() {
+    this.router.navigate(['unsubscribe'], {queryParams: {query: this.email}});
 
   }
 

@@ -24,8 +24,16 @@ export class InformationService {
     return this.frontParams;
   }
 
-  subscribe(params: any): Observable<any> {
+  subscribeNewsletters(params: any): Observable<any> {
     return this.http.post('api/customers/', params);
+  }
+
+  unsubscribeNewsletters(id: string, params: any): Observable<any> {
+    return this.http.patch(`api/customers/${id}/`, params);
+  }
+
+  getCustomerInfo(params: any): Observable<any> {
+    return this.http.get('api/customers/', params)
   }
 
 }

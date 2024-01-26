@@ -91,6 +91,17 @@ html, body {
     text-align: center;
   }
 
+  .mat-mdc-select-panel     {
+    max-height: 100% !important;
+  }
+   .mat-mdc-select-arrow {
+     visibility: hidden;
+  }
+
+  .mat-mdc-option {
+    font-family: Inter, "Inter", Verdana, sans-serif;;
+  }
+
   .base-input:focus {
     border-color: #7e7e7e;
     transform: scale(1.05);
@@ -125,8 +136,44 @@ html, body {
 
   .products-filter {
     background: #ffffff;
-    width: 100%;
+    width: 98%;
+
+  }
+  .body-scroller {
+    height: 100%;
+  }
+
+  .products-filter {
+    position: absolute;
+    z-index: 5;
+    top: 134px;
+    width: calc(100vw - 15px);
+
+  }
+  .products-list-cont {
+    margin-top: 220px;
+  }
+
+  @media(max-width: 550px){
+
+    .products-filter {
+      top: 60px;
+      width: calc(100vw - 15px);
+      display: flex;
+      justify-content: center;
+
+
+    }
+
+    .products-list-cont {
+      margin-top: 80px;
+    }
 
   }
 
+  @media (min-width: 1000px) {
+    .products-list-cont {
+      margin-top: 150px;
+    }
+  }
 }
