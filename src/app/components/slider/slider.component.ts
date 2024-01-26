@@ -24,24 +24,20 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
   @Input()
   timeOut: number = 10;
 
+  @Input()
+  shadow: boolean = false;
+
   ngOnInit() {
     window.dispatchEvent(new Event('resize'));
-    // this.initSlider();
-    // this.hideSlider = false;
-
   }
 
 
   ngAfterViewInit(): void {
     this.initSlider();
-    // this.hideSlider = false;
-
   }
 
 
   initSlider() {
-    console.log("***initSlider**** ", this.slidesArray )
-
     setTimeout(() => {
       this.slider = new KeenSlider(this.sliderRef.nativeElement, {
         initial: 0,
@@ -53,7 +49,6 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
         loop: true,
 
       });
-      console.log("***********   this.initSlides ",   this.hideSlider)
       this.dotHelper = [...Array(this.slider.details().size).keys()]
 
     }, this.timeOut)
@@ -64,15 +59,9 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
   }
 
   refresh() {
-    console.log("***ss**** ", this.dotHelper)
     this.slider.destroy()
     this.currentSlide = 0;
     this.slider.refresh()
-    // this.initSlider()
-    console.log("****ss*** ", this.dotHelper)
   }
-
-
-
 
 }

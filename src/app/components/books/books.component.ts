@@ -20,9 +20,10 @@ export class BooksComponent implements OnDestroy,OnInit  {
   productsOnPage: number = 12;
 
   filterGenre: Genre | null;
+  height: string ;
 
   @ViewChild('products')
-  products: ProductsListComponent;
+  products: ProductsListComponent = new ProductsListComponent( this.productService);
 
   constructor(
     private productService: ProductService,
@@ -31,6 +32,9 @@ export class BooksComponent implements OnDestroy,OnInit  {
   }
 
   ngOnInit() {
+
+    this.height  = window.innerWidth < 600 ? '60vh' : '70vh';
+
     this.route.queryParams?.pipe(
       takeUntil(this.destroySubject),
     ).subscribe((params: any) => {

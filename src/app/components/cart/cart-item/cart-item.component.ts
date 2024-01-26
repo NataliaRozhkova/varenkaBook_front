@@ -49,15 +49,12 @@ export class CartItemComponent {
   }
 
   checkCount($event: any): boolean{
-    console.log($event)
     return false
   }
 
   changeCount($event: any) {
 
     let countOrder = $event;
-
-    console.log("*******changeCount  ", $event)
 
     if ($event > this.product.countInStock) {
       countOrder = this.product.countInStock;

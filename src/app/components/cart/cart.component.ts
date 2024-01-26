@@ -43,8 +43,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     this.promocode = this.cartService.getPromocode();
     this.cardGifts = this.cartService.getGiftCards();
 
-    console.log("------- promocode   ", this.promocode)
-    console.log("------- cardGifts   ", this.cardGifts)
     this.updateTotalValue();
 
 
@@ -107,9 +105,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       card = card as PromoCode;
 
       let usedCard: boolean = this.cardGifts.filter(item => item.number == card.number).length > 0;
-
-      console.log("------card ", card)
-      console.log("------card ", this.cardGifts.filter(item => item.number == card.number))
 
       if (usedCard) {
         this.cardUsed = true;
@@ -262,8 +257,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log("!!!!!", this.giftCard);
-
   }
 
 

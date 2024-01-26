@@ -1,5 +1,19 @@
-<div class="filters">
+<div class="filters" *ngIf="!showDroppedList">
   <div *ngFor="let i of genres" (click)="chooseGenre(i)" class="filter-item">
-      <div class="fаilter-text"> {{i.genre}}</div>
+    <div class="fаilter-text"> {{i.genre}}</div>
   </div>
 </div>
+
+<div class="dropped-filter-list" *ngIf="showDroppedList">
+  <mat-label class="select-label">
+    <img [@iconChange]="state" src="../../../assets/icons/chevron-up.svg">
+
+  </mat-label>
+  <mat-select (opened)="showList(true)" (closed)="showList(false)" >
+    <mat-option *ngFor="let i of genres" [value]="i.id" (click)="chooseGenre(i)">
+      {{i.genre}}
+    </mat-option>
+  </mat-select>
+</div>
+
+

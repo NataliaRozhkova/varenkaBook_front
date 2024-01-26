@@ -13,11 +13,11 @@ import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 
 @Component({
-  selector: 'find-panel',
-  templateUrl: './find-panel.component.html',
-  styleUrls: ['./find-panel.component.less']
+  selector: 'search-panel',
+  templateUrl: './search-panel.component.html',
+  styleUrls: ['./search-panel.component.less']
 })
-export class FindPanelComponent implements AfterViewInit, OnChanges{
+export class SearchPanelComponent implements AfterViewInit, OnChanges {
 
   findStr: string = '';
 
@@ -28,7 +28,7 @@ export class FindPanelComponent implements AfterViewInit, OnChanges{
   closePanel = new EventEmitter<boolean>();
 
   findStrControl: FormControl = new FormControl<any>({});
-  @ViewChild('search') search: ElementRef  ;
+  @ViewChild('search') search: ElementRef;
 
 
   constructor(
@@ -45,20 +45,18 @@ export class FindPanelComponent implements AfterViewInit, OnChanges{
   }
 
 
-  find($event: any){
-
-    this.router.navigate(['product-info', $event.id ])
+  find() {
+    this.router.navigate(['search'], {queryParams: {query: this.findStr}});
+    this.closePanel.emit(false);
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("--------  ", changes)
     if (changes['show'].currentValue) {
       setTimeout(() => {
         this.search.nativeElement.focus();
-
       }, 10)
     }
   }
 
-  }
+}

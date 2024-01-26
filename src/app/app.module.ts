@@ -39,12 +39,19 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {SliderComponent} from "./components/slider/slider.component";
 import {ImageComponent} from "./components/image/image.component";
 import {MatStepperModule} from "@angular/material/stepper";
-import { PhoneMaskDirective} from "./directives/phone-mask.directive";
+import {PhoneMaskDirective} from "./directives/phone-mask.directive";
 import {CdkStepperModule} from "@angular/cdk/stepper";
 import {NewsItemComponent} from "./components/news/news-item/news-item.component";
 import {NewsInfoComponent} from "./components/news/news-info/news-info.component";
-import {SubscribeComponent} from "./components/sibscribe/subscribe.component";
-import {FindPanelComponent} from "./components/find-panel/find-panel.component";
+import {SubscribeComponent} from "./components/subscribe/subscribe.component";
+import {SearchPanelComponent} from "./components/search-panel/search-panel.component";
+import {SearchPageComponent} from "./components/search-component/search-page.component";
+import { MatSnackBarModule} from "@angular/material/snack-bar";
+import {UnsubscribeComponent} from "./components/unsibscribe/unsubscribe.component";
+import {MatSelectModule} from "@angular/material/select";
+import {FooterComponent} from "./footer/footer.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {PendingChangesGuard} from "./directives/guard";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -59,8 +66,10 @@ const appRoutes: Routes = [
   {path: '', component: MainComponent},
   {path: 'product-info/:id', component: ProductInfoComponent},
   {path: 'cart', component: CartComponent},
-  {path: 'order/:id', component: OrderComponent},
-  {path: 'order', component: OrderComponent},
+  {path: 'order/:id', component: OrderComponent, canDeactivate: [PendingChangesGuard]},
+  {path: 'order', component: OrderComponent, canDeactivate: [PendingChangesGuard]},
+  {path: 'search', component: SearchPageComponent},
+  {path: 'unsubscribe', component: UnsubscribeComponent},
 ];
 
 
@@ -91,7 +100,11 @@ const appRoutes: Routes = [
     NewsItemComponent,
     NewsInfoComponent,
     SubscribeComponent,
-    FindPanelComponent,
+    SearchPanelComponent,
+    SearchPageComponent,
+    UnsubscribeComponent,
+    FooterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -115,10 +128,12 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatStepperModule,
     CdkStepperModule,
-
+    MatSnackBarModule,
+    MatSelectModule,
+    MatProgressSpinnerModule
 
   ],
-  providers: [ ],
+  providers: [PendingChangesGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

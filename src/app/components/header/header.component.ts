@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./header.component.less'],
   animations: [
     trigger('expandedPanel', [
-      state('initial', style({height: 0, overflow: "hidden" })),
+      state('initial', style({height: 0, overflow: "hidden"})),
       state('expanded', style({height: 200})),
       transition('initial <=> expanded', animate('0.2s')),
     ]),
@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   isExpanded: boolean = false
 
   state: string = 'initial';
+
   constructor(
     private menuService: MenuService,
     private router: Router
@@ -32,34 +33,24 @@ export class HeaderComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = event.target.innerWidth;
-    if (this.screenWidth <= 550) {
-      this.menuActive = false;
-    } else {
-      this.menuActive = true;
-    }
+    this.menuActive = this.screenWidth > 550;
 
   }
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    if (this.screenWidth <= 550) {
-      this.menuActive = false;
-    } else {
-      this.menuActive = true;
-    }
-
+    this.menuActive = this.screenWidth > 550;
   }
 
   showMenu() {
-    console.log("")
     this.isExpanded = !this.isExpanded;
     this.state = this.isExpanded ? 'expanded' : 'initial'
 
   }
 
-  navigate($event:any) {
+  navigate($event: any) {
     this.showMenu();
-    this.router.navigate([$event], {queryParams:  {genre: 'all'}  }   )
+    this.router.navigate([$event], {queryParams: {genre: 'all'}})
 
   }
 

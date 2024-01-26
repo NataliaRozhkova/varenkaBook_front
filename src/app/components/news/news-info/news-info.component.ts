@@ -34,7 +34,6 @@ export class NewsInfoComponent implements OnDestroy, OnInit, AfterViewInit{
         }
       ),
       map((res: News) => {
-        console.log("******** news", res)
         this.news = res;
       })
     )

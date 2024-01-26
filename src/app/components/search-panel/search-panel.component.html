@@ -1,9 +1,10 @@
-<div class="find-panel"  (click)="find('aa')">
+<div class="find-panel"  (click)="find()">
   <input #search  id="search" [hidden]="false"
          class="  subscribe"
          [(ngModel)]="findStr"
          [placeholder]="'Введите название или автора'"
+         (keyup.enter)="find()"
+         (focusout)="closePanel.emit(false)"
          [formControl]="findStrControl">
 </div>
-<!--         (focusout)="closePanel.emit(false)"
--->
+

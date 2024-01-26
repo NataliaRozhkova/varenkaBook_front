@@ -1,13 +1,12 @@
 @import "src/styles/color";
 
 :host {
-  background: @hoverColorMenu;
 
   .filters {
-    margin-top: 30px;
-    margin-bottom: 30px;
     text-align: center;
     background: transparent;
+    margin: 30px 10px 30px 10px;
+    width: 95%;
 
 
     @media (max-width: 1000px) {
@@ -26,9 +25,14 @@
     grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
   }
 
+  @media (min-width: 500px) {
+    .filter-item:hover {
+      transform: scale(1.1);
+    }
+
+  }
   .filter-item:hover {
-      cursor: pointer;
-    transform: scale(1.1);
+    cursor: pointer;
   }
 
 
@@ -39,13 +43,38 @@
     font-size: 20px;
 
   }
+  .dropped-filter-list {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content:center ;
+    margin: 22px;
+  }
 
-  .filter-item-image:hover {
-    -webkit-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    transform: scale(1.05);
+  @media (max-width: 550px) {
+    .dropped-filter-list {
+      width: 300px;
+    }
+
+  }
+  @media (max-width: 320px) {
+    .dropped-filter-list {
+      width: 250px;
+    }
+
+  }
 
 
+  .select-label {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    position: absolute;
+
+  }
+
+  .cdk-overlay-pane {
+    width: 100%;
   }
 
 }

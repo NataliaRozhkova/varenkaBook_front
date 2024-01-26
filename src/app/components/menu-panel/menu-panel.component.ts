@@ -56,14 +56,20 @@ export class MenuPanelComponent {
 
   showFindPanel($event: boolean) {
 
-    this.dialogRef = this.dialog.open(this.myDialog,
-      {
-        data: 123, height: '50px', width: '90%',
-        scrollStrategy: new NoopScrollStrategy(),
-        position:{top: '30px'}
+    if ($event) {
+      this.dialogRef = this.dialog.open(this.myDialog,
+        {
+          data: 123, height: '50px', width: '90%',
+          scrollStrategy: new NoopScrollStrategy(),
+          position:{top: '30px'}
 
 
-      });
+        });
+    } else  {
+      this.closePanel();
+    }
+
+
     this.showFind = $event;
 
 

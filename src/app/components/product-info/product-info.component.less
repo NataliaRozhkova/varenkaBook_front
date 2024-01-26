@@ -117,7 +117,7 @@
     }
 
     .slider-container {
-      width: 100%;
+      width: 100vw;
       display: flex;
       justify-content: center;
       margin-top: 30px;
@@ -125,7 +125,7 @@
 
 
     .image-slider::ng-deep {
-      max-width: 50%;
+      max-width: 70%;
       .arrow {
         fill: @colorTheme5 ;
       }
@@ -136,10 +136,11 @@
         left: auto;
         right: -50px;
       }
-      //.arrow--disabled {
-      //  fill: rgba(255, 255, 255, 0.5);
-      //}
     }
+  }
+
+  .ng-star-inserted {
+    //width: 100%;
   }
 
 
