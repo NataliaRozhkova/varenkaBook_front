@@ -2,7 +2,7 @@
   <input #search  id="search" [hidden]="false"
          class="  subscribe"
          [(ngModel)]="findStr"
-         [placeholder]="'Введите название или автора'"
+         [placeholder]="'Искать на полках'"
          (keyup.enter)="find()"
          (focusout)="closePanel.emit(false)"
          [formControl]="findStrControl">

@@ -1,4 +1,4 @@
-@import "src/styles/color";
+@import "../../../styles/color.less";
 
 :host {
   .products-list {
@@ -30,20 +30,32 @@
     margin-right: 30px;
    }
 
+  @media (min-width: 600px) {
+    .product-item:hover {
+      //-webkit-transform: scale(1.05);
+      //-ms-transform: scale(1.05);
+      //transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+      transform: scale(1.05);
 
-  .product-item:hover {
-    -webkit-transform: scale(1.05);
-    -ms-transform: scale(1.05);
-    transform: scale(1.05);
-
+      -webkit-transition: transform 0.1ms;
+      -moz-transition:transform  0.1ms;
+      -ms-transition:transform  0.1ms;
+    }
   }
+
+
+
 
   .pagination {
     width: max-content;
     text-align: center;
     margin: 25px;
-    .ngx-pagination {
-      padding-left: 0px !important;
+    ::ng-deep .ngx-pagination {
+      padding-left: 0;
     }
   }
 
@@ -61,10 +73,16 @@
     justify-content: center;
 
     .mat-mdc-progress-spinner {
-      --mdc-circular-progress-active-indicator-color: @colorTheme3 !important;
+      --mdc-circular-progress-active-indicator-color: @colorTheme4 !important;
       opacity: 0.8;
     }
 
+  }
+
+  .not-found {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 50px;
   }
 
 

@@ -18,6 +18,7 @@ export class NewsComponent implements OnDestroy,OnInit  {
 
   page: number = 1;
   total: number = 0;
+  loading: boolean = true;
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -39,6 +40,7 @@ export class NewsComponent implements OnDestroy,OnInit  {
 
     this.filters.offset = ($event - 1) * this.newsCountOnPage + this.offset;
 
+    this.loading = true;
 
     this.newsService.getNews(this.filters)
       .pipe(
@@ -48,6 +50,11 @@ export class NewsComponent implements OnDestroy,OnInit  {
           this.news = res.results;
           this.total = res.count;
           this.page = $event;
+          this.loading = false;
+
+        },
+        error => {
+          this.loading = false;
         }
       )
   }

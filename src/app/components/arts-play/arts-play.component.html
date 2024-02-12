@@ -1,9 +1,9 @@
 <div class="arts-play-page">
   <div class="products-filter">
-
-    <product-filters *ngIf="!filterGenre" [filterName]="filterName"
-                     (selectedGenre)="changeCategory($event)"></product-filters>
     <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
+
+    <product-filters #filters  [filterName]="filterName"
+                     (selectedGenre)="changeCategory($event)"></product-filters>
   </div>
 
   <div class="products-list-cont">

@@ -93,7 +93,7 @@
       <span *ngIf="product.discount" class="discount"> {{product.retailPrice + ' \u20AC'}}</span>
       {{product.discountPrice + ' \u20AC'}}
     </div>
-    <button mat-button class="main-button"
+    <button mat-button class="main-button to-cart"
             (click)="addToCart()"
             [disabled]="countInCart >= product.countInStock && product.availability.status == 'in_stock'"
     >В корзину

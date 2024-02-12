@@ -86,8 +86,10 @@ export class ProductsListComponent implements OnDestroy, OnInit {
     if (this.search) {
       this.filters.search = this.search;
     }
-    this.filters.availability = this.availability;
-    this.loading = true;
+
+    setTimeout(() => {
+      this.filters.availability = this.availability;
+      this.loading = true;
 
       this.productService.getProducts(this.filters)
         .pipe(
@@ -98,8 +100,12 @@ export class ProductsListComponent implements OnDestroy, OnInit {
             this.total = res.count;
             this.page = $event;
             this.loading = false;
+          },err => {
+          this.loading = false;
           }
         )
+
+    },  0)
 
 
   }

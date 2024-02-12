@@ -40,8 +40,6 @@ export class SubscribeComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-
-
   }
 
   subscribe() {
@@ -67,10 +65,13 @@ export class SubscribeComponent implements OnDestroy, OnInit {
   }
 
   openSnackBar() {
-    let snackBarRef = this.snackBar.open('Вы успешно подписались на нашу рассылку', 'Отписаться', {
+    let snackBarRef = this.snackBar.open('Вы успешно подписались на нашу рассылку',  '', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      duration: 5000,
+      duration: 500000,
+      panelClass: 'text-center'
+
+
     });
     snackBarRef._open();
     snackBarRef.onAction().pipe(
@@ -82,6 +83,12 @@ export class SubscribeComponent implements OnDestroy, OnInit {
 
   unsubscribe() {
     this.router.navigate(['unsubscribe'], {queryParams: {query: this.email}});
+
+  }
+
+  closePanel() {
+    this.storageService.setItem(true, 'subscribed');
+    this.subscribed = true;
 
   }
 

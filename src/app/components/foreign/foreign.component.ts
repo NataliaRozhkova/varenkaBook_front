@@ -8,18 +8,18 @@ import {ProductFiltersComponent} from "../product-filters/product-filters.compon
 import {InformationService} from "../../services/information.service";
 
 @Component({
-  selector: 'books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.less']
+  selector: 'foreign',
+  templateUrl: './foreign.component.html',
+  styleUrls: ['./foreign.component.less']
 })
-export class BooksComponent implements OnDestroy, OnInit {
+export class ForeignComponent implements OnDestroy, OnInit {
 
   private destroySubject: Subject<void> = new Subject();
 
-  productType: string = 'book';
+  productType: string = 'foreign';
 
-  mainFilterName: string = "книги"
-  filterName: string = "книги"
+  mainFilterName: string = "иностранные"
+  filterName: string = "иностранные"
 
   productsOnPage: number = 12;
 

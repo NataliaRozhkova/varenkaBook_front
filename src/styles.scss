@@ -1,5 +1,4 @@
 @import 'assets/iconmoon/style.css';
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
@@ -161,8 +160,6 @@ html, body {
       width: calc(100vw - 15px);
       display: flex;
       justify-content: center;
-
-
     }
 
     .products-list-cont {
@@ -170,6 +167,9 @@ html, body {
     }
 
   }
+   .text-center {
+       text-align: center;
+   }
 
   @media (min-width: 1000px) {
     .products-list-cont {

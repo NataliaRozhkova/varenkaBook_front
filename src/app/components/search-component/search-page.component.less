@@ -1,6 +1,80 @@
+@import "../../../styles/color.less";
+
 :host {
 
   .search-page {
-    height: 80%;
+    min-height: 80%;
+    display: grid;
+    padding: 30px;
   }
+
+  h1 {
+    padding: 0;
+    margin: 0 0 60px 0;
+  }
+
+  .find-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    margin-bottom: 30px;
+
+    .base-input {
+      max-width: 100%;
+      height: 40px;
+      margin-bottom: 25px;
+      padding: 0;
+
+    }
+
+    .base-input:focus {
+      border-color: #7e7e7e;
+      transform: scale(1);
+
+    }
+
+    .main-button {
+      max-width: 300px;
+    }
+  }
+
+  .find-result {
+    min-height: 400px;
+  }
+  .products-list.spinner {
+    margin-top: 50px !important;
+  }
+
+
+  ::ng-deep .mdc-tab__content {
+    font-size: 18px;
+    font-family: Inter, "Inter", Verdana, sans-serif;
+    letter-spacing: normal;
+
+  }
+
+
+  ::ng-deep .mat-mdc-tab:hover {
+    background-color: #eafffb;
+  }
+
+
+  ::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active {
+
+    .mdc-tab__text-label {
+      color: @baseFontColor;
+    }
+  }
+
+  ::ng-deep .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline, .mat-mdc-tab-link:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+    border-color: @baseFontColor;
+  }
+
+  ::ng-deep .mat-mdc-tab-body {
+    margin: 30px;
+  }
+
+
 }

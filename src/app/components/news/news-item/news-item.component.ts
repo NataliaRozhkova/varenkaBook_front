@@ -17,7 +17,7 @@ export class NewsItemComponent {
 
   constructor(
     private router: Router,
-    public imageService: ImageService
+    public imageService: ImageService,
   ) {
   }
 

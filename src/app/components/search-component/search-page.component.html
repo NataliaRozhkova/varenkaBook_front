@@ -2,18 +2,40 @@
 
   <h1>Поиск</h1>
 
-  <div class="find-panel"  >
-    <input #searchInput  class="base-input" id="search" [hidden]="false"
-           class="  subscribe"
+  <div class="find-panel">
+    <input #searchInput class="base-input" id="search" [hidden]="false"
            [(ngModel)]="search"
-           [placeholder]="'Введите название или автора'"
-           (keyup.enter)="find('in_stock')">
+           [placeholder]="'Искать на полках'"
+           (keyup.enter)="find()">
+    <button mat-button class="main-button" (click)="find()">Поиск</button>
+
   </div>
 
-    <products class="products-list" [productsCountOnPage]="productsOnPage"
-              [availability]="availability"
-              [search]="search"
-              #products></products>
 
-  <h2>Если не нашли ничего подходящего, можете оформить книги под заказ</h2>
+  <mat-tab-group (selectedTabChange)="find()"
+                 [(selectedIndex)]="selectedTab"
+                 [@.disabled]="true"
+                 [disableRipple]="true"
+
+  >
+    <mat-tab label="В наличии" class="prodact-list-search">
+      <div class="find-result">
+        <products #productsInStock class="products-list" [productsCountOnPage]="productsOnPage"
+                  [availability]="'in_stock'"
+                  [search]="search"
+                  #products></products>
+      </div>
+    </mat-tab>
+    <mat-tab label="Под заказ" class="products-list-search">
+      <div class="find-result">
+
+      <products #productsToOrder class="products-list" [productsCountOnPage]="productsOnPage"
+                [availability]="'available_to_order'"
+                [search]="search"
+      ></products>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+
 </div>

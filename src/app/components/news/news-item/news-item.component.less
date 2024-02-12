@@ -1,4 +1,4 @@
-@import "src/styles/color";
+@import "../../../../styles/color.less";
 
 :host {
 
@@ -18,7 +18,9 @@
   }
 
   .news-image {
-    height: 30vh;
+    //height: 30vh;
+    max-width: 150px;
+    //max-height: 100px;
   }
 
   .news-info {
@@ -30,16 +32,22 @@
     justify-content: space-between;
 
     .title {
+      text-align: start;
+
       font-weight: bold;
+      font-size: 18px;
       margin-bottom: 15px;
     }
 
     .description {
       flex:1;
       text-align: start;
+      font-size: 16px;
+      color: @fontColorBright;
+
     }
     .date {
-      text-align: end;
+      text-align: start;
       font-size: 14px;
       color: @fontColorBright;
     }

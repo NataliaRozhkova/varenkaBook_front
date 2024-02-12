@@ -46,33 +46,53 @@ export class ProductFiltersComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.showDroppedList = window.innerWidth <= 600;
 
-    this.infoService.getFrontParams().pipe(
-      takeUntil(this.destroySubject),
-      switchMap((res: any) => {
-        const frontParams: FrontParam[] = res?.results;
-        const bookFilters = frontParams.find(par => par.name == this.filterName)?.value
+    this.changeFilterName(this.filterName);
 
-        if (bookFilters) {
-          let list = bookFilters?.replace(" ", "").split(',');
-          list.forEach((i) => {
-            this.genresList.push(i.trim());
-          })
-        }
-        return this.productService.getGenres()
-      }),
-      map((response: any) => {
-
-        this.genres = response?.results?.filter((genre: any) => {
-          return this.genresList.includes(genre.genre)
-        });
-      })
-    ).subscribe()
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.showDroppedList = event.target.innerWidth <= 550;
 
+  }
+
+  changeFilterName(newFilter: string) {
+    this.filterName = newFilter;
+
+    this.infoService.getFrontParams().pipe(
+      takeUntil(this.destroySubject),
+      switchMap((res: any) => {
+        const frontParams: FrontParam[] = res?.results;
+        const bookFilters = frontParams.find(par => par.name == this.filterName)?.value
+        console.log("** ** * ** ", bookFilters)
+        this.genresList = [];
+
+        if (bookFilters) {
+
+          let list = bookFilters?.replace(" ", "").split(',');
+          console.log("** ** * ** list", list)
+          list.forEach((i) => {
+            this.genresList.push(i.trim());
+          })
+          console.log("** ** * **  this.genresList",  this.genresList)
+
+        }
+        return this.productService.getGenres()
+      }),
+      map((response: any) => {
+        this.genres = [];
+        console.log("** ** * **  this.response?.results",  response?.results)
+        console.log("** ** * **  this.this.genresList",  this.genresList)
+
+
+
+        this.genres = response?.results?.filter((genre: any) => {
+          return this.genresList.includes(genre.genre)
+        });
+        console.log("** ** * **  this.genres",  this.genres)
+
+      })
+    ).subscribe()
   }
 
   showList(showed: boolean) {

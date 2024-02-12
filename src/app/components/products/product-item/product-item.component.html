@@ -1,9 +1,9 @@
 <div class="product-card" (click)="openInfo(product)">
 
-  <div *ngIf="product.isNew && !product.isPopular" class="sticker popular">
+  <div *ngIf="!product.isNew && product.isPopular" class="sticker popular">
     Хит!
   </div>
-  <div *ngIf="product.isPopular" class="sticker new">
+  <div *ngIf="product.isNew" class="sticker new">
     Новинка!
   </div>
   <div class="product-card-image">
@@ -23,8 +23,7 @@
   <div class="product-card-info">
     <div class="product-card-name">{{product.name}}</div>
     <div class="product-card-author">{{product.author}}</div>
-    <div class="product-card-category">
-      <span *ngFor="let i of product.genres">{{i.genre}}, </span></div>
+
     <div class="product-card-price">
 
       <span *ngIf="product.discount" class="discount"> {{product.retailPrice + ' \u20AC'}}</span>

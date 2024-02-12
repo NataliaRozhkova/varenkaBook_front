@@ -9,7 +9,10 @@
   </div>
 
 
+
 </div>
+<div *ngIf="products.length == 0 && !loading" class="not-found">По Вашему запросу ничего не найдено</div>
+
 <pagination-controls *ngIf="products && showPagination && !loading &&  total > productsCountOnPage" class="pagination"
                      previousLabel=""
                      nextLabel=""
@@ -17,7 +20,6 @@
 >
 
 </pagination-controls>
-
 
 <div class="spinner" *ngIf="loading" >
   <mat-spinner></mat-spinner>

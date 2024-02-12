@@ -52,6 +52,9 @@ import {MatSelectModule} from "@angular/material/select";
 import {FooterComponent} from "./footer/footer.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {PendingChangesGuard} from "./directives/guard";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {ForeignComponent} from "./components/foreign/foreign.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -61,7 +64,7 @@ const appRoutes: Routes = [
   {path: 'books/:genre', component: BooksComponent},
   {path: 'arts-play/:genre', component: ArtsPlayComponent},
   {path: 'arts-play', component: ArtsPlayComponent},
-  {path: 'foreign', component: BooksComponent},
+  {path: 'foreign', component: ForeignComponent},
   {path: 'main', component: MainComponent},
   {path: '', component: MainComponent},
   {path: 'product-info/:id', component: ProductInfoComponent},
@@ -104,7 +107,7 @@ const appRoutes: Routes = [
     SearchPageComponent,
     UnsubscribeComponent,
     FooterComponent,
-
+    ForeignComponent
   ],
   imports: [
     BrowserModule,
@@ -130,7 +133,9 @@ const appRoutes: Routes = [
     CdkStepperModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatTooltipModule
 
   ],
   providers: [PendingChangesGuard],

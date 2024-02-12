@@ -45,12 +45,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1000kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
+                  "maximumWarning": "4kb",
                   "maximumError": "4kb"
                 }
               ],
@@ -81,7 +81,8 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "varenka_front:build:production"
+              "browserTarget": "varenka_front:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
               "browserTarget": "varenka_front:build:development",

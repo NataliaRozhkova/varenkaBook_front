@@ -1,4 +1,4 @@
-<div class="news-list">
+<div class="news-list"  *ngIf="!loading" >
   <div *ngFor="let newsItem of news | paginate:  { itemsPerPage: newsCountOnPage, currentPage: page, totalItems: total }" class="product-item">
 
     <news-item [news]="newsItem"></news-item>
@@ -12,3 +12,7 @@
 >
 
 </pagination-controls>
+<div class="spinner" *ngIf="loading" >
+  <mat-spinner></mat-spinner>
+
+</div>

@@ -1,7 +1,14 @@
-@import "src/styles/color";
+@import "../../../styles/color.less";
 
 :host {
+  flex: 1;
 
+  h1, h2 {
+    margin: 25px;
+  }
+  h2 {
+    font-size: 20px;
+  }
 
   .cart-view {
 
@@ -51,6 +58,7 @@
       max-width: 250px;
       height: 40px;
       width: 100%;
+      margin: 0;
     }
 
     .order-button {
@@ -95,7 +103,7 @@
     flex-direction: row;
     justify-content: space-between;
     font-size: 14px;
-    align-items: end;
+    align-items: flex-end;
   }
   .separate {
     border-bottom: 2px dotted  @backgroundColor;

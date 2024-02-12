@@ -78,6 +78,7 @@ export class UnsubscribeComponent implements OnDestroy, OnInit {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       duration: 5000,
+      panelClass: 'text-center'
 
     });
   }
