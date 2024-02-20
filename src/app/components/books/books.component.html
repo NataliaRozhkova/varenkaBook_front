@@ -1,19 +1,10 @@
 <div class="books-page">
 
-  <div class="products-filter">
-
-    <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
-    <product-filters #filters [filterName]="filterName"
-                      (selectedGenre)="changeCategory($event)"></product-filters>
-  </div>
-
-
-  <div class="products-list-cont" >
-
-    <products  [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre"
-               #products></products>
-  </div>
-
-
+  <product-page
+    [mainFilterName]="'книги'"
+    [filterName]="'книги'"
+    [productType]="'book'"
+    [showFilters]="true"
+  ></product-page>
 
 </div>

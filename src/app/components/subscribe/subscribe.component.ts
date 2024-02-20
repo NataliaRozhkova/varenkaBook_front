@@ -68,7 +68,7 @@ export class SubscribeComponent implements OnDestroy, OnInit {
     let snackBarRef = this.snackBar.open('Вы успешно подписались на нашу рассылку',  '', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      duration: 500000,
+      duration: 5000,
       panelClass: 'text-center'
 
 

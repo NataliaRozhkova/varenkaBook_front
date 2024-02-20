@@ -28,13 +28,14 @@ export class HeaderComponent implements OnInit {
     private menuService: MenuService,
     private router: Router
   ) {
+    // this.state = 'initial';
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = event.target.innerWidth;
     this.menuActive = this.screenWidth > 550;
-
+    this.isExpanded = false;
   }
 
   ngOnInit(): void {
@@ -43,8 +44,10 @@ export class HeaderComponent implements OnInit {
   }
 
   showMenu() {
-    this.isExpanded = !this.isExpanded;
-    this.state = this.isExpanded ? 'expanded' : 'initial'
+    if (this.screenWidth < 550) {
+      this.isExpanded = !this.isExpanded;
+      this.state = this.isExpanded ? 'expanded' : 'initial'
+    }
 
   }
 

@@ -1,0 +1,45 @@
+<div class="books-page">
+
+  <div class="filters-panel"  *ngIf="showFilters">
+
+    <div class="products-filter-item">
+
+      <div class="dropped-filter-list">
+        <mat-select #selectGenre placeholder="Категория" (opened)="categoryState = 'expanded'" (closed)="categoryState = 'initial'"
+                    (selectionChange)="change()">
+          <mat-option>Все</mat-option>
+          <mat-option *ngFor="let i of genres" [value]="i">
+            {{i.genre}}
+          </mat-option>
+        </mat-select>
+      </div>
+      <img [@iconChange]="categoryState" src="../../../assets/icons/chevron-up.svg" (click)="openGenreFilters()">
+
+
+    </div>
+
+    <div class="products-filter-item">
+
+      <div class="dropped-filter-list">
+        <mat-select #selectAge placeholder="Возрастные ограничения" (opened)="ageState = 'expanded'" (closed)="ageState = 'initial'"
+                    (selectionChange)="change()">
+          <mat-option>Все</mat-option>
+          <mat-option *ngFor="let i of ageCategories" [value]="i">
+            {{i.ageCategory}}
+          </mat-option>
+        </mat-select>
+
+      </div>
+      <img [@iconChange]="ageState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">
+
+    </div>
+  </div>
+
+  <div class="products-list-cont">
+
+    <products [productsCountOnPage]="productsOnPage" [productType]="this.productType" [genres]="this.filterGenre"
+              #products></products>
+  </div>
+
+
+</div>

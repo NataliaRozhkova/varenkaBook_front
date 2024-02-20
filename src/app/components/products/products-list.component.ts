@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Availability, Genre, Product} from "../../model/product";
+import {AgeCategory, Availability, Genre, Product} from "../../model/product";
 import {find, Subject, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
 
@@ -18,7 +18,10 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   genres: Genre | null;
   @Input()
   availability: string = 'in_stock'
-
+  @Input()
+  genresList: string[] = [];
+  @Input()
+  ageCategory: AgeCategory | null;
 
   products: Product[] = [];
   pageSize: number;
@@ -76,11 +79,18 @@ export class ProductsListComponent implements OnDestroy, OnInit {
     this.products = []
 
     this.filters.offset = ($event - 1) * this.productsCountOnPage + this.offset;
+    console.log("******* products this.genres ", this.genres)
 
     if (this.genres) {
       this.filters.genres = this.genres.id;
     } else {
       delete this.filters['genres'];
+    }
+
+    if (this.ageCategory) {
+      this.filters.ageCategory = this.ageCategory.id;
+    } else {
+      delete this.filters['ageCategory'];
     }
 
     if (this.search) {

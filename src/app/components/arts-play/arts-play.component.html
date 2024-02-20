@@ -1,16 +1,12 @@
 <div class="arts-play-page">
-  <div class="products-filter">
-    <div *ngIf="filterGenre">{{filterGenre.genre}}</div>
 
-    <product-filters #filters  [filterName]="filterName"
-                     (selectedGenre)="changeCategory($event)"></product-filters>
-  </div>
+  <product-page
+    [mainFilterName]="'игры'"
+    [filterName]="'игры'"
+    [productType]="'games'"
+    [showFilters]="true"
+  ></product-page>
 
-  <div class="products-list-cont">
 
-    <products class="products-list" [productsCountOnPage]="productsOnPage" [productType]="this.productType"
-              [genres]="this.filterGenre"
-              #products></products>
-  </div>
 
 </div>

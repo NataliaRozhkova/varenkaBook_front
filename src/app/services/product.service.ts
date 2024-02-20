@@ -23,6 +23,9 @@ export class ProductService {
   getGenres(): Observable<any> {
     return this.http.get('api/genres/', {'limit':15})
   }
+  getAgeCategories(): Observable<any> {
+    return this.http.get('api/age_categories/', {'limit':15})
+  }
 
 
   getProductInfo(id: any): Observable<Product>  {

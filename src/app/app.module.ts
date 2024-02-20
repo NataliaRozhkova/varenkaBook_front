@@ -18,7 +18,6 @@ import {MainComponent} from "./components/main/main.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {BooksComponent} from "./components/books/books.component";
 import {ArtsPlayComponent} from "./components/arts-play/arts-play.component";
-import {ProductFiltersComponent} from "./components/product-filters/product-filters.component";
 import {CustomScrollbarComponent} from "./components/custom-scrollbar/custom-scrollbar.component";
 import {ProductInfoComponent} from "./components/product-info/product-info.component";
 import {CartComponent} from "./components/cart/cart.component";
@@ -55,6 +54,7 @@ import {PendingChangesGuard} from "./directives/guard";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ForeignComponent} from "./components/foreign/foreign.component";
+import {ProductPageComponent} from "./components/product-page/product-page.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -89,7 +89,6 @@ const appRoutes: Routes = [
     MainComponent,
     BooksComponent,
     ArtsPlayComponent,
-    ProductFiltersComponent,
     CustomScrollbarComponent,
     ProductInfoComponent,
     CartComponent,
@@ -107,7 +106,8 @@ const appRoutes: Routes = [
     SearchPageComponent,
     UnsubscribeComponent,
     FooterComponent,
-    ForeignComponent
+    ForeignComponent,
+    ProductPageComponent
   ],
   imports: [
     BrowserModule,
