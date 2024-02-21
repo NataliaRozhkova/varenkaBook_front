@@ -55,17 +55,28 @@ export class ProductPageComponent implements OnDestroy, OnInit {
   height: string;
   categoryState: string = 'initial';
   ageState: string = 'initial';
+  sortState: string = 'initial';
 
   @ViewChild('products')
   products: ProductsListComponent = new ProductsListComponent(this.productService);
 
   @ViewChild('selectGenre') selectGenre: MatSelect;
   @ViewChild('selectAge') selectAge: MatSelect;
+  @ViewChild('selectSort') selectSort: MatSelect;
 
   filters: string[] = [];
 
   genres: Genre[] = [];
   ageCategories: AgeCategory[] = [];
+
+  sortTypes: any = [
+    {name: 'По возрастанию цены', value: ''},
+    {name: 'По Убыванию цены', value: ''},
+    {name: 'По названию', value: 'name'},
+    {name: 'По автору', value: 'author'},
+    {name: 'По популярности', value: '-is_popular'},
+    {name: 'По новизне', value: '-is_new'},
+  ]
 
 
   constructor(
@@ -119,28 +130,29 @@ export class ProductPageComponent implements OnDestroy, OnInit {
   change() {
     this.products.genres = this.selectGenre.value;
     this.products.ageCategory = this.selectAge.value;
+    this.products.order = this.selectSort.value;
     this.products.change(1);
   }
 
-  openGenreFilters() {
-    if (this.categoryState == 'initial'  ) {
-      this.categoryState = 'expanded';
-      this.selectGenre.open();
-    } else  {
-      this.categoryState = 'initial';
-      this.selectGenre.close();
-    }
-  }
-
-  openAgeFilters() {
-    if (this.ageState == 'initial'  ) {
-      this.ageState = 'expanded';
-      this.selectAge.open();
-    } else  {
-      this.ageState = 'initial';
-      this.selectAge.close();
-    }
-  }
+  // openGenreFilters() {
+  //   if (this.categoryState == 'initial'  ) {
+  //     this.categoryState = 'expanded';
+  //     this.selectGenre.open();
+  //   } else  {
+  //     this.categoryState = 'initial';
+  //     this.selectGenre.close();
+  //   }
+  // }
+  //
+  // openAgeFilters() {
+  //   if (this.ageState == 'initial'  ) {
+  //     this.ageState = 'expanded';
+  //     this.selectAge.open();
+  //   } else  {
+  //     this.ageState = 'initial';
+  //     this.selectAge.close();
+  //   }
+  // }
 
 
   ngOnDestroy() {

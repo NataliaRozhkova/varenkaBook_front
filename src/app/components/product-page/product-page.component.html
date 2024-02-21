@@ -13,7 +13,7 @@
           </mat-option>
         </mat-select>
       </div>
-      <img [@iconChange]="categoryState" src="../../../assets/icons/chevron-up.svg" (click)="openGenreFilters()">
+<!--      <img [@iconChange]="categoryState" src="../../../assets/icons/chevron-up.svg" (click)="openGenreFilters()">-->
 
 
     </div>
@@ -30,7 +30,24 @@
         </mat-select>
 
       </div>
-      <img [@iconChange]="ageState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">
+<!--      <img [@iconChange]="ageState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">-->
+
+    </div>
+
+
+    <div class="products-filter-item">
+
+      <div class="dropped-filter-list">
+        <mat-select #selectSort placeholder="Сортировать" (opened)="sortState = 'expanded'" (closed)="sortState = 'initial'"
+                    (selectionChange)="change()">
+          <mat-option>По умолчанию</mat-option>
+          <mat-option *ngFor="let i of sortTypes" [value]="i.value">
+            {{i.name}}
+          </mat-option>
+        </mat-select>
+
+      </div>
+<!--      <img [@iconChange]="sortState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">-->
 
     </div>
   </div>

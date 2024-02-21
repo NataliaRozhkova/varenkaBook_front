@@ -27,7 +27,11 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   pageSize: number;
   page: number = 1;
   total: number = 0;
-  order: string = '-priority,-is_new,-is_popular'
+
+  initOrder: string = '-priority,-is_new,-is_popular';
+
+  @Input()
+  order: string =  this.initOrder;
 
   @Input()
   offset: number = 0;
@@ -79,7 +83,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
     this.products = []
 
     this.filters.offset = ($event - 1) * this.productsCountOnPage + this.offset;
-    console.log("******* products this.genres ", this.genres)
 
     if (this.genres) {
       this.filters.genres = this.genres.id;
@@ -88,9 +91,15 @@ export class ProductsListComponent implements OnDestroy, OnInit {
     }
 
     if (this.ageCategory) {
-      this.filters.ageCategory = this.ageCategory.id;
+      this.filters.age_category = this.ageCategory.id;
     } else {
-      delete this.filters['ageCategory'];
+      delete this.filters['age_category'];
+    }
+
+    if (this.order) {
+      this.filters.ordering = this.order;
+    } else {
+      this.filters.ordering = this.initOrder;
     }
 
     if (this.search) {
