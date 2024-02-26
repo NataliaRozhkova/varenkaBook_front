@@ -5,6 +5,7 @@ export class Order {
   id: number;
   name: string = '';
   email: string = '';
+  nif: number ;
   phoneNumber: string = '';
   deliveryType: DeliveryType = new DeliveryType();
   orderType:OrderType = new OrderType();

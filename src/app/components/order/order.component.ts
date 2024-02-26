@@ -20,8 +20,11 @@ import {MatStepper} from "@angular/material/stepper";
 import {environment} from '../../../environments/environment';
 import {MatDialog} from "@angular/material/dialog";
 import {ComponentCanDeactivate} from "../../directives/guard";
+import {PaymentComponent, StripePaymentType} from "../payment/payment.component";
 
-
+export interface CanComponentDeactivate {
+  canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+}
 @Component({
   selector: 'order',
   templateUrl: './order.component.html',
@@ -39,6 +42,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   productsCount: number;
   cdr = inject(ChangeDetectorRef);
 
+  @ViewChild('paymentComponent')
+  paymentComponent: PaymentComponent;
+
+  canDeactivatePage: boolean = false;
 
   deliveryTypes: DeliveryType[] = [];
   pickPoints: PickPoint[] = [];
@@ -60,6 +67,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   concentDataProcessingControl = new FormControl('');
   concentNewslettersControl = new FormControl('');
   pickPointControl = new FormControl('');
+  nifControl = new FormControl('');
 
 
   orderResponse: HttpErrorResponse;
@@ -78,6 +86,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     concentDataProcessing: this.concentNewslettersControl,
     concentNewsletters: this.concentNewslettersControl,
     pickPoint: this.pickPointControl,
+    nif: this.nifControl,
   })
 
   deliveryTypeNames: any = environment.deliveryTypeNames
@@ -103,7 +112,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     private productService: ProductService,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
-
   ) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
@@ -173,12 +181,28 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     }
 
+
+  }
+
+  payOrder(orderId: number, email: string) {
+    this.paymentComponent.orderId = orderId;
+    this.paymentComponent.email = email;
+    this.paymentComponent.checkout();
   }
 
   submitSingleOrder(order: Order) {
     this.productService.createOrder(order).pipe(
-      takeUntil(this.destroySubject))
+      takeUntil(this.destroySubject),
+    )
+
       .subscribe(resp => {
+          this.order = resp;
+
+          this.canDeactivatePage = true;
+          this.cartService.clearCart();
+
+          this.payOrder(this.order.id, this.order.email);
+
         },
         err => {
           this.orderResponse = err;
@@ -197,9 +221,13 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       }),
       map((resp: any) => {
         this.preorder = resp;
-      })
+      }),
     )
       .subscribe(resp => {
+          this.canDeactivatePage = true;
+          this.cartService.clearCart();
+          this.payOrder(this.order.id, this.order.email);
+
         },
         err => {
           this.orderResponse = err;
@@ -397,7 +425,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     sessionStorage.setItem('order', JSON.stringify(this.order))
 
 
-
   }
 
   resolveErrors(httpErrorResponse: HttpErrorResponse) {
@@ -463,15 +490,22 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> {
 
-    this.dialogRef = this.dialog.open(this.myDialog,
-      {
-        data: 123, height: '350px', width: '250px',
-      });
+    if (!this.canDeactivatePage) {
 
-    return this.dialogRef.afterClosed() ;
+
+
+      this.dialogRef = this.dialog.open(this.myDialog,
+        {
+          data: 123, height: '350px', width: '250px',
+        });
+
+    }
+    this.dialogRef.canDeactivate = true;
+    return this.dialogRef.afterClosed();
 
 
   }
 
+  protected readonly StripePaymentType = StripePaymentType;
 }
 

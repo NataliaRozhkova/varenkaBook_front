@@ -8,5 +8,8 @@ export const environment = {
 
   errors: {
 
+  },
+  stripe: {
+    publicKey: 'pk_test_51MaPsGBW6wAkAh0TGuRLeXVobKyekgtIZLQTqQCqi3JVk4YyjEKnrNuthG3zprHZW6XK8Lrd3TlQRbBmAWaQPmNb00tEXdL65J',
   }
 };

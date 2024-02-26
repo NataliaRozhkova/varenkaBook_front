@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Observable} from "rxjs";
 import {shareReplay} from 'rxjs/operators';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,19 @@ export class InformationService {
 
   getCustomerInfo(params: any): Observable<any> {
     return this.http.get('api/customers/', params)
+  }
+
+  createPayment(id:number, params: any) : Observable<any> {
+    return this.http.get(`api/buy/${id}/`, params)
+  }
+
+  getErrorText(errors: any): string {
+    let errorText = '';
+    Object.keys(errors).forEach((err) => {
+      errorText += environment.errors[err as keyof typeof environment.errors]
+
+    })
+    return errorText;
   }
 
 }

@@ -1,0 +1,13 @@
+<div class="certificate-list"  *ngIf="!loading" >
+  <div *ngFor="let certificate of certificateTypes" class="certificate-item">
+
+    <certificate-item [certificate]="certificate"></certificate-item>
+
+  </div>
+
+</div>
+
+<div class="spinner" *ngIf="loading" >
+  <mat-spinner></mat-spinner>
+
+</div>

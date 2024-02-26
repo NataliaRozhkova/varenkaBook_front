@@ -1,0 +1,47 @@
+@import "../../../styles/color.less";
+
+:host {
+  .certificate-list {
+    //margin-left: 30px;
+    text-align: center;
+
+    @media (max-width: 1000px) {
+      --grid-column-count: 3;
+    }
+    @media (max-width: 600px) {
+      --grid-column-count: 2;
+    }
+    @media (max-width: 400px) {
+      --grid-column-count: 1;
+    }
+    --grid-column-count: 4;
+    --grid-item--min-width: 100px;
+
+    --grid-item--max-width: calc((100%) / var(--grid-column-count));
+
+    display: grid;
+    row-gap: 50px;
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+
+    margin: 20px 0 20px 0;
+  }
+
+  .certificate-item:hover {
+    cursor: pointer;
+  }
+
+
+  @media (min-width: 600px) {
+    .certificate-item:hover {
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+      transform: scale(1.05);
+
+      -webkit-transition: transform 0.1ms;
+      -moz-transition:transform  0.1ms;
+      -ms-transition:transform  0.1ms;
+    }
+  }
+}

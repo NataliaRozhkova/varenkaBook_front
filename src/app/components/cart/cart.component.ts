@@ -40,8 +40,8 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
 
-    this.promocode = this.cartService.getPromocode();
-    this.cardGifts = this.cartService.getGiftCards();
+    this.promocode = this.cartService.getPromocodeFromStorage();
+    this.cardGifts = this.cartService.getGiftCardsFromStorage();
 
     this.updateTotalValue();
 
@@ -85,10 +85,10 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   saveToStorage() {
 
     if (this.promocode) {
-      this.cartService.setPromocode(this.promocode);
+      this.cartService.setPromocodeToStorage(this.promocode);
     }
     if (this.cardGifts.length > 0) {
-      this.cartService.setGiftCards(this.cardGifts);
+      this.cartService.setGiftCardsToStorage(this.cardGifts);
     }
   }
 
@@ -188,7 +188,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.cartService.deleteGiftCardsFromStorage();
     if (this.cardGifts.length > 0) {
-      this.cartService.setGiftCards(this.cardGifts);
+      this.cartService.setGiftCardsToStorage(this.cardGifts);
     }
 
     this.updateTotalValue();

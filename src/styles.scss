@@ -90,11 +90,24 @@ html, body {
     text-align: center;
   }
 
-  .mat-mdc-select-panel     {
+  .mat-mdc-select-panel {
     max-height: 100% !important;
   }
-   .mat-mdc-select-arrow {
-     visibility: hidden;
+
+  .mat-mdc-select-value {
+    //width: auto;
+  }
+
+  .mat-mdc-select-arrow {
+    //visibility: hidden;
+    color: #00a189;
+    font-size: 22px;
+    //position: relative;
+    svg {
+      transform: scale(1.5);
+      top: -10px;
+      //left: -200px;
+    }
   }
 
   .mat-mdc-option {
@@ -138,6 +151,7 @@ html, body {
     width: 98%;
 
   }
+
   .body-scroller {
     height: 100%;
   }
@@ -151,11 +165,9 @@ html, body {
   }
 
 
-
-   .text-center {
-       text-align: center;
-   }
-
+  .text-center {
+    text-align: center;
+  }
 
 
 }

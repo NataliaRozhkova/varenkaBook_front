@@ -1,0 +1,41 @@
+@import "../../../styles/color.less";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .certificate {
+    margin: 0 50px 0 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 5vh;
+  }
+
+  .certificate-image {
+    height: 30vh;
+  }
+
+  .certificate-info {
+
+  }
+
+
+  ::ng-deep img {
+    border-radius: 6px !important;
+
+  }
+
+
+  @media (max-width: 850px) {
+    .certificate {
+      flex-direction: column;
+    }
+
+    .certificate-image {
+      height: 20vh;
+    }
+  }
+
+}

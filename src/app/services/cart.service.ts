@@ -2,6 +2,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Product} from "../model/product";
 import {StorageService} from "./storage.service";
 import {PromoCode} from "../model/promo";
+import {Observable} from "rxjs";
+import {HttpService} from "./http.service";
 
 export interface CartItem {
   product: Product;
@@ -20,6 +22,7 @@ export class CartService {
 
   constructor(
     private storageService: StorageService,
+    private http: HttpService
   ) {
     this.products = this.storageService.getItem('products', '[]');
     this.productsCount = this.storageService.getItem('productsCount', '0');
@@ -88,17 +91,17 @@ export class CartService {
     return this.products;
   }
 
-  setPromocode(promocode: PromoCode) {
+  setPromocodeToStorage(promocode: PromoCode) {
     this.storageService.setItem(promocode, 'promocode');
   }
-  getPromocode( ): PromoCode {
+  getPromocodeFromStorage( ): PromoCode {
     return this.storageService.getItem( 'promocode', 'null');
   }
 
-  setGiftCards(giftCards: PromoCode[]) {
+  setGiftCardsToStorage(giftCards: PromoCode[]) {
     this.storageService.setItem(giftCards, 'giftCards');
   }
-  getGiftCards( ): PromoCode[] {
+  getGiftCardsFromStorage( ): PromoCode[] {
     return this.storageService.getItem( 'giftCards', '[]');
   }
 
@@ -112,7 +115,16 @@ export class CartService {
   clearCart() {
     this.products = [];
     this.cartChange.emit();
+    this.deletePromocodeFromStorage();
+    this.deleteGiftCardsFromStorage();
     return this.products;
+  }
+
+  getPromocodeInfo(code: string): Observable<any> {
+    return this.http.get('api/promo_codes', {number: code})
+  }
+  getGiftCardsInfo(code: string): Observable<any> {
+    return this.http.get('api/certificates', {number: code})
   }
 
   syncItems() {
@@ -120,4 +132,6 @@ export class CartService {
     this.storageService.setItem(this.products, 'products');
     this.storageService.setItem(this.productsCount, 'productsCount');
   }
+
+
 }

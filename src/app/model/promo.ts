@@ -12,3 +12,10 @@ export class PromoCode {
 
   }
 }
+
+
+export class  CertificateCard {
+  value: number;
+  id: string;
+  photo: string;
+}

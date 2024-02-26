@@ -138,12 +138,15 @@ export class SubscribeComponent implements OnDestroy, OnInit {
   }
 
   getErrorText(errors: any): string {
-    let errorText = '';
-    Object.keys(errors).forEach((err) => {
-      errorText += environment.errors[err as keyof typeof environment.errors]
+    // let errorText = '';
+    // Object.keys(errors).forEach((err) => {
+    //   errorText += environment.errors[err as keyof typeof environment.errors]
+    //
+    // })
+    // return errorText;
 
-    })
-    return errorText;
+    return  this.informationService.getErrorText(errors);
+
   }
 
   ngOnDestroy() {

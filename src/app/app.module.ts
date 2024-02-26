@@ -55,6 +55,12 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ForeignComponent} from "./components/foreign/foreign.component";
 import {ProductPageComponent} from "./components/product-page/product-page.component";
+import {CertificateListComponent} from "./components/certificate-list/certificate-list.component";
+import {CertificateItemComponent} from "./components/certificate-list/certificate-item/certificate-item.component";
+import {CertificateComponent} from "./components/certificate/certificate.component";
+import {PaymentComponent} from "./components/payment/payment.component";
+import {NgxStripeModule, StripeService} from "ngx-stripe";
+import {environment} from "../environments/environment";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -73,6 +79,7 @@ const appRoutes: Routes = [
   {path: 'order', component: OrderComponent, canDeactivate: [PendingChangesGuard]},
   {path: 'search', component: SearchPageComponent},
   {path: 'unsubscribe', component: UnsubscribeComponent},
+  {path: 'certificate-info/:id', component: CertificateComponent},
 ];
 
 
@@ -107,7 +114,11 @@ const appRoutes: Routes = [
     UnsubscribeComponent,
     FooterComponent,
     ForeignComponent,
-    ProductPageComponent
+    ProductPageComponent,
+    CertificateListComponent,
+    CertificateItemComponent,
+    CertificateComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -135,10 +146,12 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxStripeModule.forRoot(environment.stripe.publicKey),
 
   ],
-  providers: [PendingChangesGuard],
+  providers: [PendingChangesGuard,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

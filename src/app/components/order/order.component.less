@@ -1,8 +1,103 @@
 @import "../../../styles/color.less";
 
 :host {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+
   .order-form {
     padding: 30px;
+    flex: 1;
+  }
+
+  .order-component {
+    justify-content: start;
+  }
+
+
+  //.order-input {
+  //  //width: 100%;
+  //  //max-width: 100%;
+  //  height: 40px;
+  //  font-size: 22px;
+  //  border-radius: 5px;
+  //  border: 1px solid #7e7e7e;
+  //  -webkit-transition: 0.2s;
+  //  transition: 0.2s;
+  //  outline: none;
+  //  padding: 0 15px 0 15px;
+  //  text-align: center;
+  //}
+
+  .field {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+
+    input {
+      height: 40px;
+      font-size: 22px;
+      border-radius: 5px;
+      border: 1px solid #7e7e7e;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+      outline: none;
+      padding: 0 15px 0 15px;
+      text-align: center;
+      margin-right: 20px;
+      min-width: 25%;
+      width: 40%;
+
+    }
+
+    mat-error {
+      width: 25%;
+    }
+
+    input:focus {
+      box-shadow: 0px 0px 10px 1px @colorTheme4;
+    }
+
+    mat-label {
+      width: 25%;
+      min-width: 70px;
+      margin-right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+    }
+  }
+
+  .buttons-block {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 15% 20px 15%;
+
+    button {
+      width: 200px;
+    }
+
+    .previous {
+      background-color: @fontColorBright;
+
+    }
+  }
+
+  mat-select {
+    width: 50%;
+  }
+
+  @media (max-width: 470px) {
+    .field {
+      flex-direction: column;
+
+      input {
+        width: 90%;
+      }
+    }
   }
 }
 
@@ -29,4 +124,39 @@
       background-color: @colorTheme8;
     }
   }
+
+
+}
+
+::ng-deep .mdc-list-item__primary-text {
+  font-family: Inter, "Inter", Verdana, sans-serif !important;
+
+}
+
+::ng-deep .mat-pseudo-checkbox-checked {
+  background: @colorTheme4 !important;
+}
+
+::ng-deep .mdc-list-item--selected .mdc-list-item__primary-text {
+  color: @colorTheme4 !important;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after, .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: @baseColorHeader !important;
+}
+
+::ng-deep .mat-mdc-checkbox.mat-accent {
+
+  --mdc-checkbox-disabled-unselected-icon-color: rgba(0, 0, 0, 0.1)!important;
+  --mdc-checkbox-selected-hover-icon-color: @colorTheme4 !important;
+  --mdc-checkbox-selected-focus-icon-color: @colorTheme4 !important;
+  --mdc-checkbox-selected-icon-color:@colorTheme4 !important;
+    --mdc-checkbox-selected-pressed-icon-color: @colorTheme4 !important;
+}
+
+::ng-deep .mat-mdc-checkbox.mat-accent .mdc-checkbox--selected~.mdc-checkbox__ripple{
+  background: none;
+}
+::ng-deep .mat-mdc-checkbox.mat-accent .mdc-checkbox__ripple{
+  background: none;
 }
