@@ -13,7 +13,7 @@
       <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
     </div>
   </div>
-  <div class="cart-buttons">
+  <div class="cart-buttons" *ngIf="this.productsCount > 0">
     <div class="gift-card">
       <h3>Введите номер промокода</h3>
       <div class="promo-input">

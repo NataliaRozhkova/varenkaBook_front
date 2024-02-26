@@ -114,9 +114,12 @@ export class CartService {
 
   clearCart() {
     this.products = [];
+    this.productsCount = 0;
     this.cartChange.emit();
     this.deletePromocodeFromStorage();
     this.deleteGiftCardsFromStorage();
+    this.syncItems();
+
     return this.products;
   }
 

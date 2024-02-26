@@ -199,6 +199,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
           this.order = resp;
 
           this.canDeactivatePage = true;
+          this.dialogRef.canDeactivate = true;
+
           this.cartService.clearCart();
 
           this.payOrder(this.order.id, this.order.email);
@@ -225,6 +227,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     )
       .subscribe(resp => {
           this.canDeactivatePage = true;
+          this.dialogRef.canDeactivate = true;
+
           this.cartService.clearCart();
           this.payOrder(this.order.id, this.order.email);
 
@@ -500,7 +504,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         });
 
     }
-    this.dialogRef.canDeactivate = true;
     return this.dialogRef.afterClosed();
 
 
