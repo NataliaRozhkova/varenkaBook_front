@@ -8,6 +8,7 @@ import {map, switchMap} from "rxjs";
 import {HttpService} from "../../services/http.service";
 import {PaymentService} from "../../services/payment.service";
 import {FormControl} from "@angular/forms";
+import {PaymentParameters} from "../../model/models";
 
 
 
@@ -24,27 +25,15 @@ export enum StripePaymentType {
 })
 export class PaymentComponent  {
 
-  publicKey: string = environment.stripe.publicKey;
 
   @Input()
-  amount: number;
-
-  @Input()
-  paymentType: StripePaymentType;
-
-  @Input()
-  itemId: string = ''
-
-  @Input()
-  email: string = '';
+  paymentParameters: PaymentParameters = new PaymentParameters();
 
   emailControl = new FormControl('');
 
   @Input()
   showEmail:boolean = false;
 
-  @Input()
-  orderId: number;
 
   constructor(
     private paymentService: PaymentService,
@@ -54,10 +43,13 @@ export class PaymentComponent  {
 
   ) {}
 
-  checkout() {
+  checkout(params: any) {
+
+    console.log("***** paymentParameters", this.paymentParameters)
+    this.paymentParameters = params;
     this.clearControl();
     if (this.validate()) {
-      this.paymentService.createPayment(this.orderId, '').pipe(
+      this.paymentService.createPayment(params).pipe(
         switchMap(res => {
           return this.stripeService.redirectToCheckout({sessionId: res.id})
         })
@@ -79,7 +71,7 @@ export class PaymentComponent  {
     const emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     let isValid = true;
 
-    if (!this.email.match(emailRegex)) {
+    if (!this.paymentParameters.email.match(emailRegex)) {
       this.emailControl.setErrors({emailCorrectError: false});
       this.emailControl.markAsDirty();
       isValid = false;

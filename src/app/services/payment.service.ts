@@ -17,7 +17,7 @@ export class PaymentService {
   }
 
 
-  createPayment( id: number, params: any,) : Observable<any> {
-    return this.http.get(`api/buy/${id}/`, params)
+  createPayment( params: any) : Observable<any> {
+    return this.http.post(`api/buy/`, params)
   }
 }

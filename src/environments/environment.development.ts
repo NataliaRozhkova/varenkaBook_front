@@ -21,13 +21,12 @@ export const environment = {
     cityError:'Поле не может быть пустым',
     pickPointError:'Поле не может быть пустым',
     customerExist: "Вы уже подписаны на рассылку"
-
-
-
-
   },
 
   stripe: {
     publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
-  }
+  },
+
+  dns: "http://192.168.1.220:4200/"
+
 };

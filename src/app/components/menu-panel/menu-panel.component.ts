@@ -30,6 +30,7 @@ export class MenuPanelComponent {
   ) {
     this.productsCount = this.cartService.getCartCount();
 
+
   }
 
   ngOnInit() {
@@ -61,10 +62,13 @@ export class MenuPanelComponent {
         {
           data: 123, height: '50px', width: '90%',
           scrollStrategy: new NoopScrollStrategy(),
+          disableClose: true,
           position:{top: '30px'}
 
 
         });
+      this.dialogRef.disableClose = true;
+
     } else  {
       this.closePanel();
     }

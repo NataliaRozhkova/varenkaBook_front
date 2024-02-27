@@ -61,6 +61,8 @@ import {CertificateComponent} from "./components/certificate/certificate.compone
 import {PaymentComponent} from "./components/payment/payment.component";
 import {NgxStripeModule, StripeService} from "ngx-stripe";
 import {environment} from "../environments/environment";
+import {MatRadioModule} from "@angular/material/radio";
+import {OrderResultComponent} from "./components/order/order-result/order-result.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -80,6 +82,8 @@ const appRoutes: Routes = [
   {path: 'search', component: SearchPageComponent},
   {path: 'unsubscribe', component: UnsubscribeComponent},
   {path: 'certificate-info/:id', component: CertificateComponent},
+  {path: 'order-result/:result/:orderId', component: OrderResultComponent},
+  {path: 'order-result/:result/:orderId/:preorderId', component: OrderResultComponent},
 ];
 
 
@@ -118,7 +122,8 @@ const appRoutes: Routes = [
     CertificateListComponent,
     CertificateItemComponent,
     CertificateComponent,
-    PaymentComponent
+    PaymentComponent,
+    OrderResultComponent
   ],
   imports: [
     BrowserModule,
@@ -148,6 +153,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     MatTooltipModule,
     NgxStripeModule.forRoot(environment.stripe.publicKey),
+    MatRadioModule,
 
   ],
   providers: [PendingChangesGuard,

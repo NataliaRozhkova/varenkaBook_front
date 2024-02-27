@@ -18,3 +18,22 @@ export class News {
   date: Date;
   photo: string;
 }
+
+export class PaymentParameters {
+  currency: string;
+  success_url: string;
+  cancel_url: string;
+  email: string;
+  items: PaymentItem[] = [];
+}
+
+export class PaymentItem {
+  type: PaymentItemsType;
+  id: number;
+  quantity: number;
+}
+export enum PaymentItemsType {
+  order ='order',
+  certificate = 'certificate'
+}
+

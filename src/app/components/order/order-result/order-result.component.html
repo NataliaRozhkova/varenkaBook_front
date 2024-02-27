@@ -1,0 +1,11 @@
+<div  class="success" *ngIf="result == 'success'">
+
+  <h1>Заказ №{{orderId}} успешно создан</h1>
+  <h1 *ngIf="preorderId">Заказ №{{preorderId}} успещно создан</h1>
+</div>
+
+<div  class="cancel" *ngIf="result == 'cancel'">
+
+  <h1>Не удалось оплатить заказ.</h1>
+
+</div>

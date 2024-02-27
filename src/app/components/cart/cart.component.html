@@ -13,9 +13,9 @@
       <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
     </div>
   </div>
-  <div class="cart-buttons" *ngIf="this.productsCount > 0">
+  <div class="cart-buttons" *ngIf="products.length > 0" >
     <div class="gift-card">
-      <h3>Введите номер промокода</h3>
+      <h3>Введите промокод</h3>
       <div class="promo-input">
         <input class="base-input promocode" [(ngModel)]="giftCard"/>
         <button mat-button class=" main-button" (click)="addGiftCard()">Применить</button>

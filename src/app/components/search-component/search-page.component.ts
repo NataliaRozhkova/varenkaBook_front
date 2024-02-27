@@ -53,8 +53,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   find( ) {
 
-    console.log("************ selectedTab", this.selectedTab)
-
       const status = this.selectedTab == 0 ? 'in_stock' : 'available_to_order';
 
       this.availability = status;

@@ -116,10 +116,7 @@ export class ProductPageComponent implements OnDestroy, OnInit {
         return this.productService.getAgeCategories();
       }),
         map((response: any) => {
-          console.log("******* age", response)
           this.ageCategories = response?.results;
-          console.log("******* this.ageCategories", this.ageCategories)
-
         })
 
     ).subscribe()

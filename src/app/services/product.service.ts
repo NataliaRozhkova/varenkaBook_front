@@ -21,15 +21,16 @@ export class ProductService {
   }
 
   getGenres(): Observable<any> {
-    return this.http.get('api/genres/', {'limit':15})
+    return this.http.get('api/genres/', {'limit': 15})
   }
+
   getAgeCategories(): Observable<any> {
-    return this.http.get('api/age_categories/', {'limit':15})
+    return this.http.get('api/age_categories/', {'limit': 15})
   }
 
 
-  getProductInfo(id: any): Observable<Product>  {
-    return this.http.get(`api/products/${id}/`,{} )
+  getProductInfo(id: any): Observable<Product> {
+    return this.http.get(`api/products/${id}/`, {})
   }
 
   getProducts(params: any): Observable<Product> {
@@ -40,19 +41,25 @@ export class ProductService {
     return this.http.post('api/orders/', order)
   }
 
+  changeOrder( params: any) {
+    return this.http.patch(`api/orders/`, params);
+  }
+
 
   getDeliveryTypes(): Observable<any> {
     return this.http.get('api/delivery_types/', '')
   }
+
   getPickPoints(): Observable<any> {
     return this.http.get('api/pick_points/', '')
   }
 
-  roundPrice(price: number) : number {
-    return  parseFloat(price.toFixed(2));
+  roundPrice(price: number): number {
+    return parseFloat(price.toFixed(2));
   }
-  roundPriceStr(price: number) : string {
-    return   price.toFixed(2);
+
+  roundPriceStr(price: number): string {
+    return price.toFixed(2);
   }
 
 

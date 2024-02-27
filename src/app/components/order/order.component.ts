@@ -21,10 +21,9 @@ import {environment} from '../../../environments/environment';
 import {MatDialog} from "@angular/material/dialog";
 import {ComponentCanDeactivate} from "../../directives/guard";
 import {PaymentComponent, StripePaymentType} from "../payment/payment.component";
+import {PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
 
-export interface CanComponentDeactivate {
-  canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
-}
+
 @Component({
   selector: 'order',
   templateUrl: './order.component.html',
@@ -52,6 +51,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   deliveryType: string = '';
   pickPoint: string = '';
 
+  paymentParameters:PaymentParameters = new PaymentParameters();
+
   jointDelivery: boolean = false;
 
   nameControl = new FormControl('');
@@ -68,6 +69,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   concentNewslettersControl = new FormControl('');
   pickPointControl = new FormControl('');
   nifControl = new FormControl('');
+  nameLatinControl = new FormControl('');
+  trackPhoneNumberControl = new FormControl('');
 
 
   orderResponse: HttpErrorResponse;
@@ -87,6 +90,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     concentNewsletters: this.concentNewslettersControl,
     pickPoint: this.pickPointControl,
     nif: this.nifControl,
+    nameLatin: this.nameLatinControl,
+    trackPhoneNumber: this.trackPhoneNumberControl,
   })
 
   deliveryTypeNames: any = environment.deliveryTypeNames
@@ -118,6 +123,16 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   ngOnInit(): void {
+
+
+    this.canDeactivatePage = false;
+
+
+    if (this.products.length == 0) {
+      this.canDeactivatePage = true;
+      this.router.navigate(['main'])
+
+    }
 
     this.orderControls.valueChanges.subscribe(
       (event) => {
@@ -178,16 +193,60 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         this.submitSingleOrder(this.preorder);
       }
 
-
     }
-
 
   }
 
-  payOrder(orderId: number, email: string) {
-    this.paymentComponent.orderId = orderId;
-    this.paymentComponent.email = email;
-    this.paymentComponent.checkout();
+  payOrder( ) {
+    this.paymentParameters = this.createPaymentParams();
+    this.paymentComponent.checkout(this.paymentParameters);
+  }
+
+  createPaymentParams(): PaymentParameters {
+    let params = new  PaymentParameters();
+
+    let urlId = '';
+
+
+    if (this.productsToOrder.length > 0) {
+      params.email = this.order.email;
+    }  else {
+      params.email = this.preorder.email;
+    }
+
+    if (this.productsInStock.length > 0 || this.productsToOrder.length > 0) {
+
+      let orderItem = new PaymentItem();
+      orderItem.id = this.order.id ;
+      orderItem.type = PaymentItemsType.order;
+      orderItem.quantity = 1;
+      params.items.push(orderItem)
+      urlId += this.order.id + "/";
+
+    }
+
+    if (this.productsToOrder.length > 0 && this.productsInStock.length > 0) {
+      let preorderItem = new PaymentItem();
+      preorderItem.id = this.preorder.id;
+      preorderItem.type = PaymentItemsType.order;
+      preorderItem.quantity = 1;
+      params.items.push(preorderItem)
+      urlId += this.preorder.id + "/";
+
+    }
+    params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
+    params.success_url = environment.dns + "order-result/success/" + urlId;
+
+    // params.cancel_url = environment.dns + "order-result/success/" + urlId;
+    // params.success_url = environment.dns + "order-result/cancel/" + urlId;
+
+    params.currency = 'eur';
+
+    console.log(params)
+
+    return params;
+
+
   }
 
   submitSingleOrder(order: Order) {
@@ -199,11 +258,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
           this.order = resp;
 
           this.canDeactivatePage = true;
-          this.dialogRef.canDeactivate = true;
 
-          this.cartService.clearCart();
-
-          this.payOrder(this.order.id, this.order.email);
+          this.payOrder( );
 
         },
         err => {
@@ -227,10 +283,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     )
       .subscribe(resp => {
           this.canDeactivatePage = true;
-          this.dialogRef.canDeactivate = true;
 
-          this.cartService.clearCart();
-          this.payOrder(this.order.id, this.order.email);
+          this.payOrder();
 
         },
         err => {
@@ -275,6 +329,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.order.orderStatus.status = 'created';
     this.setPickPoint()
     this.order.phoneNumber = this.order.phoneNumber.replaceAll(" ", "");
+    this.order.trackPhoneNumber = this.order.trackPhoneNumber.replaceAll(" ", "");
 
   }
 
@@ -437,6 +492,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     if (!httpErrorResponse) {
       return;
     }
+
+    this.orderControls.setErrors(["Ошибка создания заказа. Проверьте правильность заполнения полей"]);
     let errors = httpErrorResponse.error;
     Object.keys(errors).forEach((key) => {
 
@@ -494,14 +551,17 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> {
 
-    if (!this.canDeactivatePage) {
+    // if (this.canDeactivatePage  ) {
+    //   let canDeactivateObs = new Observable<boolean>()
+    //   return canDeactivateObs;
 
 
-
-      this.dialogRef = this.dialog.open(this.myDialog,
-        {
-          data: 123, height: '350px', width: '250px',
-        });
+    this.dialogRef = this.dialog.open(this.myDialog,
+      {
+        data: 123, height: '400px', width: '250px',
+      });
+    if (this.canDeactivatePage) {
+      this.dialog.closeAll()
 
     }
     return this.dialogRef.afterClosed();

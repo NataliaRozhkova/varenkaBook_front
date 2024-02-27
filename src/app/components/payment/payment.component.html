@@ -1,10 +1,9 @@
-<!--<input type="hidden" value="{{ publicKey }}" id="public-key">-->
 
 <div class="field"  *ngIf="showEmail">
   <mat-label for="email">email:</mat-label>
-  <input  id="email" name="email" type="email" [(ngModel)]="email" [formControl]="emailControl">
+  <input  id="email" name="email" type="email" [(ngModel)]="paymentParameters.email" [formControl]="emailControl">
   <mat-error
     *ngIf="emailControl.errors">{{getErrorText(emailControl.errors)}}</mat-error>
 </div>
 
-<button mat-button class="order-button main-button" (click)="checkout()">Купить</button>
+<button mat-button class="order-button main-button" (click)="checkout(this.paymentParameters)">Купить</button>

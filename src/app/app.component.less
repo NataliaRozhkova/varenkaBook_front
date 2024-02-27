@@ -36,3 +36,33 @@
 
 
 }
+
+::ng-deep .mat-mdc-dialog-surface {
+
+  width: auto !important;
+  height: auto !important;
+
+  overflow: hidden !important;
+  padding: 10px 0 10px 0 ;
+
+  .mat-mdc-dialog-title {
+    text-align: center;
+    font-family: Inter, "Inter", Verdana, sans-serif !important;
+
+  }
+
+  .mat-mdc-dialog-actions {
+    display: flex;
+    justify-content: space-evenly;
+
+    .main-button {
+      width: 30%;
+    }
+
+    .cancel {
+      background-color: @colorTheme8;
+    }
+  }
+
+
+}

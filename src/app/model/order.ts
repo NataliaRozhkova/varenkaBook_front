@@ -5,7 +5,7 @@ export class Order {
   id: number;
   name: string = '';
   email: string = '';
-  nif: number ;
+  nif: number;
   phoneNumber: string = '';
   deliveryType: DeliveryType = new DeliveryType();
   orderType:OrderType = new OrderType();
@@ -13,6 +13,8 @@ export class Order {
   concentDataProcessing: boolean = false;
   concentNewsletters: boolean = false;
   pickPoint: PickPoint | null;
+  trackPhoneNumber: string = '';
+  nameLatin: string = '';
   postalCode: string = '';
   country: string = '';
   region: string = '';
@@ -54,15 +56,7 @@ export class PickPoint {
       (this.appartmentNumber ? this.appartmentNumber + ', ': '')
   }
 }
-export class Address {
-  postalCode: string = '';
-  country: string = '';
-  region: string = '';
-  city: string = '';
-  street: string = '';
-  buildingNumber: string = '';
-  appartmentNumber: string = '';
-}
+
 export class ProductInOrder {
   product: ProductID;
   amount: number = 0;

@@ -19,20 +19,22 @@
     <div class="step" *ngIf="pageIndex == 4">
       <ng-container *ngTemplateOutlet="submitPage"></ng-container>
     </div>
-
+    <mat-error
+    *ngIf="orderControls.errors">{{ orderControls.errors}}</mat-error>
 
   </div>
   <div class="buttons-block">
-    <div style=" visibility: hidden;" *ngIf="pageIndex == 0" ></div>
+    <div style=" visibility: hidden;" *ngIf="pageIndex == 0"></div>
     <button mat-button class="main-button previous" *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
     <button mat-button class="main-button next" *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
-    <button mat-button  class="main-button submit" type ="submit"  *ngIf="pageIndex == pageCount -1" (click)="onSubmit()" [disabled]="!order.concentDataProcessing">Оплатить</button>
+    <button mat-button class="main-button submit" type="submit" *ngIf="pageIndex == pageCount -1" (click)="onSubmit()"
+            [disabled]="!order.concentDataProcessing">Оплатить
+    </button>
 
 
   </div>
   <payment #paymentComponent
-           [paymentType]="StripePaymentType.Order"
-           [showEmail]="false" [email]="order.email"
+           [showEmail]="false"
            style="visibility: hidden"
   ></payment>
 </div>
@@ -43,7 +45,7 @@
   <div class="field">
     <mat-label for="name">ФИО:</mat-label>
 
-    <input id="name" name="name"  class="order-input" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
+    <input id="name" name="name" class="order-input" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
     <mat-error *ngIf="nameControl.errors">{{getErrorText(nameControl.errors)  }}</mat-error>
   </div>
 
@@ -75,37 +77,67 @@
     <mat-error *ngIf="phoneControl.errors">{{getErrorText(phoneControl.errors)}}</mat-error>
   </div>
 
-<!--  <div class="buttons-block">-->
-<!--    <button class="previous" *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>-->
-<!--    <button class="next" *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>-->
-
-<!--  </div>-->
 
 </ng-template>
 
 <ng-template #secondStep>
-  <h2>Доставка</h2>
 
-  <!--  <h2>Тип доствки</h2>-->
-  <mat-select  placeholder="Выберите тип доставки"  [(ngModel)]="deliveryType" name="deliveryType" [formControl]="deliveryTypeControl">
-    <mat-option *ngFor="let i of deliveryTypes" [value]="i.type">{{deliveryTypeNames[i.type]}}</mat-option>
+    <h2>Выберите тип доставки</h2>
+  <mat-radio-group id="delivery-type"
+                   class="radio-group"
+                   [(ngModel)]="deliveryType" name="deliveryType"
+                   [name]="'first'"
+                   [formControl]="deliveryTypeControl">
+    <mat-radio-button *ngFor="let i of deliveryTypes"
+                      [value]="i.type"
+                      [id]="i.type"
+    >{{deliveryTypeNames[i.type]}}</mat-radio-button>
+  </mat-radio-group>
 
-  </mat-select>
   <mat-error *ngIf="deliveryTypeControl.errors">{{getErrorText(deliveryTypeControl.errors)}}</mat-error>
 
   <div class="delivery-address" *ngIf="pickPointsShow">
-    <mat-select placeholder="Выберите пункт выдачи"  [(ngModel)]="pickPoint" name="deliveryType" [formControl]="pickPointControl">
-      <mat-option *ngFor="let i of pickPoints" [value]="i.id">{{getStringAddress(i)}}</mat-option>
+    <h2>Выберите пункт выдачи</h2>
 
-    </mat-select>
+    <div>
+
+    <mat-radio-group id="pickPoints" class="radio-group pickpoints"
+                     [(ngModel)]="pickPoint" name="pickPoints"
+                     [formControl]="pickPointControl">
+      <mat-radio-button  *ngFor="let i of pickPoints" [value]="i.id" [id]="i.id">{{getStringAddress(i)}}</mat-radio-button>
+    </mat-radio-group>
+
+
     <mat-error *ngIf="pickPointControl.errors">{{getErrorText(pickPointControl.errors)}}</mat-error>
+    </div>
   </div>
 
   <div class="delivery-address" *ngIf="showAddress">
     <h2>Адрес доставки</h2>
+
+
+    <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
+      <mat-label for="nameLatin">ФИО (латинницей):</mat-label>
+      <input id="nameLatin" name="nameLatin" type="text" [(ngModel)]="order.nameLatin"
+             [formControl]="nameLatinControl">
+      <mat-error *ngIf="nameLatinControl.errors">{{getErrorText(nameLatinControl.errors)}}</mat-error>
+    </div>
+    <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
+      <mat-label for="trackPhoneNumber">Номер телефона для отслеживания посылки:</mat-label>
+        <input id="phone"
+             name="phone" type="text"
+             [maxLength]="12"
+             phoneMask
+             [preValue]="order.trackPhoneNumber"
+             [phoneControl]="trackPhoneNumberControl"
+             maxlength="15"
+             [(ngModel)]="order.trackPhoneNumber"
+             [formControl]="trackPhoneNumberControl">
+      <mat-error *ngIf="countryControl.errors">{{getErrorText(countryControl.errors)}}</mat-error>
+    </div>
     <div class="field">
       <mat-label for="postalCode">Индекс:</mat-label>
-      <input id="postalCode" name="postalCode" type="email" [(ngModel)]="order.postalCode"
+      <input id="postalCode" name="postalCode"  [(ngModel)]="order.postalCode"
              [formControl]="postalCodeControl">
       <mat-error *ngIf="postalCodeControl.errors">{{getErrorText(postalCodeControl.errors)}}</mat-error>
     </div>
@@ -145,9 +177,6 @@
     </div>
   </div>
 
-<!--  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>-->
-<!--  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>-->
-
 
 </ng-template>
 
@@ -166,27 +195,73 @@
     <mat-error *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors)}}</mat-error>
   </div>
 
-<!--  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>-->
-<!--  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1) ">Далее</button>-->
 
 </ng-template>
 <ng-template #productsListPage>
 
-  <h2>Заказ товаров в наличии</h2>
-  <div *ngIf="productsInStock" class="products">
-    <div *ngFor="let pr of productsInStock">
-      <div>{{pr.product.name}}  {{pr.product.availability.status}}  {{pr.count}}  {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>
+
+  <div *ngIf="productsInStock.length > 0" class="products">
+    <h2>Товары в наличии</h2>
+    <div class="product-table">
+      <div class="table-header">
+        <div>Навание</div>
+        <div class="small-screen-hidden">Автор</div>
+        <div class="small-screen-hidden">Количество</div>
+        <div class="small-screen-hidden">Цена (за шт.)</div>
+        <div>Итоговая цена</div>
+      </div>
+      <div *ngFor="let pr of productsInStock" class="table-row">
+        <div>{{pr.product.name}}</div>
+        <div class="small-screen-hidden">{{pr.product.author}}</div>
+        <div class="small-screen-hidden">{{pr.count}}</div>
+        <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
+        <div>{{pr.product.discountPrice * pr.count}}</div>
+      </div>
+      <div  class="table-header">
+        <div>Итого</div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div>Много деньгов</div>
+      </div>
     </div>
+<!--    <div *ngFor="let pr of productsInStock">-->
+<!--      <div>{{pr.product.name}}   {{pr.count}}  {{pr.product.discountPrice * pr.count}}</div>-->
+<!--    </div>-->
   </div>
-  <h2>Заказа товаров</h2>
-  <div *ngIf="productsToOrder" class="products">
-    <div *ngFor="let pr of productsToOrder">
-      <div>{{pr.product.name}}  {{pr.product.availability.status}}  {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>
+  <div *ngIf="productsToOrder.length > 0" class="products">
+    <h2>Товары под заказ</h2>
+    <div class="product-table">
+      <div class="table-header">
+        <div>Навание</div>
+        <div class="small-screen-hidden">Автор</div>
+        <div class="small-screen-hidden">Количество</div>
+        <div class="small-screen-hidden">Цена (за шт.)</div>
+        <div>Итоговая цена</div>
+      </div>
+      <div *ngFor="let pr of productsToOrder" class="table-row">
+        <div>{{pr.product.name}}</div>
+        <div class="small-screen-hidden">{{pr.product.author}}</div>
+        <div class="small-screen-hidden">{{pr.count}}</div>
+        <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
+        <div>{{pr.product.discountPrice * pr.count}}</div>
+      </div>
+      <div  class="table-header">
+        <div>Итого</div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div>Много деньгов</div>
+      </div>
+
     </div>
+<!--    <div *ngFor="let pr of productsToOrder">-->
+<!--      <div>{{pr.product.name}}   {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>-->
+<!--    </div>-->
   </div>
 
   <h2>
-    <div class="field">
+    <div class="field" *ngIf="this.productsToOrder.length > 0 && this.productsInStock.length > 0">
       <mat-checkbox class="confirm-checkbox" [(ngModel)]="jointDelivery"> Оформить совместную доставку?
         Оплата за раздельную доставку оплачивается для каждоо заказа отдельно.
 
@@ -195,9 +270,6 @@
     </div>
   </h2>
 
-
-<!--  <button (click)="changeStep(-1)">Назад</button>-->
-<!--  <button (click)="changeStep(1) ">Далее</button>-->
 
 </ng-template>
 
@@ -213,21 +285,19 @@
   <div class="field">
     <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentNewsletters"> Хочу подписаться на рассылку
     </mat-checkbox>
-    <mat-error *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors )}}</mat-error>
+    <mat-error *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors)}}</mat-error>
   </div>
 
-<!--  <button *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>-->
-<!--  <button *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>-->
-
-<!--  <button type="submit" (click)="onSubmit()" [disabled]="!order.concentDataProcessing">ОТправить</button>-->
 
 </ng-template>
 
 
 <ng-template #dialog class="delete-dialog">
-  <h2 mat-dialog-title>Вы действительно хотите прервать оформление заказа?</h2>
-  <div mat-dialog-actions>
-    <button class="main-button cancel" mat-button [mat-dialog-close]="true">Да</button>
-    <button class="main-button" mat-button mat-dialog-close [mat-dialog-close]="false">Нет</button>
+  <div *ngIf="!canDeactivatePage">
+    <h2 mat-dialog-title>Вы действительно хотите прервать оформление заказа?</h2>
+    <div mat-dialog-actions>
+      <button class="main-button cancel" mat-button [mat-dialog-close]="true">Да</button>
+      <button class="main-button" mat-button mat-dialog-close [mat-dialog-close]="false">Нет</button>
+    </div>
   </div>
 </ng-template>
