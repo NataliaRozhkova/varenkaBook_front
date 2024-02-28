@@ -50,7 +50,7 @@ import {UnsubscribeComponent} from "./components/unsibscribe/unsubscribe.compone
 import {MatSelectModule} from "@angular/material/select";
 import {FooterComponent} from "./footer/footer.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {PendingChangesGuard} from "./directives/guard";
+import {ActivateGuard, PendingChangesGuard} from "./directives/guard";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {ForeignComponent} from "./components/foreign/foreign.component";
@@ -63,6 +63,7 @@ import {NgxStripeModule, StripeService} from "ngx-stripe";
 import {environment} from "../environments/environment";
 import {MatRadioModule} from "@angular/material/radio";
 import {OrderResultComponent} from "./components/order/order-result/order-result.component";
+import {NgxMaskModule} from "ngx-mask";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
@@ -77,8 +78,8 @@ const appRoutes: Routes = [
   {path: '', component: MainComponent},
   {path: 'product-info/:id', component: ProductInfoComponent},
   {path: 'cart', component: CartComponent},
-  {path: 'order/:id', component: OrderComponent, canDeactivate: [PendingChangesGuard]},
-  {path: 'order', component: OrderComponent, canDeactivate: [PendingChangesGuard]},
+  {path: 'order/:id', component: OrderComponent, canDeactivate: [PendingChangesGuard],   canActivate: [ActivateGuard]},
+  {path: 'order', component: OrderComponent, canDeactivate: [PendingChangesGuard], canActivate: [ActivateGuard]},
   {path: 'search', component: SearchPageComponent},
   {path: 'unsubscribe', component: UnsubscribeComponent},
   {path: 'certificate-info/:id', component: CertificateComponent},
@@ -123,7 +124,7 @@ const appRoutes: Routes = [
     CertificateItemComponent,
     CertificateComponent,
     PaymentComponent,
-    OrderResultComponent
+    OrderResultComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,9 +155,9 @@ const appRoutes: Routes = [
     MatTooltipModule,
     NgxStripeModule.forRoot(environment.stripe.publicKey),
     MatRadioModule,
-
+    NgxMaskModule.forRoot(),
   ],
-  providers: [PendingChangesGuard,
+  providers: [PendingChangesGuard, ActivateGuard
   ],
   bootstrap: [AppComponent]
 })

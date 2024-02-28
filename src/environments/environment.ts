@@ -12,14 +12,17 @@ export const environment = {
     deliveryTypeError:'Поле не может быть пустым',
     nameError:'Поле не может быть пустым',
     emailNullableError:'Поле не может быть пустым',
+    latinNameError:'Поле не может быть пустым',
     emailCorrectError: 'Некорректное значение email',
     phoneNullableError:'Поле не может быть пустым',
     phoneCorrectError: 'Некорректный телефон',
+    mask: 'Некорректный телефон',
     postalCodeError:'Поле не может быть пустым',
     countryError:'Поле не может быть пустым',
     cityError:'Поле не может быть пустым',
     pickPointError:'Поле не может быть пустым',
-    customerExist: "Вы уже подписаны на рассылку"
+    customerExist: "Вы уже подписаны на рассылку",
+    responseError: "Произошла ошибка, попробуйте повторить опзднее"
   },
 
   stripe: {

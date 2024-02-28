@@ -4,6 +4,7 @@ import {StorageService} from "./storage.service";
 import {PromoCode} from "../model/promo";
 import {Observable} from "rxjs";
 import {HttpService} from "./http.service";
+import {Order} from "../model/order";
 
 export interface CartItem {
   product: Product;
@@ -112,6 +113,18 @@ export class CartService {
     this.storageService.deleteItem('giftCards');
   }
 
+  setOrdersToStorage(order: Order, orderName: string) {
+    this.storageService.setItem(order, 'order')
+  }
+
+  getOrderFromStorage(orderName: string) : Order {
+    return this.storageService.getItem(orderName, 'null');
+  }
+
+  deleteOrderFromStorage(orderName: string) {
+    this.storageService.deleteItem(orderName);
+  }
+
   clearCart() {
     this.products = [];
     this.productsCount = 0;
@@ -120,7 +133,7 @@ export class CartService {
     this.deleteGiftCardsFromStorage();
     this.syncItems();
 
-    return this.products;
+    this.storageService.clear();
   }
 
   getPromocodeInfo(code: string): Observable<any> {

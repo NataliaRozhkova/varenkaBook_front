@@ -17,7 +17,7 @@
   }
 
   .field {
-    width: 80%;
+    width: 98%;
     display: flex;
     justify-content: flex-start;
     margin-bottom: 20px;
@@ -38,8 +38,16 @@
 
     }
 
+    .confirm-checkbox {
+      font-size: 22px;
+
+    }
+
     mat-error {
       width: 25%;
+      display: flex;
+      align-items:center;
+      margin-left: 20px;
     }
 
     input:focus {
@@ -130,8 +138,18 @@
   .products {
     margin-bottom: 30px;
   }
+
+  .information {
+    font-size: 14px;
+  }
 }
 
+::ng-deep .mat-mdc-checkbox label {
+  font-size: 18px;
+}
+::ng-deep .mdc-form-field>label{
+  font-size: 18px;
+}
 
 ::ng-deep .mdc-list-item__primary-text {
   font-family: Inter, "Inter", Verdana, sans-serif !important;

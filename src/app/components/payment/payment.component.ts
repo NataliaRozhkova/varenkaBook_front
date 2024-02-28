@@ -9,6 +9,7 @@ import {HttpService} from "../../services/http.service";
 import {PaymentService} from "../../services/payment.service";
 import {FormControl} from "@angular/forms";
 import {PaymentParameters} from "../../model/models";
+import {Router} from "@angular/router";
 
 
 
@@ -39,13 +40,14 @@ export class PaymentComponent  {
     private paymentService: PaymentService,
     private stripeService: StripeService,
     private informationService: InformationService,
+    private router: Router,
 
 
   ) {}
 
   checkout(params: any) {
+    // this.router.navigate(['main'])
 
-    console.log("***** paymentParameters", this.paymentParameters)
     this.paymentParameters = params;
     this.clearControl();
     if (this.validate()) {
@@ -57,7 +59,11 @@ export class PaymentComponent  {
         if (result.error) {
           alert(result.error.message);
         }
-      });
+      },
+        error => {
+          this.emailControl.setErrors({responseError: false});
+        }
+        );
     }
 
   }
@@ -71,8 +77,8 @@ export class PaymentComponent  {
     const emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     let isValid = true;
 
-    if (!this.paymentParameters.email.match(emailRegex)) {
-      this.emailControl.setErrors({emailCorrectError: false});
+    if (!this.paymentParameters.email?.match(emailRegex)) {
+      this.emailControl.setErrors({emailCorrectError: true});
       this.emailControl.markAsDirty();
       isValid = false;
     }

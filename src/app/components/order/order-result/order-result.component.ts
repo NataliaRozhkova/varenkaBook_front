@@ -44,20 +44,15 @@ export class OrderResultComponent implements OnDestroy{
 
   cancelOrder() {
 
-    this.productService.changeOrder( {
-      status: 'cancelled',
-      id: this.orderId
-    }).pipe(
+    this.productService.cancelOrder( this.orderId
+    ).pipe(
       takeUntil(this.destroySubject),
 
     ).subscribe();
 
     if (this.preorderId) {
 
-      this.productService.changeOrder({
-        status: 'cancelled',
-        id: this.preorderId
-      }).pipe(
+      this.productService.cancelOrder(this.preorderId).pipe(
         takeUntil(this.destroySubject),
 
       ).subscribe();

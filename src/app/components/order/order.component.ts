@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component, HostListener,
   inject, isDevMode,
@@ -6,9 +7,10 @@ import {
   OnInit, TemplateRef,
   ViewChild
 } from '@angular/core';
+import {Location} from '@angular/common';
 import {CartItem, CartService} from "../../services/cart.service";
-import {Router} from "@angular/router";
-import {map, Observable, Subject, switchMap, takeUntil} from "rxjs";
+import {ActivatedRouteSnapshot, CanActivate, NavigationEnd, Router, RouterStateSnapshot} from "@angular/router";
+import {filter, map, Observable, Subject, switchMap, takeUntil} from "rxjs";
 import {DeliveryType, Order, OrderType, PickPoint, ProductID, ProductInOrder} from "../../model/order";
 import {
   FormBuilder,
@@ -22,6 +24,9 @@ import {MatDialog} from "@angular/material/dialog";
 import {ComponentCanDeactivate} from "../../directives/guard";
 import {PaymentComponent, StripePaymentType} from "../payment/payment.component";
 import {PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
+import {PreviousRouteService} from "../../services/priveous-router.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {InformationService} from "../../services/information.service";
 
 
 @Component({
@@ -29,7 +34,7 @@ import {PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/mode
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.less']
 })
-export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate {
+export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate, AfterViewInit {
 
   order: Order = new Order();
   preorder: Order = new Order();
@@ -50,8 +55,9 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   pickPoints: PickPoint[] = [];
   deliveryType: string = '';
   pickPoint: string = '';
+  mainPickPointId: string;
 
-  paymentParameters:PaymentParameters = new PaymentParameters();
+  paymentParameters: PaymentParameters = new PaymentParameters();
 
   jointDelivery: boolean = false;
 
@@ -111,19 +117,20 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   showAddress: boolean = false;
   pickPointsShow: boolean = false;
 
+
   constructor(
     private cartService: CartService,
     private router: Router,
     private productService: ProductService,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
+    private infoService: InformationService
   ) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
   }
 
   ngOnInit(): void {
-
 
     this.canDeactivatePage = false;
 
@@ -133,6 +140,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.router.navigate(['main'])
 
     }
+
 
     this.orderControls.valueChanges.subscribe(
       (event) => {
@@ -155,8 +163,17 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
           this.pickPointsShow = false;
 
         }
+
       }
     );
+
+    this.infoService.getFrontParams().pipe(
+      takeUntil(this.destroySubject),
+    )
+      .subscribe(
+        (res) => {
+          this.mainPickPointId = res.results.find ((value:any) =>  value.name == 'main-pickpoint')?.value;
+        })
     this.productsInStock = this.getProductsFromStatus('in_stock');
     this.productsToOrder = this.getProductsFromStatus('available_to_order');
 
@@ -175,9 +192,21 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   }
 
+  ngAfterViewInit() {
+
+    if (this.order.phoneNumber) {
+      this.order.phoneNumber =  this.order.phoneNumber.replace(/^(\d{0,3})(\d{0,3})(\d{0,3})(.*)/, '+$1 $2 $3 $4');
+    }
+    if (this.order.trackPhoneNumber) {
+      this.order.trackPhoneNumber =  this.order.trackPhoneNumber.replace(/^(\d{0,3})(\d{0,3})(\d{0,3})(.*)/, '+$1 $2 $3 $4');
+    }
+
+    // this.phoneControl.updateValueAndValidity()
+  }
+
+
   onSubmit() {
     if (this.validate()) {
-
       this.setOrderFields();
       this.createPreorder();
       this.setProductsToOrders();
@@ -197,27 +226,49 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   }
 
-  payOrder( ) {
+  setOrderToStorage() {
+
+    this.setOrderFields();
+    this.cartService.setOrdersToStorage(this.order, 'order');
+    this.cartService.setOrdersToStorage(this.preorder, 'preorder');
+
+  }
+
+  getOrderFromStorage() {
+    let order = this.cartService.getOrderFromStorage('order');
+    let preorder = this.cartService.getOrderFromStorage('preorder');
+
+    if (order) {
+      this.order = order;
+    }
+
+    if (preorder) {
+      this.preorder = preorder;
+    }
+
+  }
+
+  payOrder() {
     this.paymentParameters = this.createPaymentParams();
     this.paymentComponent.checkout(this.paymentParameters);
   }
 
   createPaymentParams(): PaymentParameters {
-    let params = new  PaymentParameters();
+    let params = new PaymentParameters();
 
     let urlId = '';
 
 
     if (this.productsToOrder.length > 0) {
       params.email = this.order.email;
-    }  else {
+    } else {
       params.email = this.preorder.email;
     }
 
     if (this.productsInStock.length > 0 || this.productsToOrder.length > 0) {
 
       let orderItem = new PaymentItem();
-      orderItem.id = this.order.id ;
+      orderItem.id = this.order.id;
       orderItem.type = PaymentItemsType.order;
       orderItem.quantity = 1;
       params.items.push(orderItem)
@@ -234,19 +285,24 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       urlId += this.preorder.id + "/";
 
     }
-    params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
-    params.success_url = environment.dns + "order-result/success/" + urlId;
-
-    // params.cancel_url = environment.dns + "order-result/success/" + urlId;
-    // params.success_url = environment.dns + "order-result/cancel/" + urlId;
+    // params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
+    // params.success_url = environment.dns + "order-result/success/" + urlId;
+    //
+    params.cancel_url = environment.dns + "order-result/success/" + urlId;
+    params.success_url = environment.dns + "order-result/cancel/" + urlId;
 
     params.currency = 'eur';
 
-    console.log(params)
 
     return params;
 
 
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  pospateReject(event: any) {
+    console.log(event)
+    this.router.navigate(['main'])
   }
 
   submitSingleOrder(order: Order) {
@@ -256,10 +312,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
       .subscribe(resp => {
           this.order = resp;
+          this.setOrderToStorage();
 
           this.canDeactivatePage = true;
 
-          this.payOrder( );
+          this.payOrder();
 
         },
         err => {
@@ -279,6 +336,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       }),
       map((resp: any) => {
         this.preorder = resp;
+        this.setOrderToStorage();
+
       }),
     )
       .subscribe(resp => {
@@ -295,7 +354,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   createPreorder() {
-    if (!this.preorder.id) {
+    if (!this.preorder?.id) {
       this.preorder = JSON.parse(JSON.stringify(this.order));
       this.preorder.orderType.type = 'preorder';
     }
@@ -329,7 +388,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.order.orderStatus.status = 'created';
     this.setPickPoint()
     this.order.phoneNumber = this.order.phoneNumber.replaceAll(" ", "");
-    this.order.trackPhoneNumber = this.order.trackPhoneNumber.replaceAll(" ", "");
+    this.order.trackPhoneNumber = this.order.trackPhoneNumber?.replaceAll(" ", "");
 
   }
 
@@ -342,6 +401,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.order.pickPoint.id = this.pickPoint;
     }
 
+    if (this.deliveryType == 'pickup_from_warehouse') {
+      this.order.pickPoint = new PickPoint();
+      this.order.pickPoint.id = this.mainPickPointId;
+    }
+
   }
 
 
@@ -351,6 +415,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   changeStep(ind: number) {
+
+    this.setOrderToStorage();
 
     if (ind > 0 && (this.pageIndex == 0 && this.validatePersonalInfo() ||
       this.pageIndex == 1 && this.validateDelivery() ||
@@ -363,6 +429,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     if (ind < 0) {
       this.pageIndex -= 1;
     }
+
     this.resolveErrors(this.orderResponse);
 
     this.cdr.detectChanges();
@@ -393,7 +460,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       isValid = false;
     }
 
-    if ((this.deliveryType == 'pick_point' || this.deliveryType == 'pickup_from_warehouse') && !this.pickPoint) {
+    if (this.deliveryType == 'pick_point'  && !this.pickPoint) {
       this.pickPointControl.setErrors({pickPointError: true});
       this.pickPointControl.markAsDirty();
       isValid = false;
@@ -409,6 +476,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   validatePersonalInfo(): boolean {
+    console.log("----- validate Info")
 
     let isValid = true;
     if (!this.order.name) {
@@ -425,13 +493,23 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     const emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
 
     if (!this.order.email.match(emailRegex)) {
-      this.emailControl.setErrors({emailCorrectError: false});
+      this.emailControl.setErrors({emailCorrectError: true});
       this.emailControl.markAsDirty();
       isValid = false;
     }
 
-    if (!this.order.phoneNumber) {
+    if (!this.order.phoneNumber ) {
+
       this.phoneControl.setErrors({phoneNullableError: true});
+      this.phoneControl.markAsDirty();
+      isValid = false;
+    }
+
+    if (this.order.phoneNumber.length < 12) {
+      this.phoneControl.setErrors({phoneCorrectError: true});
+      this.phoneControl.setErrors({phoneCorrectError: true});
+
+      console.log("*** this.phoneControl ", this.phoneControl.errors)
       this.phoneControl.markAsDirty();
       isValid = false;
     }
@@ -444,6 +522,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     }
 
     return isValid;
+  }
+
+  trimPhoneNumber($event: string) {
+    this.order.phoneNumber = this.order.phoneNumber.toString().substring(0,10);
   }
 
   validateAddress(): boolean {
@@ -466,6 +548,34 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     }
     if (!this.order.street && !this.order.buildingNumber && !this.order.appartmentNumber) {
       isValid = false;
+    }
+
+    if (this.deliveryType == 'mail_delivery') {
+
+      if (!this.order.nameLatin){
+        this.nameLatinControl.setErrors({latinNameError: true})
+      }
+      if (!this.order.trackPhoneNumber ) {
+
+        this.trackPhoneNumberControl.setErrors({phoneNullableError: true});
+        this.trackPhoneNumberControl.markAsDirty();
+        isValid = false;
+      }
+
+      if (this.order.trackPhoneNumber.length < 12) {
+        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
+        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
+
+        this.trackPhoneNumberControl.markAsDirty();
+        isValid = false;
+      }
+
+      const phoneRegx = '^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$';
+      if (!this.order.trackPhoneNumber.toString().match(phoneRegx)) {
+        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
+        this.trackPhoneNumberControl.markAsDirty();
+        isValid = false;
+      }
     }
 
 
@@ -493,14 +603,16 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       return;
     }
 
-    this.orderControls.setErrors(["Ошибка создания заказа. Проверьте правильность заполнения полей"]);
+    // this.orderControls.setErrors(["Ошибка создания заказа. Проверьте правильность заполнения полей"]);
     let errors = httpErrorResponse.error;
+
     Object.keys(errors).forEach((key) => {
+
+      this.orderControls.setErrors([this.errorFromCode(key)])
 
       let errKey = this.getErrorFromKey(errors[key]);
       let error: any = {};
       error[errKey] = true;
-
       this.orderControls.get(key)?.setErrors(
         error
       );
@@ -522,13 +634,18 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     return this.products?.filter((pr) => pr.product.availability.status == availability)
   }
 
+  errorFromCode(code: string): string {
+    return  environment.errors[code as keyof typeof environment.errors]
+  }
+
   getErrorText(errors: any): string {
     let errorText = '';
 
-    Object.keys(errors).forEach((err) => {
+    Object?.keys(errors)?.forEach((err) => {
       errorText += environment.errors[err as keyof typeof environment.errors]
 
     })
+
     return errorText;
   }
 
@@ -551,10 +668,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> {
 
-    // if (this.canDeactivatePage  ) {
-    //   let canDeactivateObs = new Observable<boolean>()
-    //   return canDeactivateObs;
-
 
     this.dialogRef = this.dialog.open(this.myDialog,
       {
@@ -569,6 +682,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   }
 
-  protected readonly StripePaymentType = StripePaymentType;
+  protected readonly console = console;
 }
 

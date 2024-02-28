@@ -23,6 +23,7 @@
     *ngIf="orderControls.errors">{{ orderControls.errors}}</mat-error>
 
   </div>
+  <div class="information"> * - Поля обязательные для заполнения</div>
   <div class="buttons-block">
     <div style=" visibility: hidden;" *ngIf="pageIndex == 0"></div>
     <button mat-button class="main-button previous" *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
@@ -43,14 +44,14 @@
   <h2>Информация о получателе</h2>
 
   <div class="field">
-    <mat-label for="name">ФИО:</mat-label>
+    <mat-label for="name"> <span class="required-sign">*</span>ФИО:</mat-label>
 
     <input id="name" name="name" class="order-input" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
     <mat-error *ngIf="nameControl.errors">{{getErrorText(nameControl.errors)  }}</mat-error>
   </div>
 
   <div class="field">
-    <mat-label for="email">email:</mat-label>
+    <mat-label for="email"><span class="required-sign">*</span>email:</mat-label>
     <input id="email" name="email" type="email" [(ngModel)]="order.email" [formControl]="emailControl">
     <mat-error
       *ngIf="emailControl.errors">{{getErrorText(emailControl.errors)}}</mat-error>
@@ -60,20 +61,20 @@
     <mat-label for="email">NIF:</mat-label>
     <input id="nif" name="nif" type="number" [(ngModel)]="order.nif" [formControl]="nifControl">
     <mat-error
-      *ngIf="emailControl.errors">{{getErrorText(nifControl.errors)}}</mat-error>
+      *ngIf="nifControl.errors">{{getErrorText(nifControl.errors)}}</mat-error>
   </div>
 
   <div class="field">
-    <mat-label for="phone">Телефон:</mat-label>
+    <mat-label for="phone"><span class="required-sign">*</span>Телефон:</mat-label>
     <input id="phone"
            name="phone" type="text"
-           [maxLength]="12"
-           phoneMask
-           [preValue]="order.phoneNumber"
-           [phoneControl]="phoneControl"
-           maxlength="15"
+           mask="+000 000 000 099"
+           [dropSpecialCharacters]="false"
            [(ngModel)]="order.phoneNumber"
-           [formControl]="phoneControl">
+           [formControl]="phoneControl"
+           [validation]="false"
+    >
+
     <mat-error *ngIf="phoneControl.errors">{{getErrorText(phoneControl.errors)}}</mat-error>
   </div>
 
@@ -117,32 +118,32 @@
 
 
     <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
-      <mat-label for="nameLatin">ФИО (латинницей):</mat-label>
+      <mat-label for="nameLatin"><span class="required-sign">*</span>ФИО (латинницей):</mat-label>
       <input id="nameLatin" name="nameLatin" type="text" [(ngModel)]="order.nameLatin"
              [formControl]="nameLatinControl">
       <mat-error *ngIf="nameLatinControl.errors">{{getErrorText(nameLatinControl.errors)}}</mat-error>
     </div>
     <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
-      <mat-label for="trackPhoneNumber">Номер телефона для отслеживания посылки:</mat-label>
-        <input id="phone"
+      <mat-label for="trackPhoneNumber"><span class="required-sign">*</span>Телефон для отслеживания посылки:</mat-label>
+      <input id="track-phone"
              name="phone" type="text"
-             [maxLength]="12"
-             phoneMask
-             [preValue]="order.trackPhoneNumber"
-             [phoneControl]="trackPhoneNumberControl"
-             maxlength="15"
+             mask="+000 000 000 099"
+             [validation]="false"
+             [dropSpecialCharacters]="false"
              [(ngModel)]="order.trackPhoneNumber"
-             [formControl]="trackPhoneNumberControl">
-      <mat-error *ngIf="countryControl.errors">{{getErrorText(countryControl.errors)}}</mat-error>
+             [formControl]="trackPhoneNumberControl"
+      >
+
+      <mat-error *ngIf="trackPhoneNumberControl.errors">{{getErrorText(trackPhoneNumberControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="postalCode">Индекс:</mat-label>
+      <mat-label for="postalCode"><span class="required-sign">*</span>Индекс:</mat-label>
       <input id="postalCode" name="postalCode"  [(ngModel)]="order.postalCode"
              [formControl]="postalCodeControl">
       <mat-error *ngIf="postalCodeControl.errors">{{getErrorText(postalCodeControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="country">Страна:</mat-label>
+      <mat-label for="country"><span class="required-sign">*</span>Страна:</mat-label>
       <input id="country" name="country" type="text" [(ngModel)]="order.country"
              [formControl]="countryControl">
       <mat-error *ngIf="countryControl.errors">{{getErrorText(countryControl.errors)}}</mat-error>
@@ -152,24 +153,24 @@
       <input id="region" name="region" type="text" [(ngModel)]="order.region">
     </div>
     <div class="field">
-      <mat-label for="city">Город:</mat-label>
+      <mat-label for="city"><span class="required-sign">*</span>Город:</mat-label>
       <input id="city" name="city" type="text" [(ngModel)]="order.city" [formControl]="cityControl">
       <mat-error *ngIf="cityControl.errors">{{getErrorText(cityControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="street">Улица:</mat-label>
+      <mat-label for="street"><span class="required-sign">*</span>Улица:</mat-label>
       <input id="street" name="street" type="text" [(ngModel)]="order.street"
              [formControl]="streetControl">
       <mat-error *ngIf="streetControl.errors">{{getErrorText(streetControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="buildingNumber">Дом:</mat-label>
+      <mat-label for="buildingNumber"><span class="required-sign">*</span>Дом:</mat-label>
       <input id="buildingNumber" name="buildingNumber" type="text" [(ngModel)]="order.buildingNumber"
              [formControl]="buildingNumberControl">
       <mat-error *ngIf="buildingNumberControl.errors">{{getErrorText(buildingNumberControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="appartmentNumber">Квартира:</mat-label>
+      <mat-label for="appartmentNumber"><span class="required-sign">*</span>Квартира:</mat-label>
       <input id="appartmentNumber" name="appartmentNumber" type="text"
              [(ngModel)]="order.appartmentNumber"
              [formControl]="appartmentNumberControl">
@@ -183,7 +184,7 @@
 <ng-template #thirdPage>
   <div class="field">
     <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentDataProcessing"
-                  [formControl]="concentDataProcessingControl"> Подтверждаю согласие на обработку персональных
+                  [formControl]="concentDataProcessingControl"><span class="required-sign">*</span> Подтверждаю согласие на обработку персональных
       данных
     </mat-checkbox>
     <mat-error

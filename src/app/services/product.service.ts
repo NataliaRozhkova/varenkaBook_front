@@ -45,6 +45,10 @@ export class ProductService {
     return this.http.patch(`api/orders/`, params);
   }
 
+  cancelOrder( id: number) {
+    return this.http.get(`api/cancel/`, {id: id});
+  }
+
 
   getDeliveryTypes(): Observable<any> {
     return this.http.get('api/delivery_types/', '')
