@@ -8,7 +8,7 @@
         <img *ngIf="!shadow" src="{{sl.image}}" class="slide-image"  >
       </div>
   </div>
-  <svg
+  <svg *ngIf="slidesArray.length > 1"
     [ngClass]="
       'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
     "
@@ -21,7 +21,7 @@
     />
   </svg>
   <svg
-    *ngIf="slider"
+    *ngIf="slider && slidesArray.length > 1"
     [ngClass]="
       'arrow arrow--right ' +
       (slider.details().size - 1 === currentSlide ? 'arrow--disabled' : '')
@@ -33,7 +33,7 @@
     <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/>
   </svg>
 </div>
-<div class="dots">
+<div class="dots" *ngIf="slidesArray.length > 1">
   <button
     (click)="slider.moveToSlideRelative(i)"
     *ngFor="let slide of dotHelper; let i = index"

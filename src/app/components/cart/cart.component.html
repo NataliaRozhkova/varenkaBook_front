@@ -21,7 +21,7 @@
         <button mat-button class=" main-button" (click)="addGiftCard()">Применить</button>
       </div>
 
-      <div class="error-card" *ngIf="errorCard">Номер карты не найден</div>
+      <div class="error-card" *ngIf="errorCard && errorCertificate">Номер не найден</div>
       <div class="error-card" *ngIf="cardUsed">Данный сертификат уже использован</div>
 
       <div *ngIf="promocode">

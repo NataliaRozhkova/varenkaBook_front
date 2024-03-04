@@ -10,7 +10,7 @@ export class CustomScrollbarComponent  implements AfterViewInit, OnInit{
 
   @ViewChild('scroller') scroller: ElementRef<HTMLElement>;
 
-  @Input()
+  // @Input()
   // height: string = '80vh';
 
   ngOnInit(): void {
@@ -23,17 +23,18 @@ export class CustomScrollbarComponent  implements AfterViewInit, OnInit{
   }
 
   initScroller() {
-    const div = this.scroller?.nativeElement as HTMLDivElement;
-
+    // console.log("*** height scroller ",  this.height)
+    // const div = this.scroller?.nativeElement as HTMLDivElement;
+    //
     // if (div) {
     //   div.setAttribute("style", `height: ${this.height};`)
-    //
-    //   div.addEventListener('mouseover', e => {
-    //     // console.log('Mouse Over');
-    //   });
-    //   div.addEventListener('mouseout', e => {
-    //     // console.log('Mouse Out');
-    //   });
+
+      // div.addEventListener('mouseover', e => {
+      //   console.log('Mouse Over');
+      // });
+      // div.addEventListener('mouseout', e => {
+      //   console.log('Mouse Out');
+      // });
     // }
   }
 

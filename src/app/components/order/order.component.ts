@@ -10,7 +10,7 @@ import {
 import {Location} from '@angular/common';
 import {CartItem, CartService} from "../../services/cart.service";
 import {ActivatedRouteSnapshot, CanActivate, NavigationEnd, Router, RouterStateSnapshot} from "@angular/router";
-import {filter, map, Observable, Subject, switchMap, takeUntil} from "rxjs";
+import {filter, map, Observable, retry, Subject, switchMap, takeUntil} from "rxjs";
 import {DeliveryType, Order, OrderType, PickPoint, ProductID, ProductInOrder} from "../../model/order";
 import {
   FormBuilder,
@@ -75,8 +75,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   concentNewslettersControl = new FormControl('');
   pickPointControl = new FormControl('');
   nifControl = new FormControl('');
-  nameLatinControl = new FormControl('');
-  trackPhoneNumberControl = new FormControl('');
 
 
   orderResponse: HttpErrorResponse;
@@ -96,8 +94,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     concentNewsletters: this.concentNewslettersControl,
     pickPoint: this.pickPointControl,
     nif: this.nifControl,
-    nameLatin: this.nameLatinControl,
-    trackPhoneNumber: this.trackPhoneNumberControl,
   })
 
   deliveryTypeNames: any = environment.deliveryTypeNames
@@ -166,6 +162,21 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
       }
     );
+
+    this.phoneControl.valueChanges.pipe(
+      switchMap(val => {
+        let phone = '';
+        if (val) {
+          phone = val.replaceAll(" ", "");
+        }
+        return this.productService.phoneValidate(phone)
+      }),
+      map(res => {
+        if (!res && this.phoneControl.value  ) {
+          this.phoneControl.setErrors({phoneCorrectError: true});
+        }
+      })
+    ).subscribe();
 
     this.infoService.getFrontParams().pipe(
       takeUntil(this.destroySubject),
@@ -285,11 +296,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       urlId += this.preorder.id + "/";
 
     }
-    // params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
-    // params.success_url = environment.dns + "order-result/success/" + urlId;
-    //
-    params.cancel_url = environment.dns + "order-result/success/" + urlId;
-    params.success_url = environment.dns + "order-result/cancel/" + urlId;
+    params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
+    params.success_url = environment.dns + "order-result/success/" + urlId;
 
     params.currency = 'eur';
 
@@ -476,7 +484,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   validatePersonalInfo(): boolean {
-    console.log("----- validate Info")
 
     let isValid = true;
     if (!this.order.name) {
@@ -550,35 +557,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       isValid = false;
     }
 
-    if (this.deliveryType == 'mail_delivery') {
-
-      if (!this.order.nameLatin){
-        this.nameLatinControl.setErrors({latinNameError: true})
-      }
-      if (!this.order.trackPhoneNumber ) {
-
-        this.trackPhoneNumberControl.setErrors({phoneNullableError: true});
-        this.trackPhoneNumberControl.markAsDirty();
-        isValid = false;
-      }
-
-      if (this.order.trackPhoneNumber.length < 12) {
-        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
-        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
-
-        this.trackPhoneNumberControl.markAsDirty();
-        isValid = false;
-      }
-
-      const phoneRegx = '^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$';
-      if (!this.order.trackPhoneNumber.toString().match(phoneRegx)) {
-        this.trackPhoneNumberControl.setErrors({phoneCorrectError: true});
-        this.trackPhoneNumberControl.markAsDirty();
-        isValid = false;
-      }
-    }
-
-
     return isValid;
   }
 
@@ -603,7 +581,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       return;
     }
 
-    // this.orderControls.setErrors(["Ошибка создания заказа. Проверьте правильность заполнения полей"]);
     let errors = httpErrorResponse.error;
 
     Object.keys(errors).forEach((key) => {
@@ -663,6 +640,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     const saveOrder = JSON.parse(sessionStorage.getItem('order') || '{}');
 
+  }
+  getMainPickPointAddress(): string {
+    let mainPickPoint = this.pickPoints.filter((pickPoint) => pickPoint.id == this.mainPickPointId)[0];
+
+    return this.getStringAddress(mainPickPoint);
   }
 
   @HostListener('window:beforeunload')

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
-import {Observable} from "rxjs";
+import {Observable, retry} from "rxjs";
 import {Product} from "../model/product";
 import {Order} from "../model/order";
 
@@ -64,6 +64,10 @@ export class ProductService {
 
   roundPriceStr(price: number): string {
     return price.toFixed(2);
+  }
+
+  phoneValidate(phoneNumber: string): Observable<any> {
+    return this.http.get('api/validate_phone/', {phone: phoneNumber})
   }
 
 

@@ -1,16 +1,27 @@
 export class PromoCode {
   number: string;
-  cardType: 'gift' | 'promocode';
-  value: number;
-  discountPercent: number;
+  amount: number;
+  procent: number;
+  validity: boolean;
+  expiryDate: Date;
 
   constructor(params: any) {
     this.number = params.number;
-    this.value = params.value;
-    this.discountPercent = params.discountPercent;
-    this.cardType = params.cardType;
+    this.amount = params.amount;
+    this.procent = params.procent;
+    this.validity = params.validity;
+    this.expiryDate = params.expiryDate;
 
   }
+}
+
+export class Certificate {
+  number: string;
+  amount: number;
+  used: boolean;
+  email: string;
+
+
 }
 
 

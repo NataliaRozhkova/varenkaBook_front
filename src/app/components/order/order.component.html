@@ -20,7 +20,7 @@
       <ng-container *ngTemplateOutlet="submitPage"></ng-container>
     </div>
     <mat-error
-    *ngIf="orderControls.errors">{{ orderControls.errors}}</mat-error>
+      *ngIf="orderControls.errors">{{ orderControls.errors}}</mat-error>
 
   </div>
   <div class="information"> * - Поля обязательные для заполнения</div>
@@ -44,9 +44,13 @@
   <h2>Информация о получателе</h2>
 
   <div class="field">
-    <mat-label for="name"> <span class="required-sign">*</span>ФИО:</mat-label>
+    <mat-label for="name"><span class="required-sign">*</span>ФИО (латинницей):</mat-label>
 
-    <input id="name" name="name" class="order-input" type="text" [(ngModel)]="order.name" [formControl]="nameControl">
+    <input id="name" name="name"
+           class="order-input" type="text"
+           [mask]="'S* S*'"
+           [validation]="false"
+           [(ngModel)]="order.name" [formControl]="nameControl">
     <mat-error *ngIf="nameControl.errors">{{getErrorText(nameControl.errors)  }}</mat-error>
   </div>
 
@@ -83,7 +87,7 @@
 
 <ng-template #secondStep>
 
-    <h2>Выберите тип доставки</h2>
+  <h2>Выберите тип доставки</h2>
   <mat-radio-group id="delivery-type"
                    class="radio-group"
                    [(ngModel)]="deliveryType" name="deliveryType"
@@ -97,19 +101,30 @@
 
   <mat-error *ngIf="deliveryTypeControl.errors">{{getErrorText(deliveryTypeControl.errors)}}</mat-error>
 
+
+  <div *ngIf="!pickPointsShow && !showAddress && deliveryType" class="delivery-address">
+    <h2>Забрать из магазина</h2>
+
+    <div>
+      {{getMainPickPointAddress()}}
+    </div>
+  </div>
+
+
   <div class="delivery-address" *ngIf="pickPointsShow">
     <h2>Выберите пункт выдачи</h2>
 
     <div>
 
-    <mat-radio-group id="pickPoints" class="radio-group pickpoints"
-                     [(ngModel)]="pickPoint" name="pickPoints"
-                     [formControl]="pickPointControl">
-      <mat-radio-button  *ngFor="let i of pickPoints" [value]="i.id" [id]="i.id">{{getStringAddress(i)}}</mat-radio-button>
-    </mat-radio-group>
+      <mat-radio-group id="pickPoints" class="radio-group pickpoints"
+                       [(ngModel)]="pickPoint" name="pickPoints"
+                       [formControl]="pickPointControl">
+        <mat-radio-button *ngFor="let i of pickPoints" [value]="i.id"
+                          [id]="i.id">{{getStringAddress(i)}}</mat-radio-button>
+      </mat-radio-group>
 
 
-    <mat-error *ngIf="pickPointControl.errors">{{getErrorText(pickPointControl.errors)}}</mat-error>
+      <mat-error *ngIf="pickPointControl.errors">{{getErrorText(pickPointControl.errors)}}</mat-error>
     </div>
   </div>
 
@@ -117,28 +132,9 @@
     <h2>Адрес доставки</h2>
 
 
-    <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
-      <mat-label for="nameLatin"><span class="required-sign">*</span>ФИО (латинницей):</mat-label>
-      <input id="nameLatin" name="nameLatin" type="text" [(ngModel)]="order.nameLatin"
-             [formControl]="nameLatinControl">
-      <mat-error *ngIf="nameLatinControl.errors">{{getErrorText(nameLatinControl.errors)}}</mat-error>
-    </div>
-    <div class="field" *ngIf="deliveryTypeControl.value == 'mail_delivery'">
-      <mat-label for="trackPhoneNumber"><span class="required-sign">*</span>Телефон для отслеживания посылки:</mat-label>
-      <input id="track-phone"
-             name="phone" type="text"
-             mask="+000 000 000 099"
-             [validation]="false"
-             [dropSpecialCharacters]="false"
-             [(ngModel)]="order.trackPhoneNumber"
-             [formControl]="trackPhoneNumberControl"
-      >
-
-      <mat-error *ngIf="trackPhoneNumberControl.errors">{{getErrorText(trackPhoneNumberControl.errors)}}</mat-error>
-    </div>
     <div class="field">
       <mat-label for="postalCode"><span class="required-sign">*</span>Индекс:</mat-label>
-      <input id="postalCode" name="postalCode"  [(ngModel)]="order.postalCode"
+      <input id="postalCode" name="postalCode" [(ngModel)]="order.postalCode"
              [formControl]="postalCodeControl">
       <mat-error *ngIf="postalCodeControl.errors">{{getErrorText(postalCodeControl.errors)}}</mat-error>
     </div>
@@ -184,7 +180,8 @@
 <ng-template #thirdPage>
   <div class="field">
     <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.concentDataProcessing"
-                  [formControl]="concentDataProcessingControl"><span class="required-sign">*</span> Подтверждаю согласие на обработку персональных
+                  [formControl]="concentDataProcessingControl"><span class="required-sign">*</span> Подтверждаю согласие
+      на обработку персональных
       данных
     </mat-checkbox>
     <mat-error
@@ -218,7 +215,7 @@
         <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
         <div>{{pr.product.discountPrice * pr.count}}</div>
       </div>
-      <div  class="table-header">
+      <div class="table-header">
         <div>Итого</div>
         <div></div>
         <div></div>
@@ -226,9 +223,9 @@
         <div>Много деньгов</div>
       </div>
     </div>
-<!--    <div *ngFor="let pr of productsInStock">-->
-<!--      <div>{{pr.product.name}}   {{pr.count}}  {{pr.product.discountPrice * pr.count}}</div>-->
-<!--    </div>-->
+    <!--    <div *ngFor="let pr of productsInStock">-->
+    <!--      <div>{{pr.product.name}}   {{pr.count}}  {{pr.product.discountPrice * pr.count}}</div>-->
+    <!--    </div>-->
   </div>
   <div *ngIf="productsToOrder.length > 0" class="products">
     <h2>Товары под заказ</h2>
@@ -247,7 +244,7 @@
         <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
         <div>{{pr.product.discountPrice * pr.count}}</div>
       </div>
-      <div  class="table-header">
+      <div class="table-header">
         <div>Итого</div>
         <div></div>
         <div></div>
@@ -256,9 +253,9 @@
       </div>
 
     </div>
-<!--    <div *ngFor="let pr of productsToOrder">-->
-<!--      <div>{{pr.product.name}}   {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>-->
-<!--    </div>-->
+    <!--    <div *ngFor="let pr of productsToOrder">-->
+    <!--      <div>{{pr.product.name}}   {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>-->
+    <!--    </div>-->
   </div>
 
   <h2>

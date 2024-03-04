@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Product} from "../model/product";
 import {StorageService} from "./storage.service";
-import {PromoCode} from "../model/promo";
+import {Certificate, PromoCode} from "../model/promo";
 import {Observable} from "rxjs";
 import {HttpService} from "./http.service";
 import {Order} from "../model/order";
@@ -99,10 +99,10 @@ export class CartService {
     return this.storageService.getItem( 'promocode', 'null');
   }
 
-  setGiftCardsToStorage(giftCards: PromoCode[]) {
+  setGiftCardsToStorage(giftCards: Certificate[]) {
     this.storageService.setItem(giftCards, 'giftCards');
   }
-  getGiftCardsFromStorage( ): PromoCode[] {
+  getGiftCardsFromStorage( ): Certificate[] {
     return this.storageService.getItem( 'giftCards', '[]');
   }
 
@@ -137,10 +137,10 @@ export class CartService {
   }
 
   getPromocodeInfo(code: string): Observable<any> {
-    return this.http.get('api/promo_codes', {number: code})
+    return this.http.get('api/promo_codes/', {number: code})
   }
   getGiftCardsInfo(code: string): Observable<any> {
-    return this.http.get('api/certificates', {number: code})
+    return this.http.get('api/certificates/', {number: code})
   }
 
   syncItems() {

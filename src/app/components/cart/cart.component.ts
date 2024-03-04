@@ -2,9 +2,10 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, On
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
 import {CartItem, CartService} from "../../services/cart.service";
-import {PromoCode} from "../../model/promo";
+import {Certificate, PromoCode} from "../../model/promo";
 import {numbers} from "@material/checkbox";
 import {ProductService} from "../../services/product.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'cart',
@@ -20,9 +21,11 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   giftCard: string = '';
 
   promocode: PromoCode | null;
-  cardGifts: PromoCode[] = [];
+  cardGifts: Certificate[] = [];
 
   errorCard: boolean = false;
+  errorCertificate: boolean = false;
+
   cardUsed: boolean = false;
 
   totalValue: number = 0.0;
@@ -94,33 +97,66 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
   addGiftCard() {
 
-    let card: PromoCode = this.checkCardNumber(this.giftCard)
+    let giftCard: PromoCode;
+    let promocode: PromoCode;
+    this.errorCard = false;
+    this.errorCertificate = false;
     this.cardUsed = false;
 
-    if (!card) {
-      this.errorCard = true;
-    } else {
-      this.errorCard = false;
+    if (this.giftCard) {
+      this.cartService.getPromocodeInfo(this.giftCard).pipe(
+        takeUntil(this.destroySubject),
+      ).subscribe(
+        resp => {
+          this.errorCard = false;
 
-      card = card as PromoCode;
+          let promocode = resp as PromoCode;
 
-      let usedCard: boolean = this.cardGifts.filter(item => item.number == card.number).length > 0;
+          if (promocode.validity) {
+            this.promocode = promocode;
+            this.updateTotalValue();
 
-      if (usedCard) {
-        this.cardUsed = true;
-        return
-      } else {
-        this.cardUsed = false;
+          } else {
+            this.errorCard = true;
+          }
+        },
+        err => {
+          this.errorCard = true;
 
-      }
+        })
 
-      if (card.cardType == 'gift') {
-        this.cardGifts.push(card);
-      }
-      if (card.cardType == 'promocode') {
-        this.promocode = card;
-      }
-      this.updateTotalValue();
+      this.cartService.getGiftCardsInfo(this.giftCard).pipe(
+        takeUntil(this.destroySubject),
+      ).subscribe(resp => {
+
+          let giftCard = resp as Certificate;
+
+          if (giftCard.used) {
+            this.errorCertificate = true
+            this.cardUsed = true;
+          } else {
+            let usedCard: boolean = this.cardGifts.filter(item => item.number == giftCard.number).length > 0;
+
+            if (usedCard) {
+              this.cardUsed = true;
+              return
+            } else {
+              this.cardUsed = false;
+              this.cardGifts.push(giftCard);
+
+            }
+
+          }
+
+
+          this.updateTotalValue();
+
+        },
+        err => {
+          this.errorCertificate = true;
+
+        })
+
 
     }
 
@@ -139,12 +175,12 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     const delimeter: number = 100;
 
     if (this.promocode) {
-      totalValue = (this.promocode.value ?
-        totalValue - this.promocode.value :
-        totalValue * (this.promocode.discountPercent / delimeter));
-      totalValueDiscount = this.promocode.value ?
-        totalValueDiscount - this.promocode.value :
-        totalValueDiscount * (this.promocode.discountPercent / delimeter);
+      totalValue = (this.promocode.amount ?
+        totalValue - this.promocode.amount :
+        totalValueDiscount - totalValue * (this.promocode.procent / delimeter));
+      totalValueDiscount = this.promocode.amount ?
+        totalValueDiscount - this.promocode.amount :
+        totalValueDiscount - totalValueDiscount * (this.promocode.procent / delimeter);
 
     }
 
@@ -154,12 +190,12 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       this.giftCardsDiscount = 0;
       this.cardGifts.forEach((item) => {
 
-        if (item.value) {
+        if (item.amount) {
 
-          this.giftCardsDiscount +=  item.value;
+          this.giftCardsDiscount += item.amount;
 
-          totalValue = totalValue - item.value;
-          totalValueDiscount = totalValueDiscount - item.value
+          totalValue = totalValue - item.amount;
+          totalValueDiscount = totalValueDiscount - item.amount
         }
 
       })
@@ -182,7 +218,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
-  deleteGiftCard(card: PromoCode) {
+  deleteGiftCard(card: Certificate) {
 
     this.cardGifts = this.cardGifts.filter((item) => item.number != card.number);
 
@@ -219,35 +255,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     }
 
 
-  }
-
-
-  checkCardNumber(number: string): any {
-
-    let result;
-
-    if (number == '111') {
-      result = new PromoCode({
-        number: '111',
-        value: 200.0,
-        cardType: 'gift'
-      })
-    }
-    if (number == '333') {
-      result = new PromoCode({
-        number: '333',
-        value: 100.0,
-        cardType: 'gift'
-      })
-    }
-    if (number == '222') {
-      result = new PromoCode({
-        number: '222',
-        discountPercent: 50.0,
-        cardType: 'promocode'
-      })
-    }
-    return result
   }
 
 

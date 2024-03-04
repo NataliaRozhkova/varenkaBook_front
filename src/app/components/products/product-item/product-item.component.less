@@ -19,8 +19,9 @@
   .image-not-found {
     height: 150px;
   }
+
   .image-book {
-    max-height: 200px;
+    //max-height: 200px;
   }
 
   .product-card-image {
@@ -30,8 +31,21 @@
   }
 
   .image-wrapper {
-     height: 200px;
+    //height: 200px;
+    //width: 100px;
+    .image-wrapper {
+      justify-content: center;
+    }
 
+    ::ng-deep .image, .image-wrapper {
+      width: 80% !important;
+      height: fit-content !important;
+    }
+
+    ::ng-deep .image-wrapper {
+      width: 80% !important;
+      height: fit-content !important;
+    }
   }
 
   .product-card-info {
