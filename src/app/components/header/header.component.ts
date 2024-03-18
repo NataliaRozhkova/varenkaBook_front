@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
     trigger('expandedPanel', [
       state('initial', style({height: 0, overflow: "hidden"})),
       state('expanded', style({height: 200})),
-      transition('initial <=> expanded', animate('0.2s')),
+      transition('initial <=> expanded', animate('0.1s')),
     ]),
 
   ],

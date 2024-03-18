@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild} from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
 import {Genre, Product} from "../../model/product";
@@ -13,7 +13,7 @@ import {NoopScrollStrategy} from "@angular/cdk/overlay";
   templateUrl: './menu-panel.component.html',
   styleUrls: ['./menu-panel.component.less']
 })
-export class MenuPanelComponent {
+export class MenuPanelComponent implements OnDestroy{
 
   private destroySubject: Subject<void> = new Subject();
   productsCount: number = 0;

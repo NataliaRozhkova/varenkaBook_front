@@ -31,6 +31,6 @@ export const environment = {
     publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
   },
 
-  dns: "http://192.168.1.220:4200/"
+  dns: "http://192.168.1.134:4200/"
 
 };

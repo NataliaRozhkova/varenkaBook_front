@@ -11,14 +11,13 @@ import {PageMenuItemComponent} from "./components/page-menu/page-menu-item/page-
 import {PageMenuComponent} from "./components/page-menu/page-menu.component";
 import {HttpClientModule} from "@angular/common/http";
 
-import {RouterModule, Routes} from "@angular/router";
+import {ExtraOptions, RouterModule, Routes} from "@angular/router";
 import {ContactsComponent} from "./components/contacts/contacts.component";
 import {NewsComponent} from "./components/news/news.component";
 import {MainComponent} from "./components/main/main.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {BooksComponent} from "./components/books/books.component";
 import {ArtsPlayComponent} from "./components/arts-play/arts-play.component";
-import {CustomScrollbarComponent} from "./components/custom-scrollbar/custom-scrollbar.component";
 import {ProductInfoComponent} from "./components/product-info/product-info.component";
 import {CartComponent} from "./components/cart/cart.component";
 import {MenuPanelComponent} from "./components/menu-panel/menu-panel.component";
@@ -87,6 +86,11 @@ const appRoutes: Routes = [
   {path: 'order-result/:result/:orderId/:preorderId', component: OrderResultComponent},
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',
+  onSameUrlNavigation: 'reload',
+};
 
 @NgModule({
   declarations: [
@@ -101,7 +105,6 @@ const appRoutes: Routes = [
     MainComponent,
     BooksComponent,
     ArtsPlayComponent,
-    CustomScrollbarComponent,
     ProductInfoComponent,
     CartComponent,
     MenuPanelComponent,
@@ -133,7 +136,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(
-      appRoutes, {enableTracing: false}
+      appRoutes, routerOptions
     ),
     NgxPaginationModule,
     MatIconModule,

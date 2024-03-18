@@ -90,8 +90,8 @@
     <div class="short-description" *ngIf="product.shortDescription">{{product.shortDescription}}</div>
     <div class="price">
 
-      <span *ngIf="product.discount" class="discount"> {{product.retailPrice + ' \u20AC'}}</span>
-      {{product.discountPrice + ' \u20AC'}}
+      <span *ngIf="product.discount" class="discount"> {{product.retailPriceEuro + ' \u20AC'}}</span>
+      {{product.discountPriceEuro + ' \u20AC'}}
     </div>
     <button mat-button class="main-button to-cart"
             (click)="addToCart()"

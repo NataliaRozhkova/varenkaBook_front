@@ -114,10 +114,12 @@ export class CartService {
   }
 
   setOrdersToStorage(order: Order, orderName: string) {
-    this.storageService.setItem(order, 'order')
+    this.storageService.setItem(order, orderName)
   }
 
   getOrderFromStorage(orderName: string) : Order {
+    // this.storageService.deleteItem(orderName);
+
     return this.storageService.getItem(orderName, 'null');
   }
 

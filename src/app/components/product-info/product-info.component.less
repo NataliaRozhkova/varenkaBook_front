@@ -116,7 +116,7 @@
     }
 
     .slider-container {
-      width: 100vw;
+      width: 95vw;
       display: flex;
       justify-content: center;
       margin-top: 30px;
@@ -124,16 +124,19 @@
 
 
     .image-slider::ng-deep {
-      max-width: 70%;
+      max-width: 100%;
+
       .arrow {
-        fill: @colorTheme5 ;
+        fill: @colorTheme5;
       }
+
       .arrow--left {
-        left: -50px ;
+        left: 0;
       }
+
       .arrow--right {
         left: auto;
-        right: -50px;
+        right: 0;
       }
     }
   }
@@ -141,7 +144,7 @@
   .to-cart {
     width: 100%;
     padding: 0;
-    margin: 20px 0 0 0 ;
+    margin: 20px 0 0 0;
   }
 
 

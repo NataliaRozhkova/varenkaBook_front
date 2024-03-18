@@ -37,7 +37,7 @@ export class ProductService {
     return this.http.get(`api/products/`, params)
   }
 
-  createOrder(order: Order): Observable<any> {
+  saveOrder(order: Order): Observable<any> {
     return this.http.post('api/orders/', order)
   }
 

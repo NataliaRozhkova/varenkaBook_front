@@ -28,7 +28,8 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   page: number = 1;
   total: number = 0;
 
-  initOrder: string = '-priority,-is_new,-is_popular';
+  initOrder: string = '-priority';
+  // initOrder: string = '-priority,-is_new,-is_popular';
 
   @Input()
   order: string =  this.initOrder;

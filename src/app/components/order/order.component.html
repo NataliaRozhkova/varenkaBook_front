@@ -28,7 +28,7 @@
     <div style=" visibility: hidden;" *ngIf="pageIndex == 0"></div>
     <button mat-button class="main-button previous" *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
     <button mat-button class="main-button next" *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
-    <button mat-button class="main-button submit" type="submit" *ngIf="pageIndex == pageCount -1" (click)="onSubmit()"
+    <button mat-button class="main-button submit" type="submit" *ngIf="pageIndex == pageCount -1" (click)="payOrder()"
             [disabled]="!order.concentDataProcessing">Оплатить
     </button>
 
@@ -62,7 +62,7 @@
   </div>
 
   <div class="field">
-    <mat-label for="email">NIF:</mat-label>
+    <mat-label for="nif">NIF:</mat-label>
     <input id="nif" name="nif" type="number" [(ngModel)]="order.nif" [formControl]="nifControl">
     <mat-error
       *ngIf="nifControl.errors">{{getErrorText(nifControl.errors)}}</mat-error>
@@ -87,16 +87,33 @@
 
 <ng-template #secondStep>
 
+  <h2>
+    <div class="field" *ngIf="this.productsToOrder.length > 0 && this.productsInStock.length > 0">
+      <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.jointDelivery"> Оформить совместную доставку для товаров под
+        заказ и из наличия? <br/>
+        Оплата за раздельную доставку оплачивается для каждого заказа отдельно.
+
+      </mat-checkbox>
+      <mat-error
+        *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors)}}</mat-error>
+    </div>
+  </h2>
+
   <h2>Выберите тип доставки</h2>
   <mat-radio-group id="delivery-type"
                    class="radio-group"
                    [(ngModel)]="deliveryType" name="deliveryType"
                    [name]="'first'"
                    [formControl]="deliveryTypeControl">
-    <mat-radio-button *ngFor="let i of deliveryTypes"
+    <mat-radio-button *ngFor="let i of getDeliveryTypes()"
                       [value]="i.type"
                       [id]="i.type"
-    >{{deliveryTypeNames[i.type]}}</mat-radio-button>
+    >
+      <div class="delivery-type">
+        <div class="delivery-name"> {{deliveryTypeNames[i.type]}}</div>
+        <div class="delivery-price">Стоимость доставки {{i.price + ' \u20AC'}}</div>
+      </div>
+    </mat-radio-button>
   </mat-radio-group>
 
   <mat-error *ngIf="deliveryTypeControl.errors">{{getErrorText(deliveryTypeControl.errors)}}</mat-error>
@@ -120,7 +137,9 @@
                        [(ngModel)]="pickPoint" name="pickPoints"
                        [formControl]="pickPointControl">
         <mat-radio-button *ngFor="let i of pickPoints" [value]="i.id"
-                          [id]="i.id">{{getStringAddress(i)}}</mat-radio-button>
+                          [id]="i.id">
+          {{getStringAddress(i)}}
+        </mat-radio-button>
       </mat-radio-group>
 
 
@@ -197,78 +216,87 @@
 </ng-template>
 <ng-template #productsListPage>
 
-
-  <div *ngIf="productsInStock.length > 0" class="products">
-    <h2>Товары в наличии</h2>
-    <div class="product-table">
-      <div class="table-header">
-        <div>Навание</div>
-        <div class="small-screen-hidden">Автор</div>
-        <div class="small-screen-hidden">Количество</div>
-        <div class="small-screen-hidden">Цена (за шт.)</div>
-        <div>Итоговая цена</div>
-      </div>
-      <div *ngFor="let pr of productsInStock" class="table-row">
-        <div>{{pr.product.name}}</div>
-        <div class="small-screen-hidden">{{pr.product.author}}</div>
-        <div class="small-screen-hidden">{{pr.count}}</div>
-        <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
-        <div>{{pr.product.discountPrice * pr.count}}</div>
-      </div>
-      <div class="table-header">
-        <div>Итого</div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div>Много деньгов</div>
-      </div>
-    </div>
-    <!--    <div *ngFor="let pr of productsInStock">-->
-    <!--      <div>{{pr.product.name}}   {{pr.count}}  {{pr.product.discountPrice * pr.count}}</div>-->
-    <!--    </div>-->
+  <div class="spinner" *ngIf="loadOrder">
+    <mat-spinner></mat-spinner>
   </div>
-  <div *ngIf="productsToOrder.length > 0" class="products">
-    <h2>Товары под заказ</h2>
-    <div class="product-table">
-      <div class="table-header">
-        <div>Навание</div>
-        <div class="small-screen-hidden">Автор</div>
-        <div class="small-screen-hidden">Количество</div>
-        <div class="small-screen-hidden">Цена (за шт.)</div>
-        <div>Итоговая цена</div>
+  <div *ngIf="!loadOrder">
+    <div *ngIf="productsInStock.length > 0" class="products">
+      <h2>Товары в наличии</h2>
+      <div class="product-table">
+        <div class="table-header">
+          <div>Наименование</div>
+          <div class="small-screen-hidden">Количество</div>
+          <div class="small-screen-hidden">Цена, {{' \u20AC'}} (за шт.)</div>
+          <div>Итоговая цена, {{' \u20AC'}}</div>
+        </div>
+        <div *ngFor="let pr of productsInStock" class="table-row">
+          <div>{{pr.product.author}} {{pr.product.name}}</div>
+          <div class="small-screen-hidden">{{pr.count}}</div>
+          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro}}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count}}</div>
+        </div>
+        <div class="table-row">
+          <div>Итого</div>
+          <div></div>
+          <div></div>
+          <div>{{order.discountPrice}}</div>
+        </div>
+        <div class="table-header">
+          <div>Итого c учетом промокода</div>
+          <div></div>
+          <div></div>
+          <div>{{order.promoPrice}}</div>
+        </div>
       </div>
-      <div *ngFor="let pr of productsToOrder" class="table-row">
-        <div>{{pr.product.name}}</div>
-        <div class="small-screen-hidden">{{pr.product.author}}</div>
-        <div class="small-screen-hidden">{{pr.count}}</div>
-        <div class="small-screen-hidden"> {{pr.product.discountPrice}}</div>
-        <div>{{pr.product.discountPrice * pr.count}}</div>
-      </div>
-      <div class="table-header">
-        <div>Итого</div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div>Много деньгов</div>
-      </div>
-
     </div>
-    <!--    <div *ngFor="let pr of productsToOrder">-->
-    <!--      <div>{{pr.product.name}}   {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>-->
-    <!--    </div>-->
+    <div *ngIf="productsToOrder.length > 0" class="products">
+      <h2>Товары под заказ</h2>
+      <div class="product-table">
+        <div class="table-header">
+          <div>Наименование</div>
+          <div class="small-screen-hidden">Количество</div>
+          <div class="small-screen-hidden">Цена (за шт.)</div>
+          <div>Итоговая цена</div>
+        </div>
+        <div *ngFor="let pr of productsToOrder" class="table-row">
+          <div>{{pr.product.author}} {{pr.product.name}}</div>
+          <div class="small-screen-hidden">{{pr.count}}</div>
+          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro}}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count}}</div>
+        </div>
+        <div class="table-row">
+          <div>Итого</div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div>{{order.discountPrice}}</div>
+        </div>
+        <div class="table-header">
+          <div>Итого c учетом промокода</div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div>{{order.promoPrice}}</div>
+        </div>
+
+      </div>
+      <!--    <div *ngFor="let pr of productsToOrder">-->
+      <!--      <div>{{pr.product.name}}   {{pr.count}}   {{pr.product.discountPrice}} {{pr.product.discountPrice * pr.count}}</div>-->
+      <!--    </div>-->
+    </div>
+
+    <!--    <h2>-->
+    <!--      <div class="field" *ngIf="this.productsToOrder.length > 0 && this.productsInStock.length > 0">-->
+    <!--        <mat-checkbox class="confirm-checkbox" [(ngModel)]="order.jointDelivery"> Оформить совместную доставку?-->
+    <!--          Оплата за раздельную доставку оплачивается для каждоо заказа отдельно.-->
+
+    <!--        </mat-checkbox>-->
+    <!--        <mat-error-->
+    <!--          *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors)}}</mat-error>-->
+    <!--      </div>-->
+    <!--    </h2>-->
+
   </div>
-
-  <h2>
-    <div class="field" *ngIf="this.productsToOrder.length > 0 && this.productsInStock.length > 0">
-      <mat-checkbox class="confirm-checkbox" [(ngModel)]="jointDelivery"> Оформить совместную доставку?
-        Оплата за раздельную доставку оплачивается для каждоо заказа отдельно.
-
-      </mat-checkbox>
-      <mat-error *ngIf="concentNewslettersControl.errors">{{getErrorText(concentNewslettersControl.errors)}}</mat-error>
-    </div>
-  </h2>
-
-
 </ng-template>
 
 <ng-template #submitPage>
@@ -294,7 +322,7 @@
   <div *ngIf="!canDeactivatePage">
     <h2 mat-dialog-title>Вы действительно хотите прервать оформление заказа?</h2>
     <div mat-dialog-actions>
-      <button class="main-button cancel" mat-button [mat-dialog-close]="true">Да</button>
+      <button class="main-button cancel" mat-button [mat-dialog-close]="true" (click)="onSubmit('cancelled')">Да</button>
       <button class="main-button" mat-button mat-dialog-close [mat-dialog-close]="false">Нет</button>
     </div>
   </div>

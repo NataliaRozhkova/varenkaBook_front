@@ -4,9 +4,12 @@
       <header></header>
     </nav>
   </div>
-  <scrollbar class="scroller body-scroller" #scroller1>
-    <router-outlet ></router-outlet>
-    <footer></footer>
-  </scrollbar>
+
+  <div class="content">
+    <router-outlet (activate)="onActivate()"></router-outlet>
+    <footer ></footer>
+
+  </div>
+
 
 </div>

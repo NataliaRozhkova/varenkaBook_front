@@ -10,7 +10,7 @@ export class Product {
   dataSave: Date;
   description: string;
   discount: number;
-  discountPrice: number;
+  discountPriceEuro: number;
   format: Format;
   genres: Genre[];
   illustrator: string;
@@ -25,7 +25,7 @@ export class Product {
   photos: Photo[];
   productType: ProductType;
   publisher: Publisher;
-  retailPrice: number;
+  retailPriceEuro: number;
   shortDescription: string;
   year: string;
   soldAmount: number;

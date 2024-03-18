@@ -48,8 +48,8 @@
   <div class="right-panel">
     <div class="cost-info">
       <div *ngIf="product.discount"
-           class="discount"> {{productService.roundPriceStr(product.retailPrice * count) + ' \u20AC'}}</div>
-      {{productService.roundPriceStr(product.discountPrice * count) + ' \u20AC'}}
+           class="discount"> {{productService.roundPriceStr(product.retailPriceEuro * count) + ' \u20AC'}}</div>
+      {{productService.roundPriceStr(product.discountPriceEuro * count) + ' \u20AC'}}
     </div>
     <button class="menu-button-cart" (click)="deleteAll()">
       <span class="icon-trash_">

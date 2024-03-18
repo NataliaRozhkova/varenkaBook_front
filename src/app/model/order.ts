@@ -1,4 +1,5 @@
 import {constructorChecks} from "@angular/cdk/schematics";
+import {PromoCode} from "./promo";
 
 export class Order {
 
@@ -8,8 +9,8 @@ export class Order {
   nif: number;
   phoneNumber: string = '';
   deliveryType: DeliveryType = new DeliveryType();
-  orderType:OrderType = new OrderType();
-  orderStatus:OrderStatus = new OrderStatus();
+  orderType: OrderType = new OrderType();
+  orderStatus: OrderStatus = new OrderStatus();
   concentDataProcessing: boolean = false;
   concentNewsletters: boolean = false;
   pickPoint: PickPoint | null;
@@ -23,10 +24,18 @@ export class Order {
   buildingNumber: string = '';
   appartmentNumber: string = '';
   productsInOrder: ProductInOrder[] = [];
-
+  promoCode: PromoCode;
+  jointDelivery: boolean = false;
+  jointOrder: number;
+  initialPrice: number;
+  discountPrice: number;
+  promoPrice: number;
 }
 export class DeliveryType {
   type: string = '';
+  id: number;
+  price: number;
+
 }
 
 export class OrderType {

@@ -1,16 +1,16 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectorRef,
   Component, HostListener,
-  inject, isDevMode,
+  inject,
   OnDestroy,
   OnInit, TemplateRef,
   ViewChild
 } from '@angular/core';
-import {Location} from '@angular/common';
 import {CartItem, CartService} from "../../services/cart.service";
-import {ActivatedRouteSnapshot, CanActivate, NavigationEnd, Router, RouterStateSnapshot} from "@angular/router";
-import {filter, map, Observable, retry, Subject, switchMap, takeUntil} from "rxjs";
+import { Router} from "@angular/router";
+import { map, Observable,  Subject, switchMap, takeUntil} from "rxjs";
 import {DeliveryType, Order, OrderType, PickPoint, ProductID, ProductInOrder} from "../../model/order";
 import {
   FormBuilder,
@@ -22,11 +22,10 @@ import {MatStepper} from "@angular/material/stepper";
 import {environment} from '../../../environments/environment';
 import {MatDialog} from "@angular/material/dialog";
 import {ComponentCanDeactivate} from "../../directives/guard";
-import {PaymentComponent, StripePaymentType} from "../payment/payment.component";
+import {PaymentComponent} from "../payment/payment.component";
 import {PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
-import {PreviousRouteService} from "../../services/priveous-router.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {InformationService} from "../../services/information.service";
+import {PromoCode} from "../../model/promo";
 
 
 @Component({
@@ -34,7 +33,7 @@ import {InformationService} from "../../services/information.service";
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.less']
 })
-export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate, AfterViewInit {
+export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate, AfterViewInit, AfterContentInit {
 
   order: Order = new Order();
   preorder: Order = new Order();
@@ -76,6 +75,9 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   pickPointControl = new FormControl('');
   nifControl = new FormControl('');
 
+  loadOrder: boolean = false;
+
+  promoCode: PromoCode;
 
   orderResponse: HttpErrorResponse;
 
@@ -137,6 +139,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     }
 
+    this.promoCode = this.cartService.getPromocodeFromStorage();
+
 
     this.orderControls.valueChanges.subscribe(
       (event) => {
@@ -167,13 +171,16 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       switchMap(val => {
         let phone = '';
         if (val) {
-          phone = val.replaceAll(" ", "");
+          phone = val.replaceAll(" ", "").replaceAll("+", "");
+          // phone = val.replaceAll("+", "");
         }
         return this.productService.phoneValidate(phone)
       }),
       map(res => {
-        if (!res && this.phoneControl.value  ) {
+        if (!res && this.phoneControl.value) {
           this.phoneControl.setErrors({phoneCorrectError: true});
+        } else {
+          this.phoneControl.markAsPristine();
         }
       })
     ).subscribe();
@@ -183,7 +190,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     )
       .subscribe(
         (res) => {
-          this.mainPickPointId = res.results.find ((value:any) =>  value.name == 'main-pickpoint')?.value;
+          this.mainPickPointId = res.results.find((value: any) => value.name == 'main-pickpoint')?.value;
         })
     this.productsInStock = this.getProductsFromStatus('in_stock');
     this.productsToOrder = this.getProductsFromStatus('available_to_order');
@@ -205,22 +212,25 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   ngAfterViewInit() {
 
-    if (this.order.phoneNumber) {
-      this.order.phoneNumber =  this.order.phoneNumber.replace(/^(\d{0,3})(\d{0,3})(\d{0,3})(.*)/, '+$1 $2 $3 $4');
-    }
-    if (this.order.trackPhoneNumber) {
-      this.order.trackPhoneNumber =  this.order.trackPhoneNumber.replace(/^(\d{0,3})(\d{0,3})(\d{0,3})(.*)/, '+$1 $2 $3 $4');
-    }
+  }
 
-    // this.phoneControl.updateValueAndValidity()
+  ngAfterContentInit() {
+
+    console.log("****** ngAfterContentInit")
+
+    this.getOrderFromStorage()
+
   }
 
 
-  onSubmit() {
+  onSubmit(status: string) {
     if (this.validate()) {
       this.setOrderFields();
       this.createPreorder();
       this.setProductsToOrders();
+
+      this.order.orderStatus.status = status;
+      this.preorder.orderStatus.status = status;
 
       if (this.productsInStock.length > 0 && this.productsToOrder.length > 0) {
         this.submitDoubleOrders();
@@ -246,9 +256,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   getOrderFromStorage() {
-    let order = this.cartService.getOrderFromStorage('order');
-    let preorder = this.cartService.getOrderFromStorage('preorder');
 
+    let order = this.cartService.getOrderFromStorage('order');
+
+
+    let preorder = this.cartService.getOrderFromStorage('preorder');
     if (order) {
       this.order = order;
     }
@@ -260,6 +272,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   payOrder() {
+    this.canDeactivatePage = true;
+    this.onSubmit('created')
     this.paymentParameters = this.createPaymentParams();
     this.paymentComponent.checkout(this.paymentParameters);
   }
@@ -307,6 +321,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   }
 
+
   @HostListener('window:popstate', ['$event'])
   pospateReject(event: any) {
     console.log(event)
@@ -314,60 +329,93 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   submitSingleOrder(order: Order) {
-    this.productService.createOrder(order).pipe(
+    this.loadOrder = true;
+    this.productService.saveOrder(order).pipe(
       takeUntil(this.destroySubject),
     )
 
       .subscribe(resp => {
           this.order = resp;
           this.setOrderToStorage();
+          this.loadOrder = false;
 
-          this.canDeactivatePage = true;
-
-          this.payOrder();
+          // this.canDeactivatePage = true;
+          //
+          // this.payOrder();
 
         },
         err => {
           this.orderResponse = err;
           this.resolveErrors(err)
+          this.loadOrder = false;
+
         })
 
   }
 
   submitDoubleOrders() {
+    this.loadOrder = true;
 
-    this.productService.createOrder(this.order).pipe(
+    // if (this.order.jointDelivery) {
+    //   this.preorder.jointDelivery = true;
+    //   this.order.jointDelivery = true;
+    //   this.preorder.pickPoint = null;
+    // }
+    console.log("!!!!!! 1")
+
+    this.productService.saveOrder(this.order).pipe(
       takeUntil(this.destroySubject),
       switchMap((response: any) => {
         this.order = response;
-        return this.productService.createOrder(this.preorder)
+
+        console.log("!!!!!! 2 ", response)
+
+        if (this.jointDelivery) {
+          this.preorder.jointOrder = response.id;
+          this.preorder.deliveryType.type = this.getJointDeliveryType().type;
+        }
+        return this.productService.saveOrder(this.preorder)
       }),
       map((resp: any) => {
         this.preorder = resp;
+        if (this.jointDelivery) {
+          this.order.jointOrder = resp.id;
+        }
         this.setOrderToStorage();
+        this.loadOrder = false;
+
 
       }),
     )
       .subscribe(resp => {
-          this.canDeactivatePage = true;
-
-          this.payOrder();
-
         },
         err => {
           this.orderResponse = err;
           this.resolveErrors(err)
+          this.loadOrder = false;
+
         })
 
   }
 
   createPreorder() {
-    if (!this.preorder?.id) {
+
+    let preorderId = this.preorder?.id;
       this.preorder = JSON.parse(JSON.stringify(this.order));
       this.preorder.orderType.type = 'preorder';
-    }
+
+      if (preorderId) {
+        this.preorder.id = preorderId;
+      }
     this.preorder.concentDataProcessing = this.order.concentDataProcessing;
     this.preorder.concentNewsletters = this.order.concentNewsletters;
+
+    if (this.order.jointDelivery) {
+      this.preorder.jointDelivery = true;
+      this.preorder.pickPoint = null;
+      this.preorder.deliveryType.type = this.getJointDeliveryType().type;
+      this.preorder.jointOrder = this.order.id;
+    }
   }
 
   setProductsToOrders() {
@@ -393,12 +441,13 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.order.deliveryType = new DeliveryType();
     this.order.deliveryType.type = this.deliveryType;
     this.order.orderType = new OrderType();
-    this.order.orderStatus.status = 'created';
     this.setPickPoint()
     this.order.phoneNumber = this.order.phoneNumber.replaceAll(" ", "");
     this.order.trackPhoneNumber = this.order.trackPhoneNumber?.replaceAll(" ", "");
+    this.order.promoCode = this.promoCode;
 
   }
+
 
   setPickPoint() {
     if (this.deliveryType != 'pick_point') {
@@ -432,6 +481,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.pageIndex == 3
     )) {
       this.clearControls();
+
+      if (this.pageIndex == 2) {
+        this.onSubmit('draft')
+      }
+
       this.pageIndex += 1;
     }
     if (ind < 0) {
@@ -440,7 +494,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     this.resolveErrors(this.orderResponse);
 
+
     this.cdr.detectChanges();
+    window.scrollTo(0,0)
+
 
   }
 
@@ -468,7 +525,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       isValid = false;
     }
 
-    if (this.deliveryType == 'pick_point'  && !this.pickPoint) {
+    if (this.deliveryType == 'pick_point' && !this.pickPoint) {
       this.pickPointControl.setErrors({pickPointError: true});
       this.pickPointControl.markAsDirty();
       isValid = false;
@@ -505,7 +562,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       isValid = false;
     }
 
-    if (!this.order.phoneNumber ) {
+    if (!this.order.phoneNumber) {
 
       this.phoneControl.setErrors({phoneNullableError: true});
       this.phoneControl.markAsDirty();
@@ -532,7 +589,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   trimPhoneNumber($event: string) {
-    this.order.phoneNumber = this.order.phoneNumber.toString().substring(0,10);
+    this.order.phoneNumber = this.order.phoneNumber.toString().substring(0, 10);
   }
 
   validateAddress(): boolean {
@@ -574,6 +631,14 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   }
 
+  getDeliveryTypes(): DeliveryType[] {
+    return this.deliveryTypes.filter( type => type.type != 'joint_delivery')
+  }
+
+  getJointDeliveryType(): DeliveryType {
+    return this.deliveryTypes.filter( type => type.type == 'joint_delivery')[0]
+  }
+
   resolveErrors(httpErrorResponse: HttpErrorResponse) {
 
 
@@ -612,7 +677,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   errorFromCode(code: string): string {
-    return  environment.errors[code as keyof typeof environment.errors]
+    return environment.errors[code as keyof typeof environment.errors]
   }
 
   getErrorText(errors: any): string {
@@ -641,6 +706,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     const saveOrder = JSON.parse(sessionStorage.getItem('order') || '{}');
 
   }
+
   getMainPickPointAddress(): string {
     let mainPickPoint = this.pickPoints.filter((pickPoint) => pickPoint.id == this.mainPickPointId)[0];
 

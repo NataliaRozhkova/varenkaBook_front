@@ -242,8 +242,8 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.products.forEach((item) => {
 
-      totalValue = totalValue + (item.product.retailPrice * item.count);
-      totalValueDiscount = totalValueDiscount + (item.product.discountPrice * item.count);
+      totalValue = totalValue + (item.product.retailPriceEuro * item.count);
+      totalValueDiscount = totalValueDiscount + (item.product.discountPriceEuro * item.count);
 
     })
     totalValue = this.productService.roundPrice(totalValue);

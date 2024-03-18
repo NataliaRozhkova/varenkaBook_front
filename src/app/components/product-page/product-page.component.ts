@@ -131,25 +131,7 @@ export class ProductPageComponent implements OnDestroy, OnInit {
     this.products.change(1);
   }
 
-  // openGenreFilters() {
-  //   if (this.categoryState == 'initial'  ) {
-  //     this.categoryState = 'expanded';
-  //     this.selectGenre.open();
-  //   } else  {
-  //     this.categoryState = 'initial';
-  //     this.selectGenre.close();
-  //   }
-  // }
-  //
-  // openAgeFilters() {
-  //   if (this.ageState == 'initial'  ) {
-  //     this.ageState = 'expanded';
-  //     this.selectAge.open();
-  //   } else  {
-  //     this.ageState = 'initial';
-  //     this.selectAge.close();
-  //   }
-  // }
+
 
 
   ngOnDestroy() {

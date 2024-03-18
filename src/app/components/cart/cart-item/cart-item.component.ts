@@ -1,4 +1,4 @@
-import {Component, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
 import {Router} from "@angular/router";
 import {CartService} from "../../../services/cart.service";
@@ -13,7 +13,7 @@ import {FormControl} from "@angular/forms";
   templateUrl: './cart-item.component.html',
   styleUrls: ['./cart-item.component.less']
 })
-export class CartItemComponent {
+export class CartItemComponent implements OnDestroy{
 
   private destroySubject: Subject<void> = new Subject();
 

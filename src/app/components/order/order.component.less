@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
+  width: 100vw;
 
   .order-form {
     padding: 30px;
@@ -16,8 +16,13 @@
     justify-content: flex-start;
   }
 
+  .delivery-price {
+    font-size: 14px;
+    color: @hoverColor;
+  }
+
   .field {
-    width: 98%;
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     margin-bottom: 20px;
@@ -35,6 +40,7 @@
       margin-right: 20px;
       min-width: 25%;
       width: 40%;
+      margin-bottom: 10px;
 
     }
 
@@ -44,10 +50,12 @@
     }
 
     mat-error {
-      width: 25%;
+      width: 15%;
       display: flex;
-      align-items:center;
+      align-items: center;
       margin-left: 20px;
+      margin-bottom: 10px;
+
     }
 
     input:focus {
@@ -61,6 +69,8 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      margin-bottom: 10px;
+
     }
   }
 
@@ -94,19 +104,37 @@
     width: 50%;
   }
 
-  @media (max-width: 470px) {
+  @media (max-width: 600px) {
     .field {
       flex-direction: column;
 
       input {
         width: 90%;
       }
+
+      mat-label {
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+      }
+
+      mat-error {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        margin-left: 0;
+      }
     }
+  }
+
+  .information {
+    margin: 30px;
   }
 
   р2 {
     margin-bottom: 30px;
   }
+
   .product-table {
     width: 100%;
     display: flex;
@@ -118,7 +146,7 @@
     display: grid;
     flex-direction: row;
     width: 90%;
-    --grid-column-count: 5;
+    --grid-column-count: 4;
     --grid-item--min-width: 100px;
 
     --grid-item--max-width: calc((98%) / var(--grid-column-count));
@@ -127,8 +155,8 @@
     margin-bottom: 15px;
     padding-bottom: 15px;
     grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
-    text-align:center ;
-    border-bottom: 2px dotted  @backgroundColor;
+    text-align: center;
+    border-bottom: 2px dotted @backgroundColor;
   }
 
   .table-header {
@@ -142,12 +170,21 @@
   .information {
     font-size: 14px;
   }
+
+  .delivery-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40vw;
+    margin-bottom: 15px;
+  }
 }
 
 ::ng-deep .mat-mdc-checkbox label {
   font-size: 18px;
 }
-::ng-deep .mdc-form-field>label{
+
+::ng-deep .mdc-form-field > label {
   font-size: 18px;
 }
 
