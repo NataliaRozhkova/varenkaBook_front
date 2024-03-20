@@ -15,22 +15,10 @@ export class MainComponent implements OnInit{
 
   sliderImages: Slide[] = [
     new Slide({
-      image: '/assets/slider2.jpg',
-      text: '/assets/new.png',
+      image: '/assets/main-slider/cover_rgb_web_2800x1200.jpg',
+      text: '',
       number: 1
-    }),
-    new Slide(
-      {
-        image: '/assets/slider2.jpg',
-        text: '/assets/new.png',
-        number: 0
-      }),
-    new Slide(
-      {
-        image: '/assets/logo_small.png',
-        text: '/assets/new.png',
-        number: 0
-      }),
+    })
   ]
 
   textAbout: string = '';

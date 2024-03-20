@@ -23,6 +23,7 @@
 
     .main-image {
       height: 35vw;
+      //height: 0vh;
     }
   }
 
@@ -57,6 +58,7 @@
 
   .about {
     margin: 30px;
+    height: 50%;
   }
 
   .product-name {
@@ -110,9 +112,14 @@
     }
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 700px) {
     .product-info {
       flex-direction: column;
+      align-items: center;
+    }
+
+    .about {
+      width: 80%;
     }
 
     .slider-container {

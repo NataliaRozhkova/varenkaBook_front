@@ -54,6 +54,10 @@ export class ProductService {
     return this.http.get('api/delivery_types/', '')
   }
 
+  getCertificateTypes(): Observable<any> {
+    return this.http.get('api/certificate_types/', '')
+  }
+
   getPickPoints(): Observable<any> {
     return this.http.get('api/pick_points/', '')
   }

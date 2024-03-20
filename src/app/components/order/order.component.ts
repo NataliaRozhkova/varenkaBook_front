@@ -63,6 +63,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   nameControl = new FormControl('');
   emailControl = new FormControl('');
   phoneControl = new FormControl('');
+  nifControl = new FormControl('');
   deliveryTypeControl = new FormControl('');
   postalCodeControl = new FormControl('');
   countryControl = new FormControl('');
@@ -73,7 +74,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   concentDataProcessingControl = new FormControl('');
   concentNewslettersControl = new FormControl('');
   pickPointControl = new FormControl('');
-  nifControl = new FormControl('');
 
   loadOrder: boolean = false;
 
@@ -215,9 +215,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   ngAfterContentInit() {
-
-    console.log("****** ngAfterContentInit")
-
     this.getOrderFromStorage()
 
   }
@@ -324,7 +321,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   @HostListener('window:popstate', ['$event'])
   pospateReject(event: any) {
-    console.log(event)
     this.router.navigate(['main'])
   }
 
@@ -361,14 +357,12 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     //   this.order.jointDelivery = true;
     //   this.preorder.pickPoint = null;
     // }
-    console.log("!!!!!! 1")
 
     this.productService.saveOrder(this.order).pipe(
       takeUntil(this.destroySubject),
       switchMap((response: any) => {
         this.order = response;
 
-        console.log("!!!!!! 2 ", response)
 
         if (this.jointDelivery) {
           this.preorder.jointOrder = response.id;
@@ -573,7 +567,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.phoneControl.setErrors({phoneCorrectError: true});
       this.phoneControl.setErrors({phoneCorrectError: true});
 
-      console.log("*** this.phoneControl ", this.phoneControl.errors)
       this.phoneControl.markAsDirty();
       isValid = false;
     }
@@ -681,14 +674,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   getErrorText(errors: any): string {
-    let errorText = '';
-
-    Object?.keys(errors)?.forEach((err) => {
-      errorText += environment.errors[err as keyof typeof environment.errors]
-
-    })
-
-    return errorText;
+    return this.infoService.getErrorText(errors);
   }
 
   getStringAddress(obj: any): string {

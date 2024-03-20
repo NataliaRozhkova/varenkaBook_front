@@ -1,6 +1,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {find, Subject, takeUntil} from "rxjs";
 import {CertificateCard} from "../../model/promo";
+import {ProductService} from "../../services/product.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'certificate-list',
@@ -14,40 +16,31 @@ export class CertificateListComponent implements OnDestroy, OnInit {
 
   certificateTypes: CertificateCard[] = []
   loading = false;
+  certificateImageLink: string;
+
   constructor(
+    private productService: ProductService
   ) {
+    this.certificateImageLink = environment.certificateImage;
   }
 
   ngOnInit() {
-   this.getCertificateTypes();
+    this.getCertificateTypes();
 
   }
 
   getCertificateTypes() {
 
-    let firstCard = new CertificateCard();
-    firstCard.id = '1';
-    firstCard.value = 20;
-    firstCard.photo = '../../../assets/certificates/certificate.png';
-
-    let secondCard = new CertificateCard();
-    secondCard.id = '2';
-    secondCard.value = 40;
-    secondCard.photo = '../../../assets/certificates/certificate.png';
-
-    let thirdCard = new CertificateCard();
-    thirdCard.id = '3';
-    thirdCard.value = 50;
-    thirdCard.photo = '../../../assets/certificates/certificate.png';
-
-
-    this.certificateTypes = [
-      firstCard,
-      secondCard,
-      thirdCard
-    ]
+    this.productService.getCertificateTypes().pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((result) => {
+      this.certificateTypes = result.results;
+      console.log("----------  ",  result)
+      this.certificateTypes.forEach( (cert) => {
+        cert.photo = this.certificateImageLink;
+      })
+    })
   }
-
 
 
   ngOnDestroy() {

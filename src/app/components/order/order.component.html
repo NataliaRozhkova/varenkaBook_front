@@ -34,17 +34,17 @@
 
 
   </div>
-  <payment #paymentComponent
-           [showEmail]="false"
-           style="visibility: hidden"
-  ></payment>
+<!--  <payment #paymentComponent-->
+<!--           [showEmail]="false"-->
+<!--           style="visibility: hidden"-->
+<!--  ></payment>-->
 </div>
 
 <ng-template #firstStep>
   <h2>Информация о получателе</h2>
 
   <div class="field">
-    <mat-label for="name"><span class="required-sign">*</span>ФИО (латинницей):</mat-label>
+    <mat-label for="name"><span class="required-sign">*</span>Фамилия, имя (латиницей):</mat-label>
 
     <input id="name" name="name"
            class="order-input" type="text"
@@ -185,7 +185,7 @@
       <mat-error *ngIf="buildingNumberControl.errors">{{getErrorText(buildingNumberControl.errors)}}</mat-error>
     </div>
     <div class="field">
-      <mat-label for="appartmentNumber"><span class="required-sign">*</span>Квартира:</mat-label>
+      <mat-label for="appartmentNumber">Квартира:</mat-label>
       <input id="appartmentNumber" name="appartmentNumber" type="text"
              [(ngModel)]="order.appartmentNumber"
              [formControl]="appartmentNumberControl">

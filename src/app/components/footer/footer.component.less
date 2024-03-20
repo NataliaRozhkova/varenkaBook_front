@@ -1,0 +1,72 @@
+@import "../../../styles/color.less";
+
+:host {
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    padding: 15px ;
+  }
+
+  .media-links {
+    display: flex;
+    justify-content: center;
+    //margin-right: 10px;
+
+    .media-icon {
+      height: 30px !important;
+      width: 30px !important;
+      margin: 0 15px;
+    }
+    .media-icon:hover {
+      transform: scale(1.05);
+
+    }
+
+  }
+
+  .footer-info {
+    display: flex;
+  flex-direction: row;
+    justify-content: space-between;
+    width: 98%;
+  }
+
+  .info {
+    .logo {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 5px;
+      img {
+        width: 100px;
+      }
+    }
+  }
+
+  .footer-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-end;
+    margin-right: 10px;
+  }
+
+  .footer-menu-item:hover {
+    cursor: pointer;
+    color: @fontColorBright;
+
+  }
+
+  @media(max-width: 600px ) {
+    .footer-info {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .footer-item {
+      align-items: center;
+      margin-bottom: 15px;
+    }
+  }
+
+}

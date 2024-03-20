@@ -13,7 +13,6 @@
           </mat-option>
         </mat-select>
       </div>
-<!--      <img [@iconChange]="categoryState" src="../../../assets/icons/chevron-up.svg" (click)="openGenreFilters()">-->
 
 
     </div>
@@ -21,7 +20,7 @@
     <div class="products-filter-item">
 
       <div class="dropped-filter-list">
-        <mat-select #selectAge placeholder="Возрастные ограничения" (opened)="ageState = 'expanded'" (closed)="ageState = 'initial'"
+        <mat-select #selectAge placeholder="Фильтр по возрастам" (opened)="ageState = 'expanded'" (closed)="ageState = 'initial'"
                     (selectionChange)="change()">
           <mat-option>Все</mat-option>
           <mat-option *ngFor="let i of ageCategories" [value]="i">
@@ -30,7 +29,6 @@
         </mat-select>
 
       </div>
-<!--      <img [@iconChange]="ageState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">-->
 
     </div>
 
@@ -47,7 +45,6 @@
         </mat-select>
 
       </div>
-<!--      <img [@iconChange]="sortState" src="../../../assets/icons/chevron-up.svg" (click)="openAgeFilters()">-->
 
     </div>
   </div>

@@ -71,7 +71,7 @@ export class ProductPageComponent implements OnDestroy, OnInit {
 
   sortTypes: any = [
     {name: 'По возрастанию цены', value: ''},
-    {name: 'По Убыванию цены', value: ''},
+    {name: 'По убыванию цены', value: ''},
     {name: 'По названию', value: 'name'},
     {name: 'По автору', value: 'author'},
     {name: 'По популярности', value: '-is_popular'},

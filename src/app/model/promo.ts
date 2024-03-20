@@ -26,7 +26,7 @@ export class Certificate {
 
 
 export class  CertificateCard {
-  value: number;
+  amount: number;
   id: string;
   photo: string;
 }

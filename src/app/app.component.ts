@@ -10,6 +10,9 @@ export class AppComponent {
 
   onActivate() {
 
-    document?.scrollingElement?.scrollTo(0,0)
+    let scrollElement = document.getElementById('content')
+
+    scrollElement?.scrollTo(0, 0)
+    scrollElement?.scroll(0,0)
   }
 }

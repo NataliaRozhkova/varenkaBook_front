@@ -4,8 +4,8 @@
   <image  class="certificate-image" [imageLink]="certificate.photo"></image>
 
   <div class="certificate-info">
-    <div>Подарочная карта на {{this.certificate.value + ' \u20AC'}}</div>
-    <payment  [showEmail]="true"></payment>
+    <div>Подарочная карта на {{this.certificate.amount + ' \u20AC'}}</div>
+    <button mat-button class="order-button main-button" (click)="addToCart()">В корзину</button>
 
   </div>
 

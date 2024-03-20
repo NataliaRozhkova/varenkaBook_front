@@ -66,12 +66,12 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   getProductsInStock(): CartItem[] | [] {
-    return this.products.filter((cart) => cart.product.availability.status == 'in_stock')
+    return this.products.filter((cart) => cart?.product?.availability?.status == 'in_stock')
   }
 
 
   getProductsToOrder(): CartItem[] | [] {
-    return this.products.filter((cart) => cart.product.availability.status == 'available_to_order')
+    return this.products.filter((cart) => cart.product?.availability?.status == 'available_to_order')
   }
 
 

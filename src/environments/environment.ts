@@ -13,7 +13,7 @@ export const environment = {
     nameError:'Поле не может быть пустым',
     emailNullableError:'Поле не может быть пустым',
     latinNameError:'Поле не может быть пустым',
-    emailCorrectError: 'Некорректное значение email',
+    emailCorrectError: 'Некорректный email',
     phoneNullableError:'Поле не может быть пустым',
     phoneCorrectError: 'Некорректный телефон',
     mask: 'Некорректный телефон',
@@ -29,5 +29,17 @@ export const environment = {
     publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
   },
 
-  dns: "http://varenkabooks.com/"
+  dns: "http://varenkabooks.com/",
+
+  shopAddress:
+    {
+      address: "Rua do Almada 448  <br/>Porto, 4050-034<br/>Portugal",
+      link: "https://maps.app.goo.gl/A3UH8zztL7Xuj2y56"
+    },
+  instagram: 'https://www.instagram.com/varenka_books?igsh=MTQ0aG90Y3Q3amNoZA==',
+  telegram: 'https://t.me/varenka_books_bot',
+  email: 'varenka.books@gmail.com',
+  legalInfo: 'Empresário em Nome Individual<br/>Daria Dombrova<br/>Número fiscal 313 283 834',
+  certificateImage: '../../../assets/certificates/certificate_vertical.png'
+
 };

@@ -4,7 +4,7 @@
          [(ngModel)]="findStr"
          [placeholder]="'Искать на полках'"
          (keyup.enter)="find()"
-         (focusout)="closePanel.emit(false)"
+         (focusout)="find()"
          [formControl]="findStrControl">
 </div>
 

@@ -1,0 +1,40 @@
+<div class="footer">
+  <subscribe class="subscribe-panel"></subscribe>
+
+  <div class="media-links">
+    <a href="{{instagram}}">
+      <img src="../../../assets/icons/instagram.png" class="media-icon">
+    </a>
+    <a href="{{telegram}}" target="_blank">
+      <img src="../../../assets/icons/telegram.png" class="media-icon">
+    </a>
+  </div>
+  <div class="footer-info ">
+    <div class="info footer-item">
+      <div class="logo">
+        <img src="../../../assets/logo_small.png" class="logo-img" routerLink="/main" routerLinkActive="active"
+             ariaCurrentWhenActive="page"/>
+      </div>
+
+
+      <div [innerHTML]="addres"></div>
+      <div>{{email}}
+      </div>
+
+    </div>
+    <div class="footer-menu footer-item">
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/delivery-info')">Доставка</div>
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/info')">О нас</div>
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/privacy-policy')">Политика
+        конфиденциальности
+      </div>
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/customer-agreement')">Пользовательское
+        соглашение
+      </div>
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/contacts')">Контакты</div>
+
+    </div>
+    <div [innerHTML]="legalInfo" class="footer-item"></div>
+  </div>
+
+</div>

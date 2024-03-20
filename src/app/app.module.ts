@@ -47,7 +47,7 @@ import {SearchPageComponent} from "./components/search-component/search-page.com
 import { MatSnackBarModule} from "@angular/material/snack-bar";
 import {UnsubscribeComponent} from "./components/unsibscribe/unsubscribe.component";
 import {MatSelectModule} from "@angular/material/select";
-import {FooterComponent} from "./footer/footer.component";
+import {FooterComponent} from "./components/footer/footer.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ActivateGuard, PendingChangesGuard} from "./directives/guard";
 import {MatTabsModule} from "@angular/material/tabs";
@@ -63,9 +63,23 @@ import {environment} from "../environments/environment";
 import {MatRadioModule} from "@angular/material/radio";
 import {OrderResultComponent} from "./components/order/order-result/order-result.component";
 import {NgxMaskModule} from "ngx-mask";
+import {CertificateOrderComponent} from "./components/certificate-order/certificate-order.component";
+import {
+  CertificateOrderItemComponent
+} from "./components/certificate-order/cartificate-item/certificate-order-item.component";
+import {MatTreeModule} from "@angular/material/tree";
+import {MatMenuModule} from "@angular/material/menu";
+import {DeliveryInfoComponent} from "./components/delivery-info/delivery-info.component";
+import {CustomerAgreementComponent} from "./components/customer-agreement/customer-agreement.component";
+import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
+import {InfoComponent} from "./components/info/info.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
+  {path: 'info', component: InfoComponent},
+  {path: 'delivery-info', component: DeliveryInfoComponent},
+  {path: 'customer-agreement', component: CustomerAgreementComponent},
+  {path: 'privacy-policy', component: PrivacyPolicyComponent},
   {path: 'news', component: NewsComponent},
   {path: 'news-info/:id', component: NewsInfoComponent},
   {path: 'books', component: BooksComponent},
@@ -128,6 +142,12 @@ const routerOptions: ExtraOptions = {
     CertificateComponent,
     PaymentComponent,
     OrderResultComponent,
+    CertificateOrderComponent,
+    CertificateOrderItemComponent,
+    DeliveryInfoComponent,
+    CustomerAgreementComponent,
+    PrivacyPolicyComponent,
+    InfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -159,6 +179,8 @@ const routerOptions: ExtraOptions = {
     NgxStripeModule.forRoot(environment.stripe.publicKey),
     MatRadioModule,
     NgxMaskModule.forRoot(),
+    MatTreeModule,
+    MatMenuModule
   ],
   providers: [PendingChangesGuard, ActivateGuard
   ],

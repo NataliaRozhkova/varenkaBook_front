@@ -6,6 +6,8 @@
   <div *ngIf="product.isNew" class="sticker new">
     Новинка!
   </div>
+  <div *ngIf="!product.isNew && !product.isPopular" class="sticker new" style="visibility: hidden" >normal
+   </div>
   <div class="product-card-image">
 
     <ng-template #noImageFound>
