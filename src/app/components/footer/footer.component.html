@@ -1,28 +1,26 @@
 <div class="footer">
   <subscribe class="subscribe-panel"></subscribe>
 
-  <div class="media-links">
-    <a href="{{instagram}}">
-      <img src="../../../assets/icons/instagram.png" class="media-icon">
-    </a>
-    <a href="{{telegram}}" target="_blank">
-      <img src="../../../assets/icons/telegram.png" class="media-icon">
-    </a>
-  </div>
+
   <div class="footer-info ">
     <div class="info footer-item">
-      <div class="logo">
-        <img src="../../../assets/logo_small.png" class="logo-img" routerLink="/main" routerLinkActive="active"
-             ariaCurrentWhenActive="page"/>
+      <div class="footer-header">Наш магазин</div>
+
+      <div >
+        <div class="text-info">Rua do Almada 448</div>
+        <div class="text-info">Porto, 4050-034</div>
+        <div class="text-info">Portugal</div>
+        <div class="text-info">Время работы:</div>
+        <div class="text-info">Ср – Вс: 10:00-13:00/15:00-19:00</div>
+        <div class="text-info">Пн – Вт: выходные дни</div>
+
       </div>
-
-
-      <div [innerHTML]="addres"></div>
       <div>{{email}}
       </div>
 
     </div>
     <div class="footer-menu footer-item">
+      <div class="footer-header">VARЁNKA</div>
       <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/delivery-info')">Доставка</div>
       <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/info')">О нас</div>
       <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/privacy-policy')">Политика
@@ -31,10 +29,26 @@
       <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/customer-agreement')">Пользовательское
         соглашение
       </div>
+      <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/product-back-info')">Условия возврата</div>
       <div class="footer-menu-item" routerLinkActive="active" (click)="navigate('/contacts')">Контакты</div>
+      <a href="https://www.livroreclamacoes.pt/" class="footer-menu-item" target="_blank">Dispomos de livro de reclamações</a>
 
     </div>
-    <div [innerHTML]="legalInfo" class="footer-item"></div>
+    <div class="footer-item">
+      <div class="text-info">Empresário em Nome Individual</div>
+      <div class="text-info">Daria Dombrova</div>
+      <div class="text-info">Número fiscal 313 283 834</div>
+      <div class="text-info">Rua 26, 291, Espinho, Portugal, 4500-163</div>
+      <div class="text-info">+351 938 135 157 (NÓS)</div>
+      <div class="media-links">
+        <a href="{{instagram}}" target="_blank">
+          <img src="../../../assets/icons/instagram.png" class="media-icon" >
+        </a>
+        <a href="{{telegram}}" target="_blank">
+          <img src="../../../assets/icons/telegram.png" class="media-icon">
+        </a>
+      </div>
+    </div>
   </div>
 
 </div>

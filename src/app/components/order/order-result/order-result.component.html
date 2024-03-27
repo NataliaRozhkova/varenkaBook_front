@@ -1,7 +1,8 @@
 <div  class="success" *ngIf="result == 'success'">
 
-  <h1>Заказ №{{orderId}} успешно создан</h1>
-  <h1 *ngIf="preorderId">Заказ №{{preorderId}} успещно создан</h1>
+  <div *ngFor="let ord of orderNumbers">
+    <h1>Заказ №{{ord}} успешно создан</h1>
+  </div>
 </div>
 
 <div  class="cancel" *ngIf="result == 'cancel'">

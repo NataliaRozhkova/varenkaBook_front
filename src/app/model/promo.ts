@@ -29,4 +29,9 @@ export class  CertificateCard {
   amount: number;
   id: string;
   photo: string;
+
+  constructor(params: any) {
+    this.amount = params.amount;
+    this.id = params.id;
+  }
 }

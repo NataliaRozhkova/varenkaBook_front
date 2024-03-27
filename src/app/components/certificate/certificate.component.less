@@ -9,17 +9,42 @@
     margin: 0 50px 0 50px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-around;
     padding: 5vh;
   }
 
-  .certificate-image {
-    height: 30vh;
+  .certificate-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 40vh;
     margin: 30px;
+  }
+  .certificate-value {
+    position: absolute;
+    color: @baseBackgroundColor;
+    width: auto;
+    z-index: 2000;
+    white-space: nowrap;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .certificate-image {
+    height: 40vh;
+    //margin: 30px;
   }
 
   .certificate-info {
-
+    margin: 30px;
+    .certificate-info-text {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
   }
 
 
@@ -32,10 +57,26 @@
   @media (max-width: 850px) {
     .certificate {
       flex-direction: column;
+      margin: 0;
     }
 
-    .certificate-image {
-      height: 20vh;
+    .certificate-image-container {
+      height: 30vh;
+
+    }
+      .certificate-image {
+      height: 30vh;
+      width: 80vw;
+    }
+    .certificate-value {
+      font-size: 25px;
+    }
+    .certificate-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+
     }
   }
 

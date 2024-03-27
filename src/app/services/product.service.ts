@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Observable, retry} from "rxjs";
 import {Product} from "../model/product";
-import {Order} from "../model/order";
+import {CertificatesOrder, Order} from "../model/order";
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +45,7 @@ export class ProductService {
     return this.http.patch(`api/orders/`, params);
   }
 
-  cancelOrder( id: number) {
+  cancelOrder( id: any) {
     return this.http.get(`api/cancel/`, {id: id});
   }
 
@@ -54,8 +54,12 @@ export class ProductService {
     return this.http.get('api/delivery_types/', '')
   }
 
-  getCertificateTypes(): Observable<any> {
-    return this.http.get('api/certificate_types/', '')
+  getCertificateTypes(id: any): Observable<any> {
+    return this.http.get(`api/certificate_types/${id}/`, { })
+  }
+
+  saveCertificateOrder(order: CertificatesOrder): Observable<any> {
+    return this.http.post('api/certificate_orders/', order)
   }
 
   getPickPoints(): Observable<any> {

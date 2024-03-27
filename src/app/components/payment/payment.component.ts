@@ -4,7 +4,7 @@ import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {InformationService} from "../../services/information.service";
 import {DOCUMENT} from "@angular/common";
 import {StripeService} from "ngx-stripe";
-import {map, switchMap} from "rxjs";
+import {map, Observable, Observer, switchMap} from "rxjs";
 import {HttpService} from "../../services/http.service";
 import {PaymentService} from "../../services/payment.service";
 import {FormControl} from "@angular/forms";
@@ -45,7 +45,7 @@ export class PaymentComponent  {
 
   ) {}
 
-  checkout(params: any) {
+  checkout(params: PaymentParameters) {
     // this.router.navigate(['main'])
 
     this.paymentParameters = params;
@@ -53,11 +53,31 @@ export class PaymentComponent  {
     if (this.validate()) {
       this.paymentService.createPayment(params).pipe(
         switchMap(res => {
+
+          console.log("********   pay response ", res)
+
+          if (!res?.id) {
+            return new Observable((observer: Observer<any>) => {
+              observer.next(res);
+              observer.complete();
+            });
+          }
           return this.stripeService.redirectToCheckout({sessionId: res.id})
         })
       ).subscribe(result => {
         if (result.error) {
           alert(result.error.message);
+        } else  {
+          console.log(" -- ------ ", result)
+          console.log(" -- ---params--- ", params)
+          let orders = ''
+          params.items.forEach((item) => {
+            orders += item.id + ":";
+          })
+
+          this.router.navigate(['order-result/success/',orders ])
+
+
         }
       },
         error => {

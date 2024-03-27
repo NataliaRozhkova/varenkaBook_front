@@ -51,15 +51,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.destroySubject.next();
   }
 
-  find( ) {
+  find() {
 
-      const status = this.selectedTab == 0 ? 'in_stock' : 'available_to_order';
+    const status = this.selectedTab == 0 ? 'in_stock' : 'available_to_order';
 
-      this.availability = status;
-      // this.products.availability = status;
+    this.availability = status;
 
-    this.selectedTab == 0 ?  this.productsInStock.change(0) : this.productsToOrder.change(0);
-
+    this.selectedTab == 0 ? this.productsInStock.change(0) : this.productsToOrder.change(0);
 
 
   }

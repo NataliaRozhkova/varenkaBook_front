@@ -24,7 +24,11 @@ export class ProductItemComponent {
   }
 
   ngOnInit(): void {
-    this.productImage = this.product.previewPhoto ? this.product.previewPhoto : this.product.mainPhoto;
+    let imageLink = this.product.previewPhoto ? this.product.previewPhoto : this.product.mainPhoto;
+    if (!imageLink && this.product.imageLink) {
+      imageLink = this.product.imageLink
+    }
+    this.productImage = imageLink;
   }
 
   openInfo($event: Product){

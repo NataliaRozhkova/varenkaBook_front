@@ -5,19 +5,22 @@
   .footer {
     display: flex;
     flex-direction: column;
-    padding: 15px ;
+    padding: 15px;
+    margin:  50px 0;
   }
 
   .media-links {
     display: flex;
-    justify-content: center;
-    //margin-right: 10px;
+    justify-content: start;
+    margin-bottom: 50px;
 
     .media-icon {
-      height: 30px !important;
-      width: 30px !important;
-      margin: 0 15px;
+      height: 40px !important;
+      width: 40px !important;
+      margin: 15px 20px 0 0 ;
+
     }
+
     .media-icon:hover {
       transform: scale(1.05);
 
@@ -25,22 +28,25 @@
 
   }
 
+  .subscribe-panel {
+    margin-bottom: 100px;
+  }
+
   .footer-info {
     display: flex;
-  flex-direction: row;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: space-around;
     width: 98%;
   }
 
-  .info {
-    .logo {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin-bottom: 5px;
-      img {
-        width: 100px;
-      }
+  .logo {
+    display: flex;
+    justify-content: center;
+    width: 28%;
+    margin-bottom: 30px;
+
+    img {
+      width: 120px;
     }
   }
 
@@ -48,8 +54,20 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    justify-content: flex-end;
-    margin-right: 10px;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+
+  }
+
+  .footer-menu-item {
+    margin-bottom: 10px;
+    color: @baseFontColor;
+    text-decoration: none;
+  }
+
+  .footer-header {
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 
   .footer-menu-item:hover {
@@ -57,16 +75,26 @@
     color: @fontColorBright;
 
   }
+  .text-info {
+    margin-bottom: 10px;
 
-  @media(max-width: 600px ) {
+  }
+
+  @media (max-width: 800px ) {
     .footer-info {
       flex-direction: column;
-      justify-content: center;
+      justify-content: start;
     }
+
     .footer-item {
-      align-items: center;
-      margin-bottom: 15px;
+      font-size: 14px;
+      align-items: start;
+      margin-bottom: 30px;
+    }
+    .logo {
+      visibility: hidden;
     }
   }
+
 
 }

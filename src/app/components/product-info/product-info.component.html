@@ -35,7 +35,10 @@
 <ng-template #imageBlock>
   <div class="main-image-section">
     <div class="main-image">
-      <image [imageLink]="product.mainPhoto"></image>
+      <image [imageLink]="product.mainPhoto" *ngIf="product.mainPhoto"></image>
+      <img src="../assets/not_found.png" *ngIf="!product.mainPhoto && !product.imageLink" class="image-not-found"/>
+      <img src="{{product.imageLink}}" *ngIf="!product.mainPhoto && product.imageLink" class="image-from-link"/>
+
 
     </div>
   </div>

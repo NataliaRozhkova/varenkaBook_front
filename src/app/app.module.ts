@@ -73,11 +73,14 @@ import {DeliveryInfoComponent} from "./components/delivery-info/delivery-info.co
 import {CustomerAgreementComponent} from "./components/customer-agreement/customer-agreement.component";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {InfoComponent} from "./components/info/info.component";
+import {CertificateCartItemComponent} from "./components/cart/certificate-cart-item/certificate-cart-item.component";
+import {ProductBackInfoComponent} from "./components/product-back-info/product-back-info.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
   {path: 'info', component: InfoComponent},
   {path: 'delivery-info', component: DeliveryInfoComponent},
+  {path: 'product-back-info', component: ProductBackInfoComponent},
   {path: 'customer-agreement', component: CustomerAgreementComponent},
   {path: 'privacy-policy', component: PrivacyPolicyComponent},
   {path: 'news', component: NewsComponent},
@@ -96,8 +99,8 @@ const appRoutes: Routes = [
   {path: 'search', component: SearchPageComponent},
   {path: 'unsubscribe', component: UnsubscribeComponent},
   {path: 'certificate-info/:id', component: CertificateComponent},
-  {path: 'order-result/:result/:orderId', component: OrderResultComponent},
-  {path: 'order-result/:result/:orderId/:preorderId', component: OrderResultComponent},
+  {path: 'order-result/:result/:orders', component: OrderResultComponent},
+  // {path: 'order-result/:result/:orderId/:preorderId', component: OrderResultComponent},
 ];
 
 const routerOptions: ExtraOptions = {
@@ -148,6 +151,8 @@ const routerOptions: ExtraOptions = {
     CustomerAgreementComponent,
     PrivacyPolicyComponent,
     InfoComponent,
+    CertificateCartItemComponent,
+    ProductBackInfoComponent
   ],
   imports: [
     BrowserModule,

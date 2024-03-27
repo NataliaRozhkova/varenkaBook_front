@@ -8,7 +8,7 @@ import {ImageService} from "../../services/image.service";
 })
 export class ImageComponent implements OnInit {
 
-  imageToShow: string = "assets/no-mage-found.png";
+  imageToShow: string = "assets/not_found.png";
 
   @Input()
   imageLink: string;

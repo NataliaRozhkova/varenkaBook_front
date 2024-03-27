@@ -7,6 +7,10 @@ import {Order} from "../../model/order";
 import {map, switchMap} from "rxjs";
 import {ProductService} from "../../services/product.service";
 import {environment} from "../../../environments/environment";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {Product} from "../../model/product";
+import {Slide} from "../../model/models";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'certificate',
@@ -15,25 +19,36 @@ import {environment} from "../../../environments/environment";
 })
 export class CertificateComponent {
 
-  certificate: CertificateCard = new CertificateCard();
-
-  nameControl = new FormControl('');
-  emailControl = new FormControl('');
-  phoneControl = new FormControl('');
-  nifControl = new FormControl('');
+  certificate: CertificateCard = new CertificateCard({});
 
   constructor(
-    private infoService: InformationService,
+    private route: ActivatedRoute,
     private productService: ProductService,
+    private cartService: CartService,
   ) {
   }
 
   ngOnInit(): void {
-    this.certificate.photo = environment.certificateImage;
 
+
+    // this.productService.getCertificateType()
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        return this.productService.getCertificateTypes(params?.get('id'));
+        }
+      ),
+      map((res: CertificateCard) => {
+
+        this.certificate = res;
+        this.certificate.photo = environment.certificateImage;
+      })
+    )
+      .subscribe();
 
   }
-  addToCart(){}
+  addToCart(){
+    this.cartService.addCertificatesToCart(this.certificate)
+  }
 
 
 

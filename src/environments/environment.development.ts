@@ -31,12 +31,12 @@ export const environment = {
     publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
   },
 
-  dns: "http://172.20.10.8:4200/",
-  // dns: "http://192.168.1.134:4200/",
+  // dns: "http://172.20.10.8:4200/",
+  dns: "http://192.168.1.134:4200/",
 
   shopAddress:
     {
-      address: "Rua do Almada 448  <br/>Porto, 4050-034<br/>Portugal",
+      address: "Rua do Almada 448, Porto, 4050-034, Portugal",
       link: "https://maps.app.goo.gl/A3UH8zztL7Xuj2y56"
     },
 
@@ -45,7 +45,7 @@ export const environment = {
   instagram: 'https://www.instagram.com/varenka_books?igsh=MTQ0aG90Y3Q3amNoZA==',
   telegram: 'https://t.me/varenka_books_bot',
 
-  legalInfo: 'Empresário em Nome Individual<br/>Daria Dombrova<br/>Número fiscal 313 283 834',
+  legalInfo: 'Empresário em Nome Individual, Daria Dombrova, Número fiscal 313 283 834',
 
   certificateImage: '../../../assets/certificates/certificate_vertical.png'
 

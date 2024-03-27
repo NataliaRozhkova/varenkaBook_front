@@ -8,10 +8,26 @@ import {
   OnInit, TemplateRef,
   ViewChild
 } from '@angular/core';
-import {CartItem, CartService} from "../../services/cart.service";
-import { Router} from "@angular/router";
-import { map, Observable,  Subject, switchMap, takeUntil} from "rxjs";
-import {DeliveryType, Order, OrderType, PickPoint, ProductID, ProductInOrder} from "../../model/order";
+import {CartCertificatetItem, CartItem, CartService} from "../../services/cart.service";
+import {Router} from "@angular/router";
+import {
+  map,
+  Observable,
+  Observer,
+  Subject,
+  switchMap,
+  takeUntil,
+} from "rxjs";
+import {
+  CertificateInOrder,
+  CertificatesOrder, CertificateType,
+  DeliveryType,
+  Order,
+  OrderType,
+  PickPoint,
+  ProductID,
+  ProductInOrder
+} from "../../model/order";
 import {
   FormBuilder,
   FormControl,
@@ -23,9 +39,9 @@ import {environment} from '../../../environments/environment';
 import {MatDialog} from "@angular/material/dialog";
 import {ComponentCanDeactivate} from "../../directives/guard";
 import {PaymentComponent} from "../payment/payment.component";
-import {PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
+import {CertificateItem, PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
 import {InformationService} from "../../services/information.service";
-import {PromoCode} from "../../model/promo";
+import {Certificate,  PromoCode} from "../../model/promo";
 
 
 @Component({
@@ -37,11 +53,15 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   order: Order = new Order();
   preorder: Order = new Order();
+  certificatesOrder: CertificatesOrder = new CertificatesOrder();
 
   orders: Order[] = [];
 
+  screenWidth: number;
+
   private destroySubject: Subject<void> = new Subject();
   products: CartItem[] = [];
+  certificates: CartCertificatetItem[] = [];
   productsCount: number;
   cdr = inject(ChangeDetectorRef);
 
@@ -117,15 +137,17 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
 
   constructor(
-    private cartService: CartService,
+    public cartService: CartService,
     private router: Router,
-    private productService: ProductService,
+    public productService: ProductService,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
     private infoService: InformationService
   ) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
+    this.certificates = this.cartService.getCertificates();
+    this.screenWidth = window.innerWidth;
   }
 
   ngOnInit(): void {
@@ -133,11 +155,12 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.canDeactivatePage = false;
 
 
-    if (this.products.length == 0) {
+    if (this.products.length == 0 && this.certificates.length == 0) {
       this.canDeactivatePage = true;
       this.router.navigate(['main'])
 
     }
+
 
     this.promoCode = this.cartService.getPromocodeFromStorage();
 
@@ -196,6 +219,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.productsToOrder = this.getProductsFromStatus('available_to_order');
 
 
+
+
     this.productService.getDeliveryTypes().pipe(
       takeUntil(this.destroySubject),
       switchMap((types: any) => {
@@ -215,41 +240,87 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   ngAfterContentInit() {
-    this.getOrderFromStorage()
+    // this.getOrderFromStorage()
+    console.log("******************ngOnInit ********  ", this.jointDelivery)
 
-  }
+    if (this.productsToOrder.length == 0 || this.productsInStock.length == 0) {
 
-
-  onSubmit(status: string) {
-    if (this.validate()) {
-      this.setOrderFields();
-      this.createPreorder();
-      this.setProductsToOrders();
-
-      this.order.orderStatus.status = status;
-      this.preorder.orderStatus.status = status;
-
-      if (this.productsInStock.length > 0 && this.productsToOrder.length > 0) {
-        this.submitDoubleOrders();
-      }
-
-      if (this.productsInStock.length > 0 && this.productsToOrder.length == 0) {
-        this.submitSingleOrder(this.order);
-      }
-      if (this.productsInStock.length == 0 && this.productsToOrder.length > 0) {
-        this.submitSingleOrder(this.preorder);
-      }
-
+      this.jointDelivery = false;
+      this.order.jointOrder = null;
+      this.order.jointDelivery = false;
     }
 
   }
 
+  onSubmit(status: string) {
+
+    if (this.validate()) {
+      this.setOrderFields();
+      this.createPreorder();
+      this.setCertificatesOrderInfo();
+      this.setProductsToOrders();
+
+      if (this.certificates.length > 0) {
+        this.certificatesOrder.orderStatus.status = status;
+      }
+
+      this.order.orderStatus.status = status;
+      this.preorder.orderStatus.status = status;
+
+
+      // this.submitOrders(this.order, this.preorder, this.certificatesOrder);
+
+      let emptyPreorder: boolean = this.productsToOrder.length == 0;
+      let emptyOrder: boolean = this.productsInStock.length == 0;
+      let emptyCertificate: boolean = this.certificates.length == 0;
+
+      let certificateOrd = emptyCertificate ? null : this.certificatesOrder;
+
+      if (emptyPreorder && emptyOrder && !emptyCertificate) {
+        this.submitCertificateOrder(status)
+      }
+
+      if (!emptyOrder &&  emptyPreorder) {
+        this.submitOrders(this.order, null, certificateOrd)
+      }
+
+      if (emptyOrder &&  !emptyPreorder) {
+        this.submitOrders(this.preorder, null, certificateOrd)
+      }
+
+      if (!emptyOrder && !emptyPreorder) {
+        this.submitOrders(this.order, this.preorder, certificateOrd)
+      }
+    }
+  }
+
+
   setOrderToStorage() {
 
     this.setOrderFields();
-    this.cartService.setOrdersToStorage(this.order, 'order');
-    this.cartService.setOrdersToStorage(this.preorder, 'preorder');
+    // this.cartService.setOrdersToStorage(this.order, 'order');
+    // this.cartService.setOrdersToStorage(this.preorder, 'preorder');
 
+  }
+
+  setCertificatesOrderInfo() {
+    this.certificatesOrder.email = this.order.email;
+    this.certificatesOrder.name = this.order.name;
+    this.certificatesOrder.nif = this.order.nif;
+    this.certificatesOrder.phoneNumber = this.order.phoneNumber;
+    this.certificatesOrder.concentDataProcessing = this.order.concentDataProcessing;
+    this.certificatesOrder.concentNewsletters = this.order.concentNewsletters;
+    // this.certificatesOrder.orderStatus.status = orderStatus;
+
+
+    this.certificatesOrder.certificatesInOrder = [];
+
+    this.certificates.forEach((pr) => {
+      this.certificatesOrder.certificatesInOrder.push(new CertificateInOrder({
+        quantity: pr.count,
+        certificateType: new CertificateType({id: pr.certificate.id})
+      }))
+    })
   }
 
   getOrderFromStorage() {
@@ -287,6 +358,16 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       params.email = this.preorder.email;
     }
 
+    let certificateToUse: Certificate[] = this.cartService.getGiftCardsFromStorage();
+
+    if (certificateToUse) {
+
+      certificateToUse.forEach(cet => {
+        params.certificates.push(new CertificateItem(cet.number))
+
+      })
+    }
+
     if (this.productsInStock.length > 0 || this.productsToOrder.length > 0) {
 
       let orderItem = new PaymentItem();
@@ -294,9 +375,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       orderItem.type = PaymentItemsType.order;
       orderItem.quantity = 1;
       params.items.push(orderItem)
-      urlId += this.order.id + "/";
+      urlId += this.order.id + ":";
 
     }
+
 
     if (this.productsToOrder.length > 0 && this.productsInStock.length > 0) {
       let preorderItem = new PaymentItem();
@@ -304,11 +386,21 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       preorderItem.type = PaymentItemsType.order;
       preorderItem.quantity = 1;
       params.items.push(preorderItem)
-      urlId += this.preorder.id + "/";
+      urlId += this.preorder.id + ":";
 
     }
+
+    if (this.certificates.length > 0) {
+      let certificateOrderItem = new PaymentItem();
+      certificateOrderItem.id = this.certificatesOrder.id;
+      certificateOrderItem.type = PaymentItemsType.certificate;
+      certificateOrderItem.quantity = 1;
+      params.items.push(certificateOrderItem)
+      urlId += this.certificatesOrder.id;
+    }
+
     params.cancel_url = environment.dns + "order-result/cancel/" + urlId;
-    params.success_url = environment.dns + "order-result/success/" + urlId;
+    params.success_url = environment.dns + "order-result/success/" + urlId + "/";
 
     params.currency = 'eur';
 
@@ -324,95 +416,107 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.router.navigate(['main'])
   }
 
-  submitSingleOrder(order: Order) {
+
+  submitCertificateOrder(status: string) {
+
     this.loadOrder = true;
-    this.productService.saveOrder(order).pipe(
+    this.certificatesOrder.orderStatus.status = status;
+
+    this.productService.saveCertificateOrder(this.certificatesOrder).pipe(
       takeUntil(this.destroySubject),
-    )
+    ).subscribe((resp) => {
+      this.loadOrder = false;
 
-      .subscribe(resp => {
-          this.order = resp;
-          this.setOrderToStorage();
-          this.loadOrder = false;
+      this.certificatesOrder = resp
 
-          // this.canDeactivatePage = true;
-          //
-          // this.payOrder();
-
-        },
-        err => {
-          this.orderResponse = err;
-          this.resolveErrors(err)
-          this.loadOrder = false;
-
-        })
+    })
 
   }
 
-  submitDoubleOrders() {
+  submitOrders(order: Order, preorder: Order | null, certificateOrder: CertificatesOrder | null) {
+
     this.loadOrder = true;
 
-    // if (this.order.jointDelivery) {
-    //   this.preorder.jointDelivery = true;
-    //   this.order.jointDelivery = true;
-    //   this.preorder.pickPoint = null;
-    // }
-
-    this.productService.saveOrder(this.order).pipe(
+    this.productService.saveOrder(order).pipe(
       takeUntil(this.destroySubject),
-      switchMap((response: any) => {
+
+      switchMap((response:any) => {
         this.order = response;
-
-
-        if (this.jointDelivery) {
-          this.preorder.jointOrder = response.id;
-          this.preorder.deliveryType.type = this.getJointDeliveryType().type;
+        if (preorder) {
+          this.preorder.jointOrder = response.id
+          return this.productService.saveOrder(preorder)
+        } else {
+          return this.getPriveousRespone(response)
         }
-        return this.productService.saveOrder(this.preorder)
       }),
-      map((resp: any) => {
-        this.preorder = resp;
-        if (this.jointDelivery) {
-          this.order.jointOrder = resp.id;
+
+      switchMap((response:any) => {
+
+        if (preorder ) {
+          this.preorder = response;
+          this.order.jointOrder = response.id;
         }
-        this.setOrderToStorage();
+        if(certificateOrder) {
+          return this.productService.saveCertificateOrder(certificateOrder)
+        } else {
+          return this.getPriveousRespone(response)
+        }
+      }),
+      map((response:any) => {
+        if (certificateOrder) {
+          this.certificatesOrder  = response;
+        }
         this.loadOrder = false;
 
+      })
 
-      }),
-    )
-      .subscribe(resp => {
-        },
-        err => {
-          this.orderResponse = err;
-          this.resolveErrors(err)
-          this.loadOrder = false;
+    ).subscribe(resp => {
+      },
+      err => {
+        this.orderResponse = err;
+        this.resolveErrors(err)
+        this.loadOrder = false;
 
-        })
+      })
+
+
+  }
+
+  getPriveousRespone(resp: any): Observable<any> {
+    return  new Observable((observer: Observer<any>) => {
+      observer.next(resp);
+      observer.complete();
+    });
 
   }
 
   createPreorder() {
 
     let preorderId = this.preorder?.id;
-      this.preorder = JSON.parse(JSON.stringify(this.order));
-      this.preorder.orderType.type = 'preorder';
+    this.preorder = JSON.parse(JSON.stringify(this.order));
+    this.preorder.orderType.type = 'preorder';
 
-      if (preorderId) {
-        this.preorder.id = preorderId;
-      }
+    if (preorderId) {
+      this.preorder.id = preorderId;
+    }
     this.preorder.concentDataProcessing = this.order.concentDataProcessing;
     this.preorder.concentNewsletters = this.order.concentNewsletters;
 
     if (this.order.jointDelivery) {
       this.preorder.jointDelivery = true;
       this.preorder.pickPoint = null;
-      this.preorder.deliveryType.type = this.getJointDeliveryType().type;
+      // this.preorder.deliveryType.type = this.getJointDeliveryType().type;
+      this.preorder.payForDelivery = this.jointDelivery;
+      this.preorder.pickPoint = this.order.pickPoint;
       this.preorder.jointOrder = this.order.id;
     }
+
+    this.preorder.promoCode = null;
   }
 
   setProductsToOrders() {
+    this.order.productsInOrder = [];
+    this.preorder.productsInOrder = [];
     this.productsInStock.forEach((pr) => {
       this.order.productsInOrder.push(new ProductInOrder({
         product: new ProductID(pr.product.id),
@@ -430,6 +534,33 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       }))
     })
   }
+
+  getFullOrdersPrice(): any {
+
+    let fullPrice = 0;
+
+    if (this.order.fullPrice) {
+      fullPrice += this.order.fullPrice;
+    }
+
+    if (this.preorder.fullPrice) {
+      fullPrice += this.preorder.fullPrice;
+    }
+
+    if (this.certificatesOrder.orderPrice) {
+      fullPrice += this.certificatesOrder.orderPrice;
+    }
+    let certificatesPayment: number = 0;
+
+
+    this.cartService.getGiftCardsFromStorage().forEach((item) => {certificatesPayment += item.amount });
+
+    let result = fullPrice - certificatesPayment;
+
+    return result > 0 ? this.productService.roundPriceStr(result) : 0;
+  }
+
+
 
   setOrderFields() {
     this.order.deliveryType = new DeliveryType();
@@ -476,11 +607,16 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     )) {
       this.clearControls();
 
+
       if (this.pageIndex == 2) {
         this.onSubmit('draft')
       }
 
-      this.pageIndex += 1;
+      if (this.pageIndex == 0 && this.productsToOrder.length == 0 && this.productsInStock.length == 0) {
+        this.pageIndex += 2;
+      } else {
+        this.pageIndex += 1;
+      }
     }
     if (ind < 0) {
       this.pageIndex -= 1;
@@ -490,7 +626,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
 
     this.cdr.detectChanges();
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
 
 
   }
@@ -512,6 +648,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   validateDelivery(): boolean {
 
     let isValid = true;
+
+    if (this.certificates.length > 0 && this.productsToOrder.length == 0 && this.productsInStock.length == 0) {
+      return isValid;
+    }
 
     if (!this.deliveryType) {
       this.deliveryTypeControl.setErrors({deliveryTypeError: true});
@@ -625,11 +765,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   getDeliveryTypes(): DeliveryType[] {
-    return this.deliveryTypes.filter( type => type.type != 'joint_delivery')
+    return this.deliveryTypes.filter(type => type.type != 'joint_delivery')
   }
 
   getJointDeliveryType(): DeliveryType {
-    return this.deliveryTypes.filter( type => type.type == 'joint_delivery')[0]
+    return this.deliveryTypes.filter(type => type.type == 'joint_delivery')[0]
   }
 
   resolveErrors(httpErrorResponse: HttpErrorResponse) {
@@ -717,5 +857,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   protected readonly console = console;
+  // protected readonly document = document;
+  // protected readonly window = window;
 }
 

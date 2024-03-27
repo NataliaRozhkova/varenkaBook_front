@@ -1,14 +1,15 @@
 <div class="certificate">
 
-
-  <image  class="certificate-image" [imageLink]="certificate.photo"></image>
+  <div class="certificate-image-container">
+    <div class="certificate-value">{{this.certificate.amount + ' \u20AC'}}</div>
+    <image class="certificate-image" [imageLink]="certificate.photo"></image>
+  </div>
 
   <div class="certificate-info">
-    <div>Подарочная карта на {{this.certificate.amount + ' \u20AC'}}</div>
+    <div class="certificate-info-text">Подарочная карта на {{this.certificate.amount + ' \u20AC'}}</div>
     <button mat-button class="order-button main-button" (click)="addToCart()">В корзину</button>
 
   </div>
-
 
 
 </div>

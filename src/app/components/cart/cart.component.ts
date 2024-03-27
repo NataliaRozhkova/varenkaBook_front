@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
-import {CartItem, CartService} from "../../services/cart.service";
+import {CartCertificatetItem, CartItem, CartService} from "../../services/cart.service";
 import {Certificate, PromoCode} from "../../model/promo";
 import {numbers} from "@material/checkbox";
 import {ProductService} from "../../services/product.service";
@@ -16,6 +16,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private destroySubject: Subject<void> = new Subject();
   products: CartItem[] = [];
+  certificatesToOrder: CartCertificatetItem[] = [];
   productsCount: number;
 
   giftCard: string = '';
@@ -42,6 +43,8 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   ) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
+    this.certificatesToOrder = this.cartService.getCertificates();
+
 
     this.promocode = this.cartService.getPromocodeFromStorage();
     this.cardGifts = this.cartService.getGiftCardsFromStorage();
@@ -58,6 +61,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       .subscribe((next) => {
         this.productsCount = this.cartService.getCartCount();
         this.products = this.cartService.getProducts();
+        this.certificatesToOrder = this.cartService.getCertificates();
         this.updateTotalValue();
 
       })
@@ -97,35 +101,39 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
   addGiftCard() {
 
-    let giftCard: PromoCode;
-    let promocode: PromoCode;
     this.errorCard = false;
     this.errorCertificate = false;
     this.cardUsed = false;
 
     if (this.giftCard) {
-      this.cartService.getPromocodeInfo(this.giftCard).pipe(
-        takeUntil(this.destroySubject),
-      ).subscribe(
-        resp => {
-          this.errorCard = false;
 
-          let promocode = resp as PromoCode;
+      if (this.getProductsInStock().length > 0) {
+        this.cartService.getPromocodeInfo(this.giftCard.trim()).pipe(
+          takeUntil(this.destroySubject),
+        ).subscribe(
+          resp => {
+            this.errorCard = false;
 
-          if (promocode.validity) {
-            this.promocode = promocode;
-            this.updateTotalValue();
+            let promocode = resp as PromoCode;
 
-          } else {
+            if (promocode.validity) {
+              this.promocode = promocode;
+              this.updateTotalValue();
+
+            } else {
+              this.errorCard = true;
+            }
+          },
+          err => {
             this.errorCard = true;
-          }
-        },
-        err => {
-          this.errorCard = true;
 
-        })
+          })
+      } else {
 
-      this.cartService.getGiftCardsInfo(this.giftCard).pipe(
+        this.errorCard = true;
+
+      }
+      this.cartService.getGiftCardsInfo(this.giftCard.trim()).pipe(
         takeUntil(this.destroySubject),
       ).subscribe(resp => {
 

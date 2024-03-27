@@ -13,7 +13,8 @@
   <ng-template #elseBlock>
     <div class="image-not-found">
 
-      <image [imageLink]="'../../../assets/no-mage-found.png'" class="image-not-found" (click)="openProductInfo()"/>
+      <img *ngIf="!product.imageLink" src="../../../assets/not_found.png" class="image-not-found" (click)="openProductInfo()"/>
+      <img  *ngIf="product.imageLink" src="{{product.imageLink}}" class="image-not-found" (click)="openProductInfo()"/>
     </div>
   </ng-template>
 

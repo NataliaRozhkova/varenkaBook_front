@@ -10,16 +10,16 @@ import {FormControl} from "@angular/forms";
 import {CertificateCard} from "../../../model/promo";
 
 @Component({
-  selector: 'cart-item',
-  templateUrl: './cart-item.component.html',
-  styleUrls: ['./cart-item.component.less']
+  selector: 'certificate-cart-item',
+  templateUrl: './certificate-cart-item.component.html',
+  styleUrls: ['./certificate-cart-item.component.less']
 })
-export class CartItemComponent implements OnDestroy{
+export class CertificateCartItemComponent implements OnDestroy{
 
   private destroySubject: Subject<void> = new Subject();
 
   @Input()
-  product: Product;
+  certificate: CertificateCard;
 
   @ViewChild('dialog') myDialog = {} as TemplateRef<string>;
 
@@ -41,12 +41,12 @@ export class CartItemComponent implements OnDestroy{
   }
 
   increaseCount() {
-    this.cartService.addToCart(this.product);
+    this.cartService.addCertificatesToCart(this.certificate);
   }
 
   decreaseCount(count: number = 1) {
 
-    this.cartService.deleteFromCart(this.product, count);
+    this.cartService.deleteCertificateFromCart(this.certificate, count);
   }
 
   checkCount($event: any): boolean{
@@ -57,15 +57,12 @@ export class CartItemComponent implements OnDestroy{
 
     let countOrder = $event;
 
-    if ($event > this.product.countInStock) {
-      countOrder = this.product.countInStock;
-      this.count = this.product.countInStock;
-    }
-    this.cartService.setCount(this.product, countOrder)
+
+    this.cartService.setCertificateCount(this.certificate, countOrder)
   }
 
-  openProductInfo(){
-    this.router.navigate(['product-info', this.product.id ])
+  openCertificateInfo(){
+    this.router.navigate(['certificate-info', this.certificate.id ])
   }
 
 
@@ -78,7 +75,7 @@ export class CartItemComponent implements OnDestroy{
 
     this.dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.cartService.deleteFromCart(this.product, this.count);
+        this.cartService.deleteCertificateFromCart(this.certificate, this.count);
       }
     });
 

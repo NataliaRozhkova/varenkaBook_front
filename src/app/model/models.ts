@@ -1,3 +1,5 @@
+import {Certificate} from "./promo";
+
 export class Slide {
   image: string;
   text: string;
@@ -25,6 +27,7 @@ export class PaymentParameters {
   cancel_url: string;
   email: string;
   items: PaymentItem[] = [];
+  certificates: CertificateItem[] = [];
 }
 
 export class PaymentItem {
@@ -32,6 +35,15 @@ export class PaymentItem {
   id: number;
   quantity: number;
 }
+
+export class CertificateItem {
+  number: string;
+
+  constructor(number: string) {
+    this.number = number
+  }
+}
+
 export enum PaymentItemsType {
   order ='order',
   certificate = 'certificate'

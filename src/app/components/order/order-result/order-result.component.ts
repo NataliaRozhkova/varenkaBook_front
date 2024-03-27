@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from "@angular/core";
-import {ActivatedRoute, ParamMap} from "@angular/router";
-import {Subject, switchMap, takeUntil} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 import {CartService} from "../../../services/cart.service";
 import {ProductService} from "../../../services/product.service";
 
@@ -11,7 +11,7 @@ import {ProductService} from "../../../services/product.service";
   styleUrls: ['./order-result.component.less',
   ]
 })
-export class OrderResultComponent implements OnDestroy{
+export class OrderResultComponent implements OnDestroy {
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -22,17 +22,17 @@ export class OrderResultComponent implements OnDestroy{
   ) {
   }
 
-  orderId: number;
-  preorderId:number;
   result: string;
+  orderNumbers: string[];
 
   ngOnInit() {
 
     this.route.paramMap.pipe(
       takeUntil(this.destroySubject),
     ).subscribe((query: any) => {
-      this.orderId = query.params?.orderId;
-      this.preorderId = query.params?.preorderId;
+
+      let orders = query.params?.orders?.toString()?.replaceAll(":", " ")?.trim()
+      this.orderNumbers = orders?.split(" ")
       this.result = query.params?.result;
       if (this.result == 'success') {
         this.cartService.clearCart();
@@ -44,19 +44,11 @@ export class OrderResultComponent implements OnDestroy{
 
   cancelOrder() {
 
-    this.productService.cancelOrder( this.orderId
-    ).pipe(
-      takeUntil(this.destroySubject),
-
-    ).subscribe();
-
-    if (this.preorderId) {
-
-      this.productService.cancelOrder(this.preorderId).pipe(
+    this.orderNumbers.forEach((ord) => {
+      this.productService.cancelOrder(ord).pipe(
         takeUntil(this.destroySubject),
-
       ).subscribe();
-    }
+    })
 
   }
 
@@ -64,9 +56,4 @@ export class OrderResultComponent implements OnDestroy{
   ngOnDestroy() {
     this.destroySubject.next();
   }
-
-
-
-
-
 }

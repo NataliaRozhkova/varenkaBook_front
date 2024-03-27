@@ -33,13 +33,13 @@ export const environment = {
 
   shopAddress:
     {
-      address: "Rua do Almada 448  <br/>Porto, 4050-034<br/>Portugal",
+      address: "Rua do Almada 448, Porto, 4050-034, Portugal",
       link: "https://maps.app.goo.gl/A3UH8zztL7Xuj2y56"
     },
   instagram: 'https://www.instagram.com/varenka_books?igsh=MTQ0aG90Y3Q3amNoZA==',
   telegram: 'https://t.me/varenka_books_bot',
   email: 'varenka.books@gmail.com',
-  legalInfo: 'Empresário em Nome Individual<br/>Daria Dombrova<br/>Número fiscal 313 283 834',
+  legalInfo: 'Empresário em Nome Individual, Daria Dombrova, Número fiscal 313 283 834',
   certificateImage: '../../../assets/certificates/certificate_vertical.png'
 
 };

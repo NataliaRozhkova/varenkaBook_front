@@ -29,6 +29,7 @@ export class Product {
   shortDescription: string;
   year: string;
   soldAmount: number;
+  imageLink: string;
 
 
 }

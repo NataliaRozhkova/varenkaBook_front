@@ -30,17 +30,19 @@
 
       ::ng-deep .image {
         width: 100% !important;
-        height: auto !important;
+        height: fit-content !important;
       }
 
       ::ng-deep .image-wrapper {
         width: 100% !important;
-        height: auto !important;
+        height: fit-content !important;
       }
     }
 
     .image-not-found {
-      height: auto;
+      //height: auto;
+      height: 200px;
+      width: 150px;
 
     }
 
@@ -59,6 +61,7 @@
     display: flex;
     border: #EE204D;
     border-radius: 10px;
+    margin: 25px 0;
 
     .decrease, .increase {
       outline: none;
@@ -197,6 +200,7 @@
   .product-name {
     font-size: 18px;
     margin-bottom: 15px;
+    font-weight: bold;
   }
 
 }

@@ -1,5 +1,5 @@
 import {constructorChecks} from "@angular/cdk/schematics";
-import {PromoCode} from "./promo";
+import {Certificate, CertificateCard, PromoCode} from "./promo";
 
 export class Order {
 
@@ -24,12 +24,14 @@ export class Order {
   buildingNumber: string = '';
   appartmentNumber: string = '';
   productsInOrder: ProductInOrder[] = [];
-  promoCode: PromoCode;
+  promoCode: PromoCode | null;
   jointDelivery: boolean = false;
-  jointOrder: number;
+  jointOrder: number | null;
   initialPrice: number;
   discountPrice: number;
   promoPrice: number;
+  payForDelivery: boolean = true;
+  fullPrice: number;
 }
 export class DeliveryType {
   type: string = '';
@@ -83,5 +85,36 @@ export class ProductID {
   constructor(id: string) {
     this.id = id;
 
+  }
+}
+
+export class CertificatesOrder {
+  id: number;
+  name: string = '';
+  email: string = '';
+  nif: number;
+  phoneNumber: string = '';
+  orderStatus: OrderStatus = new OrderStatus();
+  concentDataProcessing: boolean = false;
+  concentNewsletters: boolean = false;
+  certificatesInOrder: CertificateInOrder[];
+  orderPrice: number;
+}
+
+export class CertificateInOrder {
+  certificateType: CertificateType;
+  quantity: number;
+
+  constructor(params: any) {
+    this.certificateType = params.certificateType;
+    this.quantity = params.quantity;
+  }
+
+}
+
+export class CertificateType {
+  id: string;
+  constructor(params: any) {
+    this.id = params.id;
   }
 }

@@ -2,24 +2,36 @@
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
+//@font-face {
+//  font-family: 'Inter';
+//  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
+//  font-weight: normal;
+//}
+//
+//@font-face {
+//  font-family: 'Inter';
+//  src: url('/assets/fonts/Inter-Bold.ttf') format('truetype');
+//  font-weight: bold;
+//}
+
+
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
+  font-family: 'Montserrat Regular';
+  src: url('/assets/fonts/Montserrat-Regular.woff') format('truetype');
   font-weight: normal;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Bold.ttf') format('truetype');
+  font-family: 'Montserrat Regular';
+  src: url('/assets/fonts/Montserrat-SemiBold.woff') format('truetype');
   font-weight: bold;
 }
-
 
 html, body {
   background: #ffffff;
   padding: 0;
   margin: 0;
-  font-family: Inter, "Inter", Verdana, sans-serif;
+  font-family: Montserrat Regular, "Montserrat Regular", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -66,7 +78,7 @@ html, body {
   }
 
   .mdc-button {
-    font-family: Inter, "Inter", Verdana, sans-serif;
+    font-family: Montserrat Regular, "Montserrat Regular",  sans-serif;
     letter-spacing: 0;
   }
 
@@ -96,6 +108,11 @@ html, body {
 
   .mat-mdc-select-panel {
     max-height: 100% !important;
+
+  }
+  .mat-mdc-select   {
+    font-family: Montserrat Regular, "Montserrat Regular", sans-serif !important;
+
   }
 
   .mat-mdc-select-value {
@@ -115,7 +132,7 @@ html, body {
   }
 
   .mat-mdc-option {
-    font-family: Inter, "Inter", Verdana, sans-serif;;
+    font-family: Montserrat Regular, "Montserrat Regular", sans-serif;;
   }
 
   .base-input:focus {
@@ -171,6 +188,13 @@ html, body {
 
   .text-center {
     text-align: center;
+  }
+
+  img {
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 9px 45px -27px rgba(0,0,0,0.82);
+    -moz-box-shadow: 0px 9px 45px -27px rgba(0,0,0,0.82);
+    box-shadow: 0px 9px 45px -27px rgba(0,0,0,0.82)
   }
 
 

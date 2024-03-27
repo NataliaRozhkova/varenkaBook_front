@@ -46,7 +46,9 @@ export class SearchPanelComponent implements AfterViewInit, OnChanges {
 
 
   find() {
-    this.router.navigate(['search'], {queryParams: {query: this.findStr}});
+    if (this.findStr) {
+      this.router.navigate(['search'], {queryParams: {query: this.findStr}});
+    }
     this.closePanel.emit(false);
 
   }

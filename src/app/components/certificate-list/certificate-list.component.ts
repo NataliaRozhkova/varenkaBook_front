@@ -31,11 +31,10 @@ export class CertificateListComponent implements OnDestroy, OnInit {
 
   getCertificateTypes() {
 
-    this.productService.getCertificateTypes().pipe(
+    this.productService.getCertificateTypes('').pipe(
       takeUntil(this.destroySubject)
     ).subscribe((result) => {
       this.certificateTypes = result.results;
-      console.log("----------  ",  result)
       this.certificateTypes.forEach( (cert) => {
         cert.photo = this.certificateImageLink;
       })
