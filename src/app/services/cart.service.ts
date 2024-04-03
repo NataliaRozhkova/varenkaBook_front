@@ -207,6 +207,11 @@ export class CartService {
     return this.http.get('api/certificates/', {number: code})
   }
 
+
+  getCartPrices(params: any): Observable<any> {
+    return this.http.post('api/get_cart/', params)
+  }
+
   syncItems() {
     this.cartChange.emit();
     this.storageService.setItem(this.products, 'products');

@@ -1,4 +1,4 @@
-<div class="order-component">
+<div class="order-component" #orderComponent>
   <h1>Оформление заказа</h1>
 
 
@@ -20,7 +20,7 @@
       <ng-container *ngTemplateOutlet="submitPage"></ng-container>
     </div>
     <mat-error
-      *ngIf="orderControls.errors">{{ orderControls.errors}}</mat-error>
+      *ngIf="orderHasErrors" class="order-error">В заказе ошибки, проверьте правильность заполнения полей</mat-error>
 
   </div>
   <div class="information"> * - Поля обязательные для заполнения</div>
@@ -29,14 +29,14 @@
     <button mat-button class="main-button previous" *ngIf="pageIndex != 0" (click)="changeStep(-1)">Назад</button>
     <button mat-button class="main-button next" *ngIf="pageIndex != pageCount -1" (click)="changeStep(1)">Далее</button>
     <button mat-button class="main-button submit" type="submit" *ngIf="pageIndex == pageCount -1" (click)="payOrder()"
-            [disabled]="!order.concentDataProcessing">Оплатить
+            [disabled]="!order.concentDataProcessing || orderHasErrors">Оплатить
     </button>
 
 
   </div>
   <payment #paymentComponent
            [showEmail]="false"
-           style="visibility: hidden"
+           style="visibility: hidden;width:0"
   ></payment>
 </div>
 
@@ -63,7 +63,7 @@
 
   <div class="field">
     <mat-label for="nif">NIF:</mat-label>
-    <input id="nif" name="nif" type="number" [(ngModel)]="order.nif" [formControl]="nifControl">
+    <input id="nif" name="nif" type="number"  [(ngModel)]="order.nif" [formControl]="nifControl">
     <mat-error
       *ngIf="nifControl.errors">{{getErrorText(nifControl.errors)}}</mat-error>
   </div>
@@ -112,7 +112,7 @@
     >
       <div class="delivery-type">
         <div class="delivery-name"> {{deliveryTypeNames[i.type]}}</div>
-        <div class="delivery-price">Стоимость доставки {{i.price + ' \u20AC'}}</div>
+        <div class="delivery-price">Стоимость доставки {{i.price  | number : '1.2-2' | currency: "EUR"}}</div>
       </div>
     </mat-radio-button>
   </mat-radio-group>
@@ -263,8 +263,8 @@
   </div>
   <div *ngIf="!loadOrder">
     <div *ngIf="productsInStock.length > 0 || productsToOrder.length > 0" class="products">
-      <h2 *ngIf="productsInStock.length > 0">Товары в наличии</h2>
-      <h2 *ngIf="productsToOrder.length > 0 && productsInStock.length == 0">Товары под заказ</h2>
+      <h2 *ngIf="productsInStock.length > 0" class="color-accent">Товары в наличии</h2>
+      <h2 *ngIf="productsToOrder.length > 0 && productsInStock.length == 0" class="color-accent">Товары под заказ</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -275,37 +275,37 @@
         <div *ngFor="let pr of productsInStock" class="table-row">
           <div>{{pr.product.author}} {{pr.product.name}}</div>
           <div class="small-screen-hidden">{{pr.count}}</div>
-          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro}}</div>
-          <div>{{productService.roundPriceStr(pr.product.discountPriceEuro * pr.count)}}</div>
+          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro  | number : '1.2-2' }}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count  | number : '1.2-2' }}</div>
         </div>
         <div class="table-row">
           <div>Итого</div>
           <div></div>
           <div></div>
-          <div>{{order.discountPrice}}</div>
+          <div>{{order.discountPrice | number : '1.2-2'}}</div>
         </div>
         <div class="table-header" *ngIf="order.promoCode">
           <div>Итого c учетом промокода</div>
           <div></div>
           <div></div>
-          <div>{{order.promoPrice}}</div>
+          <div>{{order.promoPrice | number : '1.2-2'}}</div>
         </div>
         <div class="table-header" *ngIf="order.payForDelivery">
           <div>Доставка</div>
           <div></div>
           <div></div>
-          <div>{{order.deliveryType.price}}</div>
+          <div>{{order.deliveryType.price | number : '1.2-2' }}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате</div>
           <div></div>
           <div></div>
-          <div>{{order.fullPrice}}</div>
+          <div>{{order.fullPrice | number : '1.2-2' }}</div>
         </div>
       </div>
     </div>
     <div *ngIf="productsToOrder.length > 0 && productsInStock.length > 0" class="products">
-      <h2>Товары под заказ</h2>
+      <h2 class="color-accent">Товары под заказ</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -316,32 +316,32 @@
         <div *ngFor="let pr of productsToOrder" class="table-row">
           <div>{{pr.product.author}} {{pr.product.name}}</div>
           <div class="small-screen-hidden">{{pr.count}}</div>
-          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro}}</div>
-          <div>{{productService.roundPriceStr(pr.product.discountPriceEuro * pr.count)}}</div>
+          <div class="small-screen-hidden"> {{pr.product.discountPriceEuro | number : '1.2-2' }}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count  | number : '1.2-2' }}</div>
         </div>
         <div class="table-row">
           <div>Итого</div>
           <div></div>
           <div></div>
-          <div>{{preorder.discountPrice}}</div>
+          <div>{{preorder.discountPrice | number : '1.2-2' }}</div>
         </div>
         <div class="table-header" *ngIf="preorder.payForDelivery">
           <div>Доставка</div>
           <div></div>
           <div></div>
-          <div>{{preorder.deliveryType.price}}</div>
+          <div>{{preorder.deliveryType.price | number : '1.2-2' }}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате *</div>
           <div></div>
           <div></div>
-          <div>{{preorder.fullPrice}}</div>
+          <div>{{preorder.fullPrice | number : '1.2-2' }}</div>
         </div>
       </div>
     </div>
 
     <div *ngIf="certificates.length > 0" class="products">
-      <h2>Подарочные сертификаты</h2>
+      <h2 class="color-accent">Подарочные сертификаты</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -351,36 +351,36 @@
         </div>
 
         <div *ngFor="let cert of certificates" class="table-row">
-          <div>Подарочный сертификат {{cert.certificate.amount}} {{' \u20AC'}} </div>
+          <div>Подарочный сертификат {{cert.certificate.amount  | number : '1.2-2'}} </div>
           <div class="small-screen-hidden">{{cert.count}}</div>
-          <div class="small-screen-hidden"> {{cert.certificate.amount}}</div>
-          <div>{{cert.certificate.amount * cert.count}}</div>
+          <div class="small-screen-hidden"> {{cert.certificate.amount  | number : '1.2-2' }}</div>
+          <div>{{cert.certificate.amount * cert.count  | number : '1.2-2'}}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате</div>
           <div></div>
           <div></div>
-          <div>{{certificatesOrder.orderPrice}}</div>
+          <div>{{certificatesOrder.orderPrice | number : '1.2-2' }}</div>
         </div>
       </div>
     </div>
 
     <div class="products" *ngIf="cartService.getGiftCardsFromStorage().length > 0">
-      <h2>Оплата подарочными сертификатами</h2>
+      <h2 class="color-accent">Оплата подарочными сертификатами</h2>
       <div class="product-table">
         <div *ngFor="let cert of cartService.getGiftCardsFromStorage()" class="table-row">
           <div>Подарочный сертификат</div>
           <div> {{cert.number}} </div>
-          <div>{{cert.amount}} {{' \u20AC'}} </div>
+          <div>{{cert.amount  | number : '1.2-2' }} </div>
         </div>
       </div>
 
     </div>
 
 
-    <h1>Итого к оплате {{getFullOrdersPrice()}}{{' \u20AC'}}</h1>
+    <h1>Итого к оплате {{getFullOrdersPrice()  | number : '1.2-2' | currency: "EUR"}}</h1>
 
-    <span class="information">* При оплате товаров под заказ берется предоплата 50% (кроме оплаты подарочным сертификатом)</span>
+    <div class="information info">* При оплате товаров под заказ берется предоплата 50% (кроме оплаты подарочным сертификатом)</div>
   </div>
 </ng-template>
 <ng-template #ordersInfoSmallScreen>
@@ -389,8 +389,8 @@
   </div>
   <div *ngIf="!loadOrder">
     <div *ngIf="productsInStock.length > 0 || productsToOrder.length > 0" class="products">
-      <h2 *ngIf="productsInStock.length > 0">Товары в наличии</h2>
-      <h2 *ngIf="productsToOrder.length > 0 && productsInStock.length == 0">Товары под заказ</h2>
+      <h2 *ngIf="productsInStock.length > 0" class="color-accent">Товары в наличии</h2>
+      <h2 *ngIf="productsToOrder.length > 0 && productsInStock.length == 0" class="color-accent">Товары под заказ</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -398,28 +398,28 @@
         </div>
         <div *ngFor="let pr of productsInStock" class="table-row">
           <div>{{pr.product.author}} {{pr.product.name}}, {{pr.count}} шт.</div>
-          <div>{{productService.roundPriceStr(pr.product.discountPriceEuro * pr.count)}}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count | number : '1.2-2'}}</div>
         </div>
         <div class="table-row">
           <div>Итого</div>
-          <div>{{order.discountPrice}}</div>
+          <div>{{order.discountPrice | number : '1.2-2'}}</div>
         </div>
         <div class="table-header" *ngIf="order.promoCode">
           <div>Итого c учетом промокода</div>
-          <div>{{order.promoPrice}}</div>
+          <div>{{order.promoPrice | number : '1.2-2'}}</div>
         </div>
         <div class="table-header" *ngIf="order.payForDelivery">
           <div>Доставка</div>
-          <div>{{order.deliveryType.price}}</div>
+          <div>{{order.deliveryType.price | number : '1.2-2'}}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате</div>
-          <div>{{order.fullPrice}}</div>
+          <div>{{order.fullPrice | number : '1.2-2'}}</div>
         </div>
       </div>
     </div>
     <div *ngIf="productsToOrder.length > 0 && productsInStock.length > 0" class="products">
-      <h2>Товары под заказ</h2>
+      <h2 class="color-accent">Товары под заказ</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -427,25 +427,25 @@
         </div>
         <div *ngFor="let pr of productsToOrder" class="table-row">
           <div>{{pr.product.author}} {{pr.product.name}}, {{pr.count}} шт.</div>
-          <div>{{productService.roundPriceStr(pr.product.discountPriceEuro * pr.count)}}</div>
+          <div>{{pr.product.discountPriceEuro * pr.count | number : '1.2-2'}}</div>
         </div>
         <div class="table-row">
           <div>Итого</div>
-          <div>{{preorder.discountPrice}}</div>
+          <div>{{preorder.discountPrice | number : '1.2-2'}}</div>
         </div>
         <div class="table-header" *ngIf="preorder.payForDelivery">
           <div>Доставка</div>
-          <div>{{preorder.deliveryType.price}}</div>
+          <div>{{preorder.deliveryType.price | number : '1.2-2'}}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате *</div>
-          <div>{{preorder.fullPrice}}</div>
+          <div>{{preorder.fullPrice | number : '1.2-2'}}</div>
         </div>
       </div>
     </div>
 
     <div *ngIf="certificates.length > 0" class="products">
-      <h2>Подарочные сертификаты</h2>
+      <h2 class="color-accent">Подарочные сертификаты</h2>
       <div class="product-table">
         <div class="table-header">
           <div>Наименование</div>
@@ -454,21 +454,21 @@
 
         <div *ngFor="let cert of certificates" class="table-row">
           <div>Подарочный сертификат {{cert.certificate.amount}} {{' \u20AC'}}, {{cert.count}} шт </div>
-          <div>{{cert.certificate.amount * cert.count}}</div>
+          <div>{{cert.certificate.amount * cert.count  | number : '1.2-2'}}</div>
         </div>
         <div class="table-header amount">
           <div>К оплате</div>
-          <div>{{certificatesOrder.orderPrice}}</div>
+          <div>{{certificatesOrder.orderPrice  | number : '1.2-2'}}</div>
         </div>
       </div>
     </div>
 
     <div class="products" *ngIf="cartService.getGiftCardsFromStorage().length > 0">
-      <h2>Оплата подарочными сертификатами</h2>
+      <h2 class="color-accent">Оплата подарочными сертификатами</h2>
       <div class="product-table">
         <div *ngFor="let cert of cartService.getGiftCardsFromStorage()" class="table-row">
           <div>Подарочный сертификат {{cert.number}} </div>
-          <div>{{cert.amount}} {{' \u20AC'}} </div>
+          <div>{{cert.amount  | number : '1.2-2'}} </div>
         </div>
       </div>
 
@@ -476,9 +476,9 @@
 
 
     <h2>Итого к оплате</h2>
-    <h2 class="full-amount">{{getFullOrdersPrice()}}{{' \u20AC'}}</h2>
+    <h2 class="full-amount">{{getFullOrdersPrice() | number : '1.2-2' | currency: "EUR"}}</h2>
 
   </div>
-  <span class="information">* При оплате товаров под заказ берется предоплата 50% (кроме оплаты подарочным сертификатом)</span>
+  <div class="information">* При оплате товаров под заказ берется предоплата 50% (кроме оплаты подарочным сертификатом)</div>
 
 </ng-template>

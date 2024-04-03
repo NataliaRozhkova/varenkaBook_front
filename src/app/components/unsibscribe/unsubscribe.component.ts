@@ -45,8 +45,9 @@ export class UnsubscribeComponent implements OnDestroy, OnInit {
     this.route.queryParams?.pipe(
       takeUntil(this.destroySubject),
       switchMap((params: any) => {
-        this.email = params.query;
-        return this.informationService.getCustomerInfo({email: params.query})
+        this.email = params['email'];
+
+        return this.informationService.getCustomerInfo({email: this.email})
       }),
       map((response: any) => {
         this.name = response.name;
@@ -57,7 +58,7 @@ export class UnsubscribeComponent implements OnDestroy, OnInit {
 
   unsubscribe() {
     this.informationService.unsubscribeNewsletters(this.customerId, {
-      concent_data_processing: false,
+      concent_newsletters: false,
     }).subscribe((res: any) => {
         this.subscribed = true;
         this.storageService.deleteItem('subscribed');

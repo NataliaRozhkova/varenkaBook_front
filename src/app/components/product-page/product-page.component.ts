@@ -70,8 +70,8 @@ export class ProductPageComponent implements OnDestroy, OnInit {
   ageCategories: AgeCategory[] = [];
 
   sortTypes: any = [
-    {name: 'По возрастанию цены', value: ''},
-    {name: 'По убыванию цены', value: ''},
+    {name: 'По возрастанию цены', value: 'order_discount_price_euro'},
+    {name: 'По убыванию цены', value: '-order_discount_price_euro'},
     {name: 'По названию', value: 'name'},
     {name: 'По автору', value: 'author'},
     {name: 'По популярности', value: '-is_popular'},

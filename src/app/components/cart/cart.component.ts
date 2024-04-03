@@ -6,6 +6,8 @@ import {Certificate, PromoCode} from "../../model/promo";
 import {numbers} from "@material/checkbox";
 import {ProductService} from "../../services/product.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {CartCertificateItem, CartCodeItem, CartProductItem, CartRequest, OrdersPriceValues} from "../../model/cart";
+import {THREE} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'cart',
@@ -36,6 +38,11 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   giftCardsDiscount: number = 0;
 
 
+  ordersPriceValues: OrdersPriceValues;
+
+  cartRequest: CartRequest;
+
+
   constructor(
     private cartService: CartService,
     private router: Router,
@@ -50,6 +57,8 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     this.cardGifts = this.cartService.getGiftCardsFromStorage();
 
     this.updateTotalValue();
+
+    this.createCartRequest();
 
 
   }
@@ -66,6 +75,51 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
       })
 
+    this.cartService.getCartPrices(this.createCartRequest()).pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((resp) => {
+      this.ordersPriceValues = resp;
+    })
+
+
+  }
+
+  createCartRequest():  CartRequest{
+    let certificates: CartCodeItem[] = [];
+
+    this.cardGifts.forEach((cert) => {
+      certificates.push(new CartCodeItem(cert.number))
+    })
+    let products: CartProductItem[] = [];
+
+    this.products.forEach((pr) => {
+      products.push(new CartProductItem(pr.product.id, pr.count))
+    })
+    let certificatesInCart: CartCertificateItem[] = [];
+
+    this.certificatesToOrder.forEach((cert) => {
+      certificatesInCart.push(new CartCertificateItem(cert.certificate.id, cert.count))
+    })
+
+    this.cartRequest = new CartRequest()
+
+    if (this.promocode) {
+      this.cartRequest.promoCode = new CartCodeItem(this.promocode?.number ? this.promocode?.number : null);
+    }
+
+    if (certificates) {
+      this.cartRequest.certificates  = certificates;
+    }
+
+    if (products) {
+      this.cartRequest.products  = products;
+    }
+
+    if (certificatesInCart) {
+      this.cartRequest.certificatesInCart  = certificatesInCart;
+    }
+
+    return  this.cartRequest
 
   }
 
@@ -241,7 +295,14 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   updateTotalValue() {
-    this.countDiscountValue()
+
+    this.cartService.getCartPrices(this.createCartRequest()).pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((resp) => {
+      this.ordersPriceValues = resp;
+    })
+
+    // this.countDiscountValue()
   }
 
   fullPrice(): any {

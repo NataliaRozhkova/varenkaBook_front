@@ -2,7 +2,7 @@
   <h3>Вы хотите отписаться от нашей рассылки?</h3>
   <div class="subscribe-input">
   </div>
-  <button mat-button class=" main-button" (click)="unsubscribe()">Отписаться</button>
+  <button mat-button class="unsubscribe main-button" (click)="unsubscribe()">Отписаться</button>
   <mat-error
     *ngIf="emailControl.errors">{{getErrorText(emailControl.errors)}}</mat-error>
 

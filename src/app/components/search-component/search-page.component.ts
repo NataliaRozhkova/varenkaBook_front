@@ -5,6 +5,7 @@ import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {Genre, Product} from "../../model/product";
 import {ProductsListComponent} from "../products/products-list.component";
 import {ThemePalette} from "@angular/material/core";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'search-page',
@@ -35,7 +36,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {
   }
 
@@ -59,6 +61,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     this.selectedTab == 0 ? this.productsInStock.change(0) : this.productsToOrder.change(0);
 
+    this.location.replaceState("/search?query=" + this.search);
 
   }
 }

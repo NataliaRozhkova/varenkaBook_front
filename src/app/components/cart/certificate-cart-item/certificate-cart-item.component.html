@@ -9,7 +9,7 @@
 
   <div class="product-info">
     <div>
-      <div class="product-name">Подарочный сертификат на {{certificate.amount + ' \u20AC'}}</div>
+      <div class="product-name">Подарочный сертификат на {{certificate.amount  | number : '1.2-2' | currency: "EUR"}}</div>
     </div>
 
 
@@ -37,7 +37,7 @@
   <div class="right-panel">
     <div class="cost-info">
 
-      {{productService.roundPriceStr(certificate.amount  * count) + ' \u20AC'}}
+      {{ (certificate.amount  * count)  | number : '1.2-2' | currency: "EUR"}}
     </div>
     <button class="menu-button-cart" (click)="deleteAll()">
       <span class="icon-trash_">

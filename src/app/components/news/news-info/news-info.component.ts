@@ -20,7 +20,7 @@ export class NewsInfoComponent implements OnDestroy, OnInit, AfterViewInit{
 
   constructor(
     private route: ActivatedRoute,
-    private imageService: ImageService,
+    public imageService: ImageService,
     private newsService: NewsService,
   ) {
   }

@@ -24,7 +24,8 @@ export const environment = {
     cityError: 'Поле не может быть пустым',
     pickPointError: 'Поле не может быть пустым',
     customerExist: "Вы уже подписаны на рассылку",
-    responseError: "Произошла ошибка, попробуйте повторить опзднее"
+    responseError: "Произошла ошибка, попробуйте повторить опзднее",
+    max: 'Некорректное значение поля',
   },
 
   stripe: {
@@ -33,6 +34,7 @@ export const environment = {
 
   // dns: "http://172.20.10.8:4200/",
   dns: "http://192.168.1.134:4200/",
+  // dns: "http://127.0.0.1:4200/",
 
   shopAddress:
     {

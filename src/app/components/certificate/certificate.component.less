@@ -4,46 +4,61 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 100%;
 
   .certificate {
-    margin: 0 50px 0 50px;
+    //margin: 0 50px 0 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 5vh;
+    height: 100%;
+
   }
 
   .certificate-image-container {
     position: relative;
     display: flex;
     justify-content: center;
-    height: 40vh;
+    //height: 40vh;
     margin: 30px;
+    flex: 1;
   }
+
   .certificate-value {
     position: absolute;
     color: @baseBackgroundColor;
     width: auto;
     z-index: 2000;
     white-space: nowrap;
-    top: 25%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    font-size: 28px;
+    font-size: 5vh;
     font-weight: bold;
   }
+
   .certificate-image {
-    height: 40vh;
-    //margin: 30px;
+    height: 35vw;
   }
 
   .certificate-info {
-    margin: 30px;
+    margin-top: 40px;
+    margin-left: 30px;
+    max-width: 300px;
+    min-width: 300px;
+
     .certificate-info-text {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 20px;
+      margin-bottom: 40px;
+      font-size: 18px;
+      text-align: start;
+    }
+
+    .info-header {
+      font-weight: bold;
+      font-size: 24px;
+
     }
   }
 
@@ -57,6 +72,8 @@
   @media (max-width: 850px) {
     .certificate {
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       margin: 0;
     }
 
@@ -64,20 +81,32 @@
       height: 30vh;
 
     }
-      .certificate-image {
+
+    .certificate-image {
       height: 30vh;
       width: 80vw;
     }
+
     .certificate-value {
       font-size: 25px;
     }
+
     .certificate-info {
       display: flex;
+      min-width: 200px;
+      margin-left: 0;
       flex-direction: column;
       justify-content: center;
 
+      .certificate-info-text {
+        font-size: 16px;
+        margin-left: 5px;
+
+      }
+
 
     }
+
   }
 
 }

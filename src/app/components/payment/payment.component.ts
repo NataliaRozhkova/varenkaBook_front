@@ -54,14 +54,13 @@ export class PaymentComponent  {
       this.paymentService.createPayment(params).pipe(
         switchMap(res => {
 
-          console.log("********   pay response ", res)
-
           if (!res?.id) {
             return new Observable((observer: Observer<any>) => {
               observer.next(res);
               observer.complete();
             });
           }
+
           return this.stripeService.redirectToCheckout({sessionId: res.id})
         })
       ).subscribe(result => {

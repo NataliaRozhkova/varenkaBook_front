@@ -2,7 +2,7 @@ import {
   AfterContentInit,
   AfterViewInit,
   ChangeDetectorRef,
-  Component, HostListener,
+  Component, ElementRef, HostListener,
   inject,
   OnDestroy,
   OnInit, TemplateRef,
@@ -41,7 +41,7 @@ import {ComponentCanDeactivate} from "../../directives/guard";
 import {PaymentComponent} from "../payment/payment.component";
 import {CertificateItem, PaymentItem, PaymentItemsType, PaymentParameters} from "../../model/models";
 import {InformationService} from "../../services/information.service";
-import {Certificate,  PromoCode} from "../../model/promo";
+import {Certificate, PromoCode} from "../../model/promo";
 
 
 @Component({
@@ -67,6 +67,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
   @ViewChild('paymentComponent')
   paymentComponent: PaymentComponent;
+
+  content:any;
 
   canDeactivatePage: boolean = false;
 
@@ -100,6 +102,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   promoCode: PromoCode;
 
   orderResponse: HttpErrorResponse;
+
+  orderHasErrors: boolean = false;
 
   orderControls = this._formBuilder.group({
     name: this.nameControl,
@@ -161,6 +165,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     }
 
+    this.content = document.getElementById('content');
+
 
     this.promoCode = this.cartService.getPromocodeFromStorage();
 
@@ -219,8 +225,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.productsToOrder = this.getProductsFromStatus('available_to_order');
 
 
-
-
     this.productService.getDeliveryTypes().pipe(
       takeUntil(this.destroySubject),
       switchMap((types: any) => {
@@ -240,8 +244,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   ngAfterContentInit() {
-    // this.getOrderFromStorage()
-    console.log("******************ngOnInit ********  ", this.jointDelivery)
 
     if (this.productsToOrder.length == 0 || this.productsInStock.length == 0) {
 
@@ -260,15 +262,10 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.setCertificatesOrderInfo();
       this.setProductsToOrders();
 
-      if (this.certificates.length > 0) {
-        this.certificatesOrder.orderStatus.status = status;
-      }
+      this.certificatesOrder.orderStatus.status = status;
 
       this.order.orderStatus.status = status;
       this.preorder.orderStatus.status = status;
-
-
-      // this.submitOrders(this.order, this.preorder, this.certificatesOrder);
 
       let emptyPreorder: boolean = this.productsToOrder.length == 0;
       let emptyOrder: boolean = this.productsInStock.length == 0;
@@ -280,11 +277,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         this.submitCertificateOrder(status)
       }
 
-      if (!emptyOrder &&  emptyPreorder) {
+      if (!emptyOrder && emptyPreorder) {
         this.submitOrders(this.order, null, certificateOrd)
       }
 
-      if (emptyOrder &&  !emptyPreorder) {
+      if (emptyOrder && !emptyPreorder) {
         this.submitOrders(this.preorder, null, certificateOrd)
       }
 
@@ -440,7 +437,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.productService.saveOrder(order).pipe(
       takeUntil(this.destroySubject),
 
-      switchMap((response:any) => {
+      switchMap((response: any) => {
         this.order = response;
         if (preorder) {
           this.preorder.jointOrder = response.id
@@ -450,29 +447,30 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         }
       }),
 
-      switchMap((response:any) => {
+      switchMap((response: any) => {
 
-        if (preorder ) {
+        if (preorder) {
           this.preorder = response;
           this.order.jointOrder = response.id;
         }
-        if(certificateOrder) {
+        if (certificateOrder) {
           return this.productService.saveCertificateOrder(certificateOrder)
         } else {
           return this.getPriveousRespone(response)
         }
       }),
-      map((response:any) => {
+      map((response: any) => {
         if (certificateOrder) {
-          this.certificatesOrder  = response;
+          this.certificatesOrder = response;
         }
         this.loadOrder = false;
 
       })
-
     ).subscribe(resp => {
       },
       err => {
+
+        this.orderHasErrors = true;
         this.orderResponse = err;
         this.resolveErrors(err)
         this.loadOrder = false;
@@ -483,7 +481,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   getPriveousRespone(resp: any): Observable<any> {
-    return  new Observable((observer: Observer<any>) => {
+    return new Observable((observer: Observer<any>) => {
       observer.next(resp);
       observer.complete();
     });
@@ -553,13 +551,14 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     let certificatesPayment: number = 0;
 
 
-    this.cartService.getGiftCardsFromStorage().forEach((item) => {certificatesPayment += item.amount });
+    this.cartService.getGiftCardsFromStorage().forEach((item) => {
+      certificatesPayment += item.amount
+    });
 
     let result = fullPrice - certificatesPayment;
 
     return result > 0 ? this.productService.roundPriceStr(result) : 0;
   }
-
 
 
   setOrderFields() {
@@ -592,11 +591,17 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
 
   validate(): boolean {
+    this.orderHasErrors = false;
     this.clearControls();
     return this.validatePersonalInfo() && this.validateDelivery() && this.validateAgreement();
   }
 
   changeStep(ind: number) {
+
+    if (this.content) {
+      this.content.scrollTop = 0;
+
+    }
 
     this.setOrderToStorage();
 

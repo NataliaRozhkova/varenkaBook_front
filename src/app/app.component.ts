@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -15,4 +15,16 @@ export class AppComponent {
     scrollElement?.scrollTo(0, 0)
     scrollElement?.scroll(0,0)
   }
+
+  // @HostListener('click', ['$event.target']) scroll(){
+  //
+  //   let content = document.getElementById("content");
+  //
+  //   console.log("**********    ", content?.scrollTop);
+  //   content?.scrollTo(0,0)
+  //   if (content) {
+  //     content.scrollTop = 0;
+  //
+  //   }
+  // }
 }

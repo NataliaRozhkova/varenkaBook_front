@@ -142,7 +142,7 @@ html, body {
   }
 
   .main-button:disabled {
-    background-color: #7e7e7e;
+    background-color: #F5F5F5;
   }
 
   .mat-mdc-form-field {
@@ -198,8 +198,14 @@ html, body {
   }
 
 
+
 }
 
+
+:-webkit-any-link {
+  color:#008ea5;
+  font-weight: bold;
+}
 
 ::-webkit-scrollbar {
   width: 15px;
@@ -231,3 +237,5 @@ html, body {
   opacity: .5;
 
 }
+
+
