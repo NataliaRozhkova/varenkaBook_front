@@ -17,6 +17,7 @@ export class MenuPanelComponent implements OnDestroy{
 
   private destroySubject: Subject<void> = new Subject();
   productsCount: number = 0;
+  hidden: boolean = true;
 
   showFind: boolean = false;
 
@@ -30,6 +31,7 @@ export class MenuPanelComponent implements OnDestroy{
   ) {
     this.productsCount = this.cartService.getCartCount();
 
+    this.hidden = this.productsCount == 0;
 
   }
 
@@ -39,6 +41,7 @@ export class MenuPanelComponent implements OnDestroy{
       takeUntil(this.destroySubject))
       .subscribe((next) => {
         this.productsCount = this.cartService.getCartCount();
+        this.hidden = this.productsCount == 0;
       })
   }
 

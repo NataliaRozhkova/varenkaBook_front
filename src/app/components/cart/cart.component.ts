@@ -1,13 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {map, Subject, switchMap, takeUntil} from "rxjs";
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import { Subject, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
 import {CartCertificatetItem, CartItem, CartService} from "../../services/cart.service";
 import {Certificate, PromoCode} from "../../model/promo";
-import {numbers} from "@material/checkbox";
 import {ProductService} from "../../services/product.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {CartCertificateItem, CartCodeItem, CartProductItem, CartRequest, OrdersPriceValues} from "../../model/cart";
-import {THREE} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'cart',
@@ -264,8 +261,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
     }
     this.promocodDiscount = fullPrice.totalValueDiscount - totalValueDiscount - this.giftCardsDiscount;
-    // this.totalValue = this.productService.roundPrice(totalValue);
-    // this.totalValueDiscount = this.productService.roundPrice(totalValueDiscount);
 
     this.giftCard = '';
 
@@ -302,7 +297,6 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       this.ordersPriceValues = resp;
     })
 
-    // this.countDiscountValue()
   }
 
   fullPrice(): any {

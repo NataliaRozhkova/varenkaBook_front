@@ -24,12 +24,6 @@ export class CartRequest {
   products: CartProductItem[] = [];
   certificatesInCart: CartCertificateItem[] = [];
 
-  // constructor(params: any) {
-  //   this.promoCode = params.promoCode;
-  //   this.certificates = params.certificates;
-  //   this.products = params.products;
-  //   this.certificatesInCart = params.certificatesInCart;
-  // }
 }
 
 

@@ -6,8 +6,6 @@ import {Product} from "../../../model/product";
 import {MatDialog} from "@angular/material/dialog";
 import {ImageService} from "../../../services/image.service";
 import {ProductService} from "../../../services/product.service";
-import {FormControl} from "@angular/forms";
-import {CertificateCard} from "../../../model/promo";
 
 @Component({
   selector: 'cart-item',

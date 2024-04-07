@@ -100,7 +100,6 @@ const appRoutes: Routes = [
   {path: 'unsubscribe', component: UnsubscribeComponent},
   {path: 'certificate-info/:id', component: CertificateComponent},
   {path: 'order-result/:result/:orders', component: OrderResultComponent},
-  // {path: 'order-result/:result/:orderId/:preorderId', component: OrderResultComponent},
 ];
 
 const routerOptions: ExtraOptions = {
@@ -187,7 +186,8 @@ const routerOptions: ExtraOptions = {
     MatTreeModule,
     MatMenuModule
   ],
-  providers: [PendingChangesGuard, ActivateGuard
+  providers: [PendingChangesGuard,
+    ActivateGuard,
   ],
   bootstrap: [AppComponent]
 })

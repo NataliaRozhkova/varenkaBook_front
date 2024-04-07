@@ -47,7 +47,6 @@ export class SubscribeComponent implements OnDestroy, OnInit {
     if (this.validate()) {
       this.informationService.subscribeNewsletters({
         name: this.name,
-        // concent_data_processing: true,
         email: this.email
       }).subscribe((res: any) => {
           this.subscribed = true;
@@ -138,13 +137,6 @@ export class SubscribeComponent implements OnDestroy, OnInit {
   }
 
   getErrorText(errors: any): string {
-    // let errorText = '';
-    // Object.keys(errors).forEach((err) => {
-    //   errorText += environment.errors[err as keyof typeof environment.errors]
-    //
-    // })
-    // return errorText;
-
     return  this.informationService.getErrorText(errors);
 
   }

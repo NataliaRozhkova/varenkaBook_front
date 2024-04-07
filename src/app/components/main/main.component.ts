@@ -1,9 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import KeenSlider from 'keen-slider'
+import {Component,  OnInit} from '@angular/core';
 import {Slide} from "../../model/models";
 import {Product} from "../../model/product";
 import {ProductService} from "../../services/product.service";
-import {map, Subject, switchMap, takeUntil} from "rxjs";
+import { Subject,  takeUntil} from "rxjs";
 import {InformationService} from "../../services/information.service";
 
 @Component({

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
-import {Observable, retry} from "rxjs";
+import {Observable} from "rxjs";
 import {Product} from "../model/product";
 import {CertificatesOrder, Order} from "../model/order";
 

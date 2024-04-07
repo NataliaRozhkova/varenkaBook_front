@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component,  OnDestroy, OnInit} from '@angular/core';
 import {News} from "../../model/models";
 import {NewsService} from "../../services/news.service";
 import {Subject, takeUntil} from "rxjs";

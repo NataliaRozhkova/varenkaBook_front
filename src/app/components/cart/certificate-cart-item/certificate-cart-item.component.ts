@@ -1,12 +1,10 @@
-import {Component, Input, OnDestroy, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy,  TemplateRef, ViewChild} from '@angular/core';
 import {Subject} from "rxjs";
 import {Router} from "@angular/router";
 import {CartService} from "../../../services/cart.service";
-import {Product} from "../../../model/product";
 import {MatDialog} from "@angular/material/dialog";
 import {ImageService} from "../../../services/image.service";
 import {ProductService} from "../../../services/product.service";
-import {FormControl} from "@angular/forms";
 import {CertificateCard} from "../../../model/promo";
 
 @Component({

@@ -15,7 +15,6 @@
 
     <h2 *ngIf="certificatesToOrder.length > 0">Подарочные сертификаты</h2>
     <div *ngFor="let pr of certificatesToOrder" class="products">
-      <!--      <cart-item [product]="pr.product" [count]="pr.count"></cart-item>-->
       <certificate-cart-item [certificate]="pr.certificate" [count]="pr.count"></certificate-cart-item>
     </div>
 

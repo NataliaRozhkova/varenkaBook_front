@@ -32,9 +32,7 @@ export const environment = {
     publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
   },
 
-  // dns: "http://172.20.10.8:4200/",
   dns: "http://192.168.1.134:4200/",
-  // dns: "http://127.0.0.1:4200/",
 
   shopAddress:
     {

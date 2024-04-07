@@ -1,4 +1,3 @@
-import {Certificate} from "./promo";
 
 export class Slide {
   image: string;

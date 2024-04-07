@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {AgeCategory, Availability, Genre, Product} from "../../model/product";
-import {find, Subject, takeUntil} from "rxjs";
+import {AgeCategory, Genre, Product} from "../../model/product";
+import { Subject, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
 
 @Component({
@@ -29,7 +29,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   total: number = 0;
 
   initOrder: string = '-priority';
-  // initOrder: string = '-priority,-is_new,-is_popular';
 
   @Input()
   order: string =  this.initOrder;

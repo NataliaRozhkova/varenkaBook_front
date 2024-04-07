@@ -178,7 +178,6 @@ export class CartService {
   }
 
   getOrderFromStorage(orderName: string): Order {
-    // this.storageService.deleteItem(orderName);
 
     return this.storageService.getItem(orderName, 'null');
   }

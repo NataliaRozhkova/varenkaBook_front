@@ -1,23 +1,11 @@
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit} from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {loadStripe, Stripe} from "@stripe/stripe-js";
+import {Component, Input} from '@angular/core';
 import {InformationService} from "../../services/information.service";
-import {DOCUMENT} from "@angular/common";
 import {StripeService} from "ngx-stripe";
-import {map, Observable, Observer, switchMap} from "rxjs";
-import {HttpService} from "../../services/http.service";
+import { Observable, Observer, switchMap} from "rxjs";
 import {PaymentService} from "../../services/payment.service";
 import {FormControl} from "@angular/forms";
 import {PaymentParameters} from "../../model/models";
 import {Router} from "@angular/router";
-
-
-
-export enum StripePaymentType {
-  Order,
-  Certificate
-}
-
 
 @Component({
   selector: 'payment',
@@ -46,7 +34,6 @@ export class PaymentComponent  {
   ) {}
 
   checkout(params: PaymentParameters) {
-    // this.router.navigate(['main'])
 
     this.paymentParameters = params;
     this.clearControl();
@@ -67,8 +54,6 @@ export class PaymentComponent  {
         if (result.error) {
           alert(result.error.message);
         } else  {
-          console.log(" -- ------ ", result)
-          console.log(" -- ---params--- ", params)
           let orders = ''
           params.items.forEach((item) => {
             orders += item.id + ":";

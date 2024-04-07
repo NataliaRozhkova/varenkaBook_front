@@ -2,7 +2,7 @@ import {
   AfterContentInit,
   AfterViewInit,
   ChangeDetectorRef,
-  Component, ElementRef, HostListener,
+  Component, HostListener,
   inject,
   OnDestroy,
   OnInit, TemplateRef,
@@ -201,7 +201,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         let phone = '';
         if (val) {
           phone = val.replaceAll(" ", "").replaceAll("+", "");
-          // phone = val.replaceAll("+", "");
         }
         return this.productService.phoneValidate(phone)
       }),
@@ -295,8 +294,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   setOrderToStorage() {
 
     this.setOrderFields();
-    // this.cartService.setOrdersToStorage(this.order, 'order');
-    // this.cartService.setOrdersToStorage(this.preorder, 'preorder');
 
   }
 
@@ -307,8 +304,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     this.certificatesOrder.phoneNumber = this.order.phoneNumber;
     this.certificatesOrder.concentDataProcessing = this.order.concentDataProcessing;
     this.certificatesOrder.concentNewsletters = this.order.concentNewsletters;
-    // this.certificatesOrder.orderStatus.status = orderStatus;
-
 
     this.certificatesOrder.certificatesInOrder = [];
 
@@ -503,7 +498,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     if (this.order.jointDelivery) {
       this.preorder.jointDelivery = true;
       this.preorder.pickPoint = null;
-      // this.preorder.deliveryType.type = this.getJointDeliveryType().type;
       this.preorder.payForDelivery = this.jointDelivery;
       this.preorder.pickPoint = this.order.pickPoint;
       this.preorder.jointOrder = this.order.id;
@@ -862,7 +856,5 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   }
 
   protected readonly console = console;
-  // protected readonly document = document;
-  // protected readonly window = window;
 }
 

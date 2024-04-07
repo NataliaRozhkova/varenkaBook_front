@@ -30,6 +30,7 @@
     "imagekitio-angular": "^3.0.0",
     "keen-slider": "5.5.0",
     "kill-port": "^2.0.1",
+    "ng-src": "^1.0.1",
     "ngx-mask": "^14.3.3",
     "ngx-pagination": "^6.0.3",
     "ngx-stripe": "^15.8.1",

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InformationService} from "../../services/information.service";
-import {Subject, takeUntil} from "rxjs";
+import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 
 @Component({

@@ -1,5 +1,4 @@
-import {constructorChecks} from "@angular/cdk/schematics";
-import {Certificate, CertificateCard, PromoCode} from "./promo";
+import { PromoCode} from "./promo";
 
 export class Order {
 

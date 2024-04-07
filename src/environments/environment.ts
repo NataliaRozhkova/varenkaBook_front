@@ -28,7 +28,7 @@ export const environment = {
   },
 
   stripe: {
-    publicKey: 'pk_test_51OnkB4EHIQl1lJBCCIrkt0IroCaDle9BrxPZRHmmsOPbaQJhLq48gdNjq5mRHpRDI6yGBnUOPD9en9uJD4cREibt00EHqHAj5u',
+    publicKey: 'pk_live_51NmKtuFjFAvOK5oXKvAKk5tiIF01hN3c7vyFtOx5wwmWQPovhKUksyA83rd8HsU02lXFy6LNpJRoTcLasRcOlI1D00CwlaTklB',
   },
 
   dns: "http://varenkabooks.com/",

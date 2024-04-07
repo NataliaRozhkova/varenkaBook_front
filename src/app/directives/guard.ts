@@ -36,7 +36,6 @@ export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate
 @Injectable()
 export class ActivateGuard implements CanActivate   {
   constructor(
-    // private permissions: Permissions,
   private router: Router
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : boolean{

@@ -1,15 +1,9 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {CertificateCard} from "../../model/promo";
-import {FormControl} from "@angular/forms";
-import {InformationService} from "../../services/information.service";
-import {StripePaymentType} from "../payment/payment.component";
-import {Order} from "../../model/order";
 import {map, switchMap} from "rxjs";
 import {ProductService} from "../../services/product.service";
 import {environment} from "../../../environments/environment";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {Product} from "../../model/product";
-import {Slide} from "../../model/models";
 import {CartService} from "../../services/cart.service";
 
 @Component({
@@ -30,8 +24,6 @@ export class CertificateComponent {
 
   ngOnInit(): void {
 
-
-    // this.productService.getCertificateType()
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         return this.productService.getCertificateTypes(params?.get('id'));
@@ -49,8 +41,6 @@ export class CertificateComponent {
   addToCart(){
     this.cartService.addCertificatesToCart(this.certificate)
   }
-
-
 
 }
 

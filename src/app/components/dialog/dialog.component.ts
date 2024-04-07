@@ -10,10 +10,8 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 })
 export class DialogComponent {
 
-  // private destroySubject: Subject<void> = new Subject();
 
   constructor(
-    // private router: Router,
     public dialogRef: MatDialogRef<DialogComponent>,
 
   ) {
@@ -22,17 +20,9 @@ export class DialogComponent {
   ngOnInit() {
   }
 
-  openDialog() {
-  }
-
   onCancelUserDialog(): void {
     this.dialogRef.close();
   }
-
-  //
-  // ngOnDestroy() {
-  //   this.destroySubject.next();
-  // }
 
 
 }
