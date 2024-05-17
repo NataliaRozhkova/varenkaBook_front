@@ -38,6 +38,8 @@ export class CertificateListComponent implements OnDestroy, OnInit {
       this.certificateTypes.forEach( (cert) => {
         cert.photo = this.certificateImageLink;
       })
+      this.certificateTypes.sort((a, b) => (a.amount < b.amount ? -1 : 1));
+
     })
   }
 

@@ -1,4 +1,8 @@
 export const environment = {
+
+  pageDescription: 'Самый лучший книжный магазин',
+  pageTitle: 'VARENKA книжный магазин в Порту Португалия',
+
   deliveryTypeNames: {
     "pickup_from_warehouse": 'Самовывоз в Порту',
     "pick_point": 'Самовывоз из пункта выдачи',
@@ -26,6 +30,13 @@ export const environment = {
     customerExist: "Вы уже подписаны на рассылку",
     responseError: "Произошла ошибка, попробуйте повторить опзднее",
     max: 'Некорректное значение поля',
+  },
+
+  coverTypes: {
+    board_book: "Книжка-картонка",
+    hard_cover: "Твердая обложка",
+    soft_cover: "Мягкая обложка",
+
   },
 
   stripe: {

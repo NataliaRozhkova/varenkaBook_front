@@ -63,7 +63,7 @@ export class CartItemComponent implements OnDestroy{
   }
 
   openProductInfo(){
-    this.router.navigate(['product-info', this.product.id ])
+    this.router.navigate(['product-info', this.product.tag ])
   }
 
 

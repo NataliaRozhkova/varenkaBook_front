@@ -128,8 +128,6 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   productsInStock: CartItem[];
   productsToOrder: CartItem[];
 
-  @ViewChild('stepper')
-  stepper: MatStepper;
   @ViewChild('dialog') myDialog = {} as TemplateRef<string>;
   private dialogRef: any;
 

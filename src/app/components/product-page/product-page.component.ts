@@ -1,7 +1,8 @@
 import {
+  AfterContentChecked,
   Component,
   EventEmitter,
-  HostListener,
+  HostListener, inject,
   Input,
   OnDestroy,
   OnInit,
@@ -18,6 +19,7 @@ import {InformationService} from "../../services/information.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {FrontParam} from "../../model/service-information";
 import {MatSelect} from "@angular/material/select";
+import {PagePosition, PageService} from "../../services/page.service";
 
 @Component({
   selector: 'product-page',
@@ -33,7 +35,7 @@ import {MatSelect} from "@angular/material/select";
   ],
 
 })
-export class ProductPageComponent implements OnDestroy, OnInit {
+export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChecked {
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -57,6 +59,10 @@ export class ProductPageComponent implements OnDestroy, OnInit {
   ageState: string = 'initial';
   sortState: string = 'initial';
 
+  frontParams: FrontParam[] = [];
+
+  allGenres: Genre[] = []
+
   @ViewChild('products')
   products: ProductsListComponent = new ProductsListComponent(this.productService);
 
@@ -65,6 +71,8 @@ export class ProductPageComponent implements OnDestroy, OnInit {
   @ViewChild('selectSort') selectSort: MatSelect;
 
   filters: string[] = [];
+
+  showProducts: boolean = false;
 
   genres: Genre[] = [];
   ageCategories: AgeCategory[] = [];
@@ -78,48 +86,88 @@ export class ProductPageComponent implements OnDestroy, OnInit {
     {name: 'По новизне', value: '-is_new'},
   ]
 
+  // pageService: PageService = inject(PageService);
+
+  position: PagePosition;
+  content: HTMLElement | null;
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
     private infoService: InformationService,
     private router: Router,
+    private pageService: PageService,
   ) {
   }
 
   ngOnInit() {
 
     this.height = window.innerWidth < 600 ? '60vh' : '70vh';
+    this.content = document.getElementById('content');
+    this.position = this.pageService.getPosition();
 
     this.infoService.getFrontParams()
       .pipe(
-      takeUntil(this.destroySubject),
-      switchMap((res: any) => {
-        const frontParams: FrontParam[] = res?.results;
-        const bookFilters = frontParams.find(par => par.name == this.filterName)?.value
-        this.filters = [];
+        takeUntil(this.destroySubject),
+        switchMap((res: any) => {
+          this.frontParams = res?.results;
+          const bookFilters = this.frontParams.find(par => par.name == this.filterName)?.value
+          this.filters = [];
 
-        if (bookFilters) {
+          if (bookFilters) {
 
-          let list = bookFilters?.replace(" ", "").split(',');
-          list.forEach((i) => {
-            this.filters.push(i.trim());
-          })
-        }
-        return this.productService.getGenres()
-      }),
+            let list = bookFilters?.split(',');
+            list.forEach((i) => {
+              this.filters.push(i.trim());
+            })
+          }
+          return this.productService.getGenres()
+        }),
         switchMap((response: any) => {
-        this.genres = [];
-        this.genres = response?.results?.filter((genre: any) => {
-          return this.filters.includes(genre.genre)
-        });
-        return this.productService.getAgeCategories();
-      }),
+
+          this.genres = [];
+          this.allGenres = response?.results;
+          this.genres = response?.results?.filter((genre: any) => {
+            return this.filters.includes(genre.genre)
+          });
+
+
+
+          return this.productService.getAgeCategories();
+        }),
         map((response: any) => {
           this.ageCategories = response?.results;
         })
+      ).subscribe(() => {
+        this.setPosition();
 
-    ).subscribe()
+    })
+
+
+  }
+
+  ngAfterContentChecked() {
+
+    if (this.content && this.position.pageName == this.productType) {
+
+      this.content.scrollTop = this.position.scrollPosition;
+
+    }
+    this.showProducts = true;
+
+  }
+
+  setPosition() {
+
+    if (this.content && this.position.pageName == this.productType) {
+
+
+      this.selectGenre.value = this.position.genreSelected;
+
+      this.selectAge.value = this.position.ageCategorySelected;
+      this.selectSort.value = this.position.sortSelected;
+      this.changeFilters();
+    }
 
 
   }
@@ -129,13 +177,54 @@ export class ProductPageComponent implements OnDestroy, OnInit {
     this.products.ageCategory = this.selectAge.value;
     this.products.order = this.selectSort.value;
     this.products.change(1);
+    this.changeFilters();
   }
 
 
+  changeFilters() {
+
+    let bookFilters = this.frontParams.find(par => par.name == this.selectGenre.value?.genre)?.value
+
+    if (!this.selectGenre.value) {
+      bookFilters = this.frontParams.find(par => par.name == 'книги')?.value
+    }
+
+
+    if (bookFilters) {
+      this.mainFilterName = bookFilters;
+      this.filterName = this.selectGenre.value;
+      this.filters = [];
+
+      if (bookFilters) {
+
+        let list = bookFilters?.split(',');
+        list.forEach((i) => {
+          this.filters.push(i.trim());
+        })
+
+        this.genres = this.allGenres.filter((genre: any) => {
+
+          return this.filters.includes(genre.genre)
+        });
+      }
+    }
+
+
+  }
 
 
   ngOnDestroy() {
     this.destroySubject.next();
+
+    this.pageService.setPagePosition({
+      pageName: this.productType,
+      pagination: this.products.page,
+      scrollPosition: this.content?.scrollTop,
+      ageCategorySelected: this.selectAge?.value,
+      genreSelected: this.selectGenre?.value,
+      sortSelected: this.selectSort?.value,
+    })
+
   }
 
 

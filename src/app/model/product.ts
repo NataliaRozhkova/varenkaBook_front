@@ -30,6 +30,9 @@ export class Product {
   year: string;
   soldAmount: number;
   imageLink: string;
+  coverType: CoverType;
+  weight: number;
+  tag: string;
 
 
 }
@@ -37,12 +40,13 @@ export class Product {
 export class AgeCategory {
   id: string;
   ageCategory: string;
+
   constructor(ageCategory: any) {
     this.id = ageCategory.id;
     this.ageCategory = ageCategory.ageCategory;
   }
 
-  }
+}
 
 export class Availability {
   id: string;
@@ -80,4 +84,9 @@ export class Photo {
   id: string;
   photo: string;
   productId: string;
+}
+
+export class CoverType {
+  id: string;
+  type: string;
 }

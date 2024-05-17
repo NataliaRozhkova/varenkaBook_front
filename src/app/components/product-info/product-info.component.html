@@ -21,7 +21,7 @@
 
 
 <ng-template #sliderBlock>
-  <div *ngIf="product" class="">
+  <div *ngIf="product.id" class="">
     <ng-container #testBlock *ngIf="allImages.length > 0">
       <div class="slider-container">
         <div class="image-slider">
@@ -33,24 +33,24 @@
 </ng-template>
 
 <ng-template #imageBlock>
-  <div class="main-image-section">
+  <div class="main-image-section" *ngIf="product.id" >
     <div class="main-image">
-      <image [imageLink]="product.mainPhoto" *ngIf="product.mainPhoto"></image>
+      <image [imageLink]="product.mainPhoto" *ngIf="product.mainPhoto" [alt]="product.author + ' ' + product.name"></image>
       <img src="../assets/not_found.png" *ngIf="!product.mainPhoto && !product.imageLink" class="image-not-found"/>
-      <img  src="{{product.imageLink}}" *ngIf="!product.mainPhoto && product.imageLink" class="image-from-link"/>
+      <img  src="{{product.imageLink}}" *ngIf="!product.mainPhoto && product.imageLink" class="image-from-link"  alt="{{product.author}} {{product.name}}"/>
 
 
     </div>
   </div>
 
   <div *ngFor="let im of product.photos" class="product-photos">
-    <image [imageLink]="im.photo" class="image-list-photos"></image>
+    <image [imageLink]="im.photo" class="image-list-photos" [alt]="product.author + ' ' + product.name"></image>
   </div>
 </ng-template>
 
 <ng-template #sectionInfo>
 
-  <div class="section-info">
+  <div class="section-info" *ngIf="product">
 
     <div class="tech-info">
       <div *ngIf="product.isbn">
@@ -77,6 +77,14 @@
         <span>Год: </span>
         <span>{{product.year}}</span>
       </div>
+      <div *ngIf="product.coverType">
+        <span>Тип обложки: </span>
+        <span>{{coverTypes[product.coverType.type]}}</span>
+      </div>
+      <div *ngIf="product.weight > 0 ">
+        <span>Вес: </span>
+        <span>{{product.weight}} г.</span>
+      </div>
     </div>
 
     <div class="description">
@@ -86,9 +94,9 @@
   </div>
 </ng-template>
 <ng-template #nameBlock>
-  <div class="about">
+  <div class="about"  *ngIf="product.id">
     <div class="author">{{product.author}}</div>
-    <div class="product-name">{{product.name}}</div>
+    <h1 class="product-name">{{product.name}}</h1>
 
     <div class="short-description" *ngIf="product.shortDescription">{{product.shortDescription}}</div>
     <div class="price">

@@ -1,14 +1,27 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {AgeCategory, Genre, Product} from "../../model/product";
-import { Subject, takeUntil} from "rxjs";
+import {Subject, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
+import {PagePosition, PageService} from "../../services/page.service";
 
 @Component({
   selector: 'products',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.less']
 })
-export class ProductsListComponent implements OnDestroy, OnInit {
+export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChecked {
 
   @Input()
   productsCountOnPage: number = 12;
@@ -28,10 +41,12 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   page: number = 1;
   total: number = 0;
 
+  content: HTMLElement | null;
+
   initOrder: string = '-priority';
 
   @Input()
-  order: string =  this.initOrder;
+  order: string = this.initOrder;
 
   @Input()
   offset: number = 0;
@@ -50,6 +65,9 @@ export class ProductsListComponent implements OnDestroy, OnInit {
 
   private destroySubject: Subject<void> = new Subject();
 
+  pageService: PageService = inject(PageService);
+
+  position: PagePosition;
 
   constructor(
     private productService: ProductService,
@@ -57,12 +75,17 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+
     this.products = [];
     this.pageSize = this.productsCountOnPage;
+    this.content = document.getElementById('content');
+
+    this.position = this.pageService.getPosition();
 
     this.filters.limit = this.productsCountOnPage;
     this.filters.offset = this.offset;
     this.filters.ordering = this.order;
+
     if (this.productType) {
       this.filters.product_type = this.productType;
     }
@@ -74,7 +97,16 @@ export class ProductsListComponent implements OnDestroy, OnInit {
       this.filters.genres = this.genres.id;
     }
 
-    this.change(1);
+    if (this.content && this.position && this.position.pageName == this.productType) {
+      this.order = this.position.sortSelected  ;
+      this.genres = this.position.genreSelected;
+      this.ageCategory = this.position.ageCategorySelected;
+
+      this.change(this.position.pagination);
+    } else {
+      this.change(1);
+    }
+
   }
 
 
@@ -84,14 +116,18 @@ export class ProductsListComponent implements OnDestroy, OnInit {
 
     this.filters.offset = ($event - 1) * this.productsCountOnPage + this.offset;
 
+    if (this.content) {
+      this.content.scrollTop = 0;
+    }
+
     if (this.genres) {
-      this.filters.genres = this.genres.id;
+      this.filters.genres = this.genres;
     } else {
       delete this.filters['genres'];
     }
 
     if (this.ageCategory) {
-      this.filters.age_category = this.ageCategory.id;
+      this.filters.age_category = this.ageCategory;
     } else {
       delete this.filters['age_category'];
     }
@@ -119,12 +155,24 @@ export class ProductsListComponent implements OnDestroy, OnInit {
             this.total = res.count;
             this.page = $event;
             this.loading = false;
-          },err => {
-          this.loading = false;
+
+          }, err => {
+            this.loading = false;
           }
         )
 
-    },  0)
+    }, 10)
+
+
+  }
+
+  ngAfterContentChecked() {
+
+    // if (this.content && this.position.pageName == this.productType) {
+    //
+    //   this.content.scrollTop = this.position.scrollPosition;
+    //
+    // }
 
 
   }
@@ -135,14 +183,24 @@ export class ProductsListComponent implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.destroySubject.next();
+
+    let scrollEl = document.getElementById('content')
+
+    // this.pageService.setPagePosition({
+    //   pageName: this.productType,
+    //   pagination: this.page,
+    //   scrollPosition: this.content?.scrollTop,
+    // })
+
+
   }
 
   upPage(): void {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    // window.scroll({
+    //   top: 0,
+    //   left: 0,
+    //   behavior: 'smooth'
+    // });
   }
 
 }

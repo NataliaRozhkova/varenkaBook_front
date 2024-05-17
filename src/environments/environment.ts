@@ -1,4 +1,8 @@
 export const environment = {
+
+  pageDescription: 'Самый лучший книжный магазин',
+  pageTitle: 'VARENKA книжный магазин в Порту Португалия',
+
   deliveryTypeNames:{
     "pickup_from_warehouse": 'Самовывоз в Порту',
     "pick_point": 'Самовывоз из пункта выдачи',
@@ -29,6 +33,13 @@ export const environment = {
 
   stripe: {
     publicKey: 'pk_live_51NmKtuFjFAvOK5oXKvAKk5tiIF01hN3c7vyFtOx5wwmWQPovhKUksyA83rd8HsU02lXFy6LNpJRoTcLasRcOlI1D00CwlaTklB',
+  },
+
+  coverTypes: {
+    board_book: "Книжка-картонка",
+    hard_cover: "Твердая обложка",
+    soft_cover: "Мягкая обложка",
+
   },
 
   dns: "http://varenkabooks.com/",

@@ -1,7 +1,5 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import {Product} from "../../../model/product";
-import { CurrencyPipe } from "@angular/common";
-import {ProductService} from "../../../services/product.service";
 import {Router} from "@angular/router";
 import {ImageService} from "../../../services/image.service";
 
@@ -10,7 +8,7 @@ import {ImageService} from "../../../services/image.service";
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.less']
 })
-export class ProductItemComponent {
+export class ProductItemComponent implements  OnInit {
 
   @Input()
   product: Product;
@@ -31,10 +29,10 @@ export class ProductItemComponent {
     this.productImage = imageLink;
   }
 
-  openInfo($event: Product){
+  openInfo($event: Product) {
 
-    this.router.navigate(['product-info', $event.id ])
-
-  }
+    this.router.navigate(['product-info', $event.tag])
 
   }
+
+}

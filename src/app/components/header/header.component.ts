@@ -2,6 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MenuService} from "../../services/menu.service";
 import {Router} from "@angular/router";
+import {PageService} from "../../services/page.service";
 
 @Component({
   selector: 'header',
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private menuService: MenuService,
-    private router: Router
+    private router: Router,
+    private pageService: PageService
   ) {
   }
 
@@ -66,9 +68,14 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  setBasePagePosition() {
+    this.pageService.setBasePosition();
+  }
+
   navigate($event: any) {
     this.showMenu();
     this.router.navigate([$event], {queryParams: {genre: 'all'}})
+    this.pageService.setBasePosition();
 
   }
 

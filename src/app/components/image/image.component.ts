@@ -13,6 +13,9 @@ export class ImageComponent implements OnInit {
   @Input()
   imageLink: string;
 
+  @Input()
+  alt: string;
+
   constructor(private imageService: ImageService) {
   }
 
