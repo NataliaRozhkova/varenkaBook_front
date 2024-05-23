@@ -72,7 +72,9 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
 
   filters: string[] = [];
 
-  showProducts: boolean = false;
+
+    @Input()
+    pageName: string;
 
   genres: Genre[] = [];
   ageCategories: AgeCategory[] = [];
@@ -86,7 +88,6 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
     {name: 'По новизне', value: '-is_new'},
   ]
 
-  // pageService: PageService = inject(PageService);
 
   position: PagePosition;
   content: HTMLElement | null;
@@ -132,34 +133,40 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
           });
 
 
-
           return this.productService.getAgeCategories();
         }),
         map((response: any) => {
           this.ageCategories = response?.results;
         })
       ).subscribe(() => {
-        this.setPosition();
+      this.setPosition();
 
     })
 
+    this.pageService.pageEvent.subscribe((event) => {
+
+      if (event == 'pagination') {
+        this.position.scrollPosition = 0;
+      }
+    })
 
   }
 
   ngAfterContentChecked() {
 
-    if (this.content && this.position.pageName == this.productType) {
+    if (this.content && this.position.pageName == this.pageName && this.content.scrollHeight >= this.position.pageHeight) {
 
       this.content.scrollTop = this.position.scrollPosition;
+      this.position = new PagePosition({});
 
     }
-    this.showProducts = true;
+
 
   }
 
   setPosition() {
 
-    if (this.content && this.position.pageName == this.productType) {
+    if (this.content && this.position.pageName == this.pageName) {
 
 
       this.selectGenre.value = this.position.genreSelected;
@@ -183,7 +190,11 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
 
   changeFilters() {
 
-    let bookFilters = this.frontParams.find(par => par.name == this.selectGenre.value?.genre)?.value
+    let selectedGenreName = this.genres.find((g) =>
+      g.id == this.selectGenre.value
+    )?.genre
+
+    let bookFilters = this.frontParams.find(par => par.name == selectedGenreName)?.value
 
     if (!this.selectGenre.value) {
       bookFilters = this.frontParams.find(par => par.name == 'книги')?.value
@@ -223,6 +234,7 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
       ageCategorySelected: this.selectAge?.value,
       genreSelected: this.selectGenre?.value,
       sortSelected: this.selectSort?.value,
+      pageHeight: this.content ? this.content.scrollHeight : 0
     })
 
   }

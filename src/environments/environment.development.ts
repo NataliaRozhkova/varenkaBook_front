@@ -7,7 +7,9 @@ export const environment = {
     "pickup_from_warehouse": 'Самовывоз в Порту',
     "pick_point": 'Самовывоз из пункта выдачи',
     "courier_delivery": 'Доставка курьером на дом',
-    "mail_delivery": 'Доставка почтой',
+    "mail_delivery": 'Доставка почтой по Португалии',
+    "mail_delivery_europe": 'Доставка почтой по Европе',
+
   },
 
   errors: {

@@ -16,7 +16,7 @@
 <pagination-controls *ngIf="products && showPagination && !loading &&  total > productsCountOnPage" class="pagination"
                      previousLabel=""
                      nextLabel=""
-                     (pageChange)="change($event);upPage()"
+                     (pageChange)="change($event);setBaseScrollPosition()"
 >
 
 </pagination-controls>

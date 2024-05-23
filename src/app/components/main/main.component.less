@@ -1,3 +1,4 @@
+@import "../../../styles/color.less";
 
 :host {
   flex: 1;
@@ -22,6 +23,27 @@
 
 
   }
+
+  .books-link {
+    width: 100%;
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    //display: flex;
+    justify-content: center;
+
+  }
+
+  .books-link-text {
+    font-size: 26px;
+        width: 50%;
+  }
+
+    .books-link-text:hover {
+        cursor: pointer;
+        color: @colorTheme8;
+        transform: scale(1.05);
+    }
 
   @media (max-width: 800px) {
     .shop-info {

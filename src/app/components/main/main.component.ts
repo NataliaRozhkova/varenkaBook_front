@@ -4,6 +4,8 @@ import {Product} from "../../model/product";
 import {ProductService} from "../../services/product.service";
 import { Subject,  takeUntil} from "rxjs";
 import {InformationService} from "../../services/information.service";
+import {Router} from "@angular/router";
+import {PageService} from "../../services/page.service";
 
 @Component({
   selector: 'contacts',
@@ -31,6 +33,9 @@ export class MainComponent implements OnInit{
   constructor(
     private productService: ProductService,
     private infoService: InformationService,
+    private router: Router,
+    private pageService: PageService
+
   ) {}
   ngOnInit() {
 
@@ -43,6 +48,13 @@ export class MainComponent implements OnInit{
         this.textAbout = res.results.find ((value:any) =>  value.name == 'text-about')?.value;
 
     })
+
+  }
+
+
+  navigate($event: any) {
+    this.router.navigate([$event], {queryParams: {genre: 'all'}})
+    this.pageService.setBasePosition();
 
   }
 

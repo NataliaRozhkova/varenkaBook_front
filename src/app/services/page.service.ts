@@ -1,6 +1,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {Meta, Title} from "@angular/platform-browser";
 import {environment} from "../../environments/environment";
+import {Observable, Subject} from "rxjs";
+import {StorageService} from "./storage.service";
 
 export class PagePosition {
   pageName: string;
@@ -9,6 +11,7 @@ export class PagePosition {
   ageCategorySelected: any;
   genreSelected: any;
   sortSelected: any;
+  pageHeight: number;
 
   constructor(position: any) {
     this.pageName = position.pageName;
@@ -17,6 +20,7 @@ export class PagePosition {
     this.ageCategorySelected = position.ageCategorySelected;
     this.genreSelected = position.genreSelected;
     this.sortSelected = position.sortSelected;
+    this.pageHeight = position.pageHeight;
   }
 }
 
@@ -36,10 +40,12 @@ export class PageService {
     scrollPosition: 0
   });
 
+  pageEvent: Subject<any> = new Subject<any>()
+
   constructor(
     private meta: Meta,
     private title: Title,
-
+    private storageService: StorageService
   ) {
   }
 
@@ -75,10 +81,16 @@ export class PageService {
 
   setPagePosition(position: any) {
     this.pagePosition = new PagePosition(position);
+    this.storageService.setItem(this.pagePosition, 'position');
   }
 
   getPosition(): PagePosition {
-    return this.pagePosition;
+        if (this.pagePosition.pageName) {
+            return this.pagePosition;
+        } else {
+            return this.storageService.getItem ('position', '[]');
+        }
+
   }
 
   setBasePosition() {

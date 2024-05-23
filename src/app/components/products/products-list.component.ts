@@ -1,15 +1,9 @@
 import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   inject,
   Input,
   OnDestroy,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import {AgeCategory, Genre, Product} from "../../model/product";
 import {Subject, takeUntil} from "rxjs";
@@ -21,7 +15,7 @@ import {PagePosition, PageService} from "../../services/page.service";
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.less']
 })
-export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChecked {
+export class ProductsListComponent implements OnDestroy, OnInit {
 
   @Input()
   productsCountOnPage: number = 12;
@@ -57,6 +51,9 @@ export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChe
   @Input()
   productStatus: string = 'in_stock';
 
+    @Input()
+    pageName: string;
+
   @Input()
   search: string;
 
@@ -75,6 +72,7 @@ export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChe
   }
 
   ngOnInit() {
+
 
     this.products = [];
     this.pageSize = this.productsCountOnPage;
@@ -97,7 +95,9 @@ export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChe
       this.filters.genres = this.genres.id;
     }
 
-    if (this.content && this.position && this.position.pageName == this.productType) {
+
+    if (this.content && this.position && this.position.pageName == this.pageName) {
+
       this.order = this.position.sortSelected  ;
       this.genres = this.position.genreSelected;
       this.ageCategory = this.position.ageCategorySelected;
@@ -155,25 +155,26 @@ export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChe
             this.total = res.count;
             this.page = $event;
             this.loading = false;
+            if (this.content) {
+                  this.content.scrollTop = this.position.scrollPosition;
+            }
 
           }, err => {
             this.loading = false;
           }
         )
 
-    }, 10)
+    }, 100)
 
 
   }
 
-  ngAfterContentChecked() {
 
-    // if (this.content && this.position.pageName == this.productType) {
-    //
-    //   this.content.scrollTop = this.position.scrollPosition;
-    //
-    // }
+  setBaseScrollPosition() {
 
+    this.position.scrollPosition = 0;
+    this.pageService.setPagePosition(this.position);
+    this.pageService.pageEvent.next('pagination')
 
   }
 
@@ -185,13 +186,6 @@ export class ProductsListComponent implements OnDestroy, OnInit, AfterContentChe
     this.destroySubject.next();
 
     let scrollEl = document.getElementById('content')
-
-    // this.pageService.setPagePosition({
-    //   pageName: this.productType,
-    //   pagination: this.page,
-    //   scrollPosition: this.content?.scrollTop,
-    // })
-
 
   }
 

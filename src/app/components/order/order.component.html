@@ -166,7 +166,7 @@
     </div>
     <div class="field">
       <mat-label for="region">Регион:</mat-label>
-      <input id="region" name="region" type="text" [(ngModel)]="order.region">
+      <input id="region" name="region" type="text" [(ngModel)]="order.region"  [formControl]="regionControl">
     </div>
     <div class="field">
       <mat-label for="city"><span class="required-sign">*</span>Город:</mat-label>

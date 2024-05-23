@@ -81,7 +81,7 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
         }
 
 
-        this.product.photos.forEach((photo) => {
+        this.product.photos?.forEach((photo) => {
           this.allImages.push(new Slide({
             image: this.imageService.changeImageUrl(photo.photo),
             number: this.allImages.length,

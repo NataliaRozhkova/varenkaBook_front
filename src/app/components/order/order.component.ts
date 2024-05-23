@@ -89,6 +89,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   deliveryTypeControl = new FormControl('');
   postalCodeControl = new FormControl('');
   countryControl = new FormControl('');
+  regionControl = new FormControl('');
   cityControl = new FormControl('');
   streetControl = new FormControl('');
   buildingNumberControl = new FormControl('');
@@ -112,6 +113,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     deliveryType: this.deliveryTypeControl,
     postalCode: this.postalCodeControl,
     country: this.countryControl,
+    region: this.regionControl,
     city: this.cityControl,
     street: this.streetControl,
     buildingNumber: this.buildingNumberControl,
@@ -136,7 +138,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
   pageCount = 4;
   showAddress: boolean = false;
   pickPointsShow: boolean = false;
-
+  deliveryPortugal: boolean = false;
 
   constructor(
     public cartService: CartService,
@@ -177,7 +179,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     this.deliveryTypeControl.valueChanges.subscribe(
       (event) => {
-        if (event == 'courier_delivery' || event == 'mail_delivery') {
+        if (event == 'courier_delivery' || event == 'mail_delivery' || event == 'mail_delivery_europe') {
 
           this.showAddress = true;
         } else {
@@ -189,6 +191,34 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
         } else {
           this.pickPointsShow = false;
 
+        }
+
+        if (event == 'mail_delivery') {
+            this.countryControl.setValue('Portugal');
+            this.order.country = 'Portugal';
+            this.countryControl.disable();
+            this.regionControl.enable();
+            this.cityControl.enable();
+            this.order.city = '';
+            this.order.region = '';
+        } else  if (event == 'courier_delivery') {
+            this.countryControl.setValue('Portugal');
+            this.regionControl.setValue('Porto');
+            this.cityControl.setValue('Porto');
+            this.order.country = 'Portugal';
+            this.order.region = 'Porto';
+            this.order.city = 'Porto';
+            this.countryControl.disable();
+            this.regionControl.disable();
+            this.cityControl.disable();
+        } else {
+            this.countryControl.enable();
+            this.regionControl.enable();
+            this.cityControl.enable();
+            this.countryControl.setValue('');
+            this.order.country = '';
+            this.order.region = '';
+            this.order.city = '';
         }
 
       }

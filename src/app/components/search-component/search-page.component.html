@@ -23,14 +23,16 @@
         <products #productsInStock class="products-list" [productsCountOnPage]="productsOnPage"
                   [availability]="'in_stock'"
                   [search]="search"
+                  [pageName]="'searchInStock'"
                   #products></products>
       </div>
     </mat-tab>
     <mat-tab label="Под заказ" class="products-list-search">
       <div class="find-result">
 
-      <products #productsToOrder class="products-list" [productsCountOnPage]="productsOnPage"
+      <products #productsToOrder class="products-list" [productsCountOnPage]="productsOnPage" [pageName]="pageName"
                 [availability]="'available_to_order'"
+                [pageName]="'searchToOrder'"
                 [search]="search"
       ></products>
       </div>

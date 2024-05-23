@@ -1,8 +1,14 @@
 <div>
-  <div class="slider">
-    <slider [slidesArray]="sliderImages"></slider>
-  </div>
-  <div class="shop-info">{{textAbout}}</div>
-  <products [productsCountOnPage]="12" [productType]="'book'" [showPagination]="false"></products>
-  <certificate-list></certificate-list>
+    <div class="slider">
+        <slider [slidesArray]="sliderImages"></slider>
+    </div>
+    <div class="shop-info">{{textAbout}}</div>
+    <products [productsCountOnPage]="12" [productType]="'book'" [showPagination]="false"></products>
+
+    <div class="books-link" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="books-link-text">
+      Смотреть все
+    </div>
+    </div>
+    <certificate-list></certificate-list>
 </div>
