@@ -32,6 +32,8 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
 
   coverTypes: any;
 
+  imageShadowStyle: any = {}
+
   // tagDescription: HTMLMetaElement | null;
 
   constructor(
@@ -59,6 +61,10 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
         this.pageService.setTitle(this.product.author + " " + this.product.name)
 
         this.pageService.setMetaTagDescription(this.product.author + " " + this.product.name + " " + this.product.shortDescription)
+
+        if (this.product.productType.type  == 'games') {
+            this.imageShadowStyle = {"box-shadow": "none"};
+        }
 
 
         this.allImages = [];
@@ -88,6 +94,8 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
             text: ''
           }));
         })
+
+
 
 
       })

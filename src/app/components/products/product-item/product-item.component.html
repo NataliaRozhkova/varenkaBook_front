@@ -1,4 +1,4 @@
-<div class="product-card" (click)="openInfo(product)">
+<a routerLink="/product-info/{{product.tag}}" class="product-card" (click)="openInfo(product)">
 
   <div *ngIf="!product.isNew && product.isPopular" class="sticker popular">
     Хит!
@@ -34,4 +34,4 @@
   </div>
 
 
-</div>
+</a>

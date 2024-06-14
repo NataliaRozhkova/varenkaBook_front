@@ -65,6 +65,7 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
       takeUntil(this.destroySubject),
     ).subscribe((params: any) => {
       this.search = params.query;
+      this.find(false);
     });
 
     this.pageService.pageEvent.subscribe((event) => {
@@ -92,27 +93,30 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
 
     ngAfterContentChecked() {
 
-
-      if (this.content && this.position.pageName ==   this.pageName && this.content.scrollHeight >= this.position.pageHeight) {
+      if (this.content && this.position.pageName == this.pageName && this.content.scrollHeight >= this.position.pageHeight) {
 
         this.content.scrollTop = this.position.scrollPosition;
-      this.position = new PagePosition({});
+        this.position = new PagePosition({});
 
       }
 
 
     }
 
+    setBasePosition() {
+        this.pageService.setBasePosition();
+    }
 
-  find() {
 
-    this.pageService.setBasePosition();
+  find(setBasePosition: boolean) {
 
-    const status = this.selectedTab == 0 ? 'in_stock' : 'available_to_order';
-    this.pageName =  this.selectedTab == 0 ? 'searchInStock' : 'searchToOrder';
-    this.availability = status;
+     if (setBasePosition) {
+        this.pageService.setBasePosition();
+    }
 
-    this.selectedTab == 0 ? this.productsInStock.change(0) : this.productsToOrder.change(0);
+
+      this.productsInStock?.change(0);
+      this.productsToOrder?.change(0);
 
     this.location.replaceState("/search?query=" + this.search);
 

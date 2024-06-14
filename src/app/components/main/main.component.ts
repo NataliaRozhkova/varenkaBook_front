@@ -19,8 +19,15 @@ export class MainComponent implements OnInit{
       image: '/assets/main-slider/cover_rgb_web_2800x1200.jpg',
       text: '',
       number: 1
+    }),
+    new Slide({
+      image: '/assets/main-slider/adult cover_1440x600px copy.jpg',
+      text: '',
+      number: 1
     })
   ]
+
+  initialSlider: number;
 
   textAbout: string = '';
 
@@ -36,8 +43,13 @@ export class MainComponent implements OnInit{
     private router: Router,
     private pageService: PageService
 
-  ) {}
+  ) {
+        this.initialSlider =  Math.floor(Math.random() * (this.sliderImages.length))  ;
+
+  }
+
   ngOnInit() {
+
 
 
     this.infoService.getFrontParams().pipe(
@@ -60,6 +72,9 @@ export class MainComponent implements OnInit{
 
 
   ngOnDestroy() {
+
+    this.pageService.setBasePosition();
+
   }
 
 }

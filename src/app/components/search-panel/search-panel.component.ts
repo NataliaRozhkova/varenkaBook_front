@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
+import { PageService} from "../../services/page.service";
 
 @Component({
   selector: 'search-panel',
@@ -33,6 +34,8 @@ export class SearchPanelComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private router: Router,
+    private pageService: PageService,
+
   ) {
   }
 
@@ -47,9 +50,11 @@ export class SearchPanelComponent implements AfterViewInit, OnChanges {
 
   find() {
     if (this.findStr) {
+      this.pageService.setBasePosition();
       this.router.navigate(['search'], {queryParams: {query: this.findStr}});
     }
     this.closePanel.emit(false);
+
 
   }
 

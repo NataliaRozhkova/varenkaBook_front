@@ -20,9 +20,9 @@
     </div>
 
     <div [@expandedPanel]="!menuActive ? state : ''" [ngClass]="menuActive ?'header-menu':  'hidden-menu' ">
-      <div class="menu-item" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">Книги</div>
-      <div class="menu-item" (click)="navigate('/arts-play')" routerLinkActive="active" ariaCurrentWhenActive="page">Art&Play</div>
-      <div class="menu-item" (click)="navigate('/foreign')" routerLinkActive="active" ariaCurrentWhenActive="page">Foreign</div>
+      <div class="menu-item" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page" id="booksMenuItem">Книги</div>
+      <div class="menu-item" (click)="navigate('/arts-play')" routerLinkActive="active" ariaCurrentWhenActive="page" id="artsMenuItem">Art&Play</div>
+      <div class="menu-item" (click)="navigate('/foreign')" routerLinkActive="active" ariaCurrentWhenActive="page" is="foreignMenuItem">Foreign</div>
       <div class="menu-item" (click)="navigate('/contacts')" routerLinkActive="active" ariaCurrentWhenActive="page">Контакты </div>
       <div class="menu-item" (click)="navigate('/news')" routerLinkActive="active" ariaCurrentWhenActive="page">Новости</div>
     </div>

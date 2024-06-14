@@ -37,7 +37,7 @@ export class ProductsListComponent implements OnDestroy, OnInit {
 
   content: HTMLElement | null;
 
-  initOrder: string = '-priority';
+  initOrder: string = '-priority,isbn';
 
   @Input()
   order: string = this.initOrder;
@@ -72,7 +72,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-
 
     this.products = [];
     this.pageSize = this.productsCountOnPage;
@@ -142,7 +141,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
       this.filters.search = this.search;
     }
 
-    setTimeout(() => {
       this.filters.availability = this.availability;
       this.loading = true;
 
@@ -152,10 +150,11 @@ export class ProductsListComponent implements OnDestroy, OnInit {
         )
         .subscribe((res: any) => {
             this.products = res.results;
+
             this.total = res.count;
             this.page = $event;
             this.loading = false;
-            if (this.content) {
+            if (this.content && this.position.pageName == this.pageName) {
                   this.content.scrollTop = this.position.scrollPosition;
             }
 
@@ -164,7 +163,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
           }
         )
 
-    }, 100)
 
 
   }
@@ -190,11 +188,6 @@ export class ProductsListComponent implements OnDestroy, OnInit {
   }
 
   upPage(): void {
-    // window.scroll({
-    //   top: 0,
-    //   left: 0,
-    //   behavior: 'smooth'
-    // });
   }
 
 }

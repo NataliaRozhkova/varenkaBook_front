@@ -1,9 +1,12 @@
 <div>
     <div class="slider">
-        <slider [slidesArray]="sliderImages"></slider>
+        <slider [slidesArray]="sliderImages" [initialSlider]="initialSlider"></slider>
     </div>
     <div class="shop-info">{{textAbout}}</div>
-    <products [productsCountOnPage]="12" [productType]="'book'" [showPagination]="false"></products>
+    <products [productsCountOnPage]="12"
+              [productType]="'book'"
+              [pageName]="'main'"
+              [showPagination]="false"></products>
 
     <div class="books-link" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">
     <div class="books-link-text">

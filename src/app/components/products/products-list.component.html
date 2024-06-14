@@ -1,7 +1,7 @@
 
-<div class="products-list" *ngIf="!loading" >
+<div class="products-list" *ngIf="!loading " >
   <div
-    *ngFor="let product of products | paginate:  { itemsPerPage: productsCountOnPage, currentPage: page, totalItems: total }"
+    *ngFor="let product of products | paginate:  { itemsPerPage: productsCountOnPage, currentPage: page, totalItems: total  }"
     class="product-item">
 
     <product-item [product]="product"></product-item>

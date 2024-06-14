@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   ViewChild,
+  ChangeDetectorRef,
   ViewEncapsulation
 } from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
@@ -69,6 +70,8 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
   @ViewChild('selectGenre') selectGenre: MatSelect;
   @ViewChild('selectAge') selectAge: MatSelect;
   @ViewChild('selectSort') selectSort: MatSelect;
+
+  cdr = inject(ChangeDetectorRef);
 
   filters: string[] = [];
 
@@ -158,10 +161,9 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
 
       this.content.scrollTop = this.position.scrollPosition;
       this.position = new PagePosition({});
+        this.cdr.detectChanges();
 
     }
-
-
   }
 
   setPosition() {
@@ -219,6 +221,15 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
         });
       }
     }
+
+
+  }
+
+  rejectFilters() {
+    this.selectGenre.value = '';
+    this.selectAge.value = '';
+     this.selectSort.value = '';
+    this.change() ;
 
 
   }

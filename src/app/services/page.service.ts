@@ -94,7 +94,7 @@ export class PageService {
   }
 
   setBasePosition() {
-    this.pagePosition.pageName = '';
+    this.pagePosition.pageName = 'base';
     this.pagePosition.pagination = 1;
     this.pagePosition.scrollPosition = 0;
 

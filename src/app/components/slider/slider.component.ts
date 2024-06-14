@@ -18,29 +18,34 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
 
   @Input()
   slidesArray: Slide[] = []
-  loaded: boolean[] = [true]
   hideSlider: boolean = true;
 
   @Input()
-  timeOut: number = 10;
+  timeOut: number = 100;
+
+  @Input()
+  initialSlider: number = 0;
 
   @Input()
   shadow: boolean = false;
 
+  imageStyle: any = {'visibility': 'hidden'};
+
   ngOnInit() {
-    window.dispatchEvent(new Event('resize'));
+    //window.dispatchEvent(new Event('resize'));
+    this.initSlider();
   }
 
 
   ngAfterViewInit(): void {
-    this.initSlider();
+    //this.initSlider();
   }
 
 
   initSlider() {
     setTimeout(() => {
       this.slider = new KeenSlider(this.sliderRef.nativeElement, {
-        initial: 0,
+        initial: this.initialSlider,
         mode: "snap",
 
         slideChanged: (s) => {
@@ -50,6 +55,7 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
 
       });
       this.dotHelper = [...Array(this.slider.details().size).keys()]
+      this.imageStyle  = {};
 
     }, this.timeOut)
   }

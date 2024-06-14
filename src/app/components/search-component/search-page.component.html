@@ -6,13 +6,13 @@
     <input #searchInput class="base-input" id="search" [hidden]="false"
            [(ngModel)]="search"
            [placeholder]="'Искать на полках'"
-           (keyup.enter)="find()">
-    <button mat-button class="main-button" (click)="find()">Поиск</button>
+           (keyup.enter)="find(true)">
+    <button mat-button class="main-button" (click)="find(true)">Поиск</button>
 
   </div>
 
 
-  <mat-tab-group (selectedTabChange)="find()"
+  <mat-tab-group (selectedTabChange)="setBasePosition();"
                  [(selectedIndex)]="selectedTab"
                  [@.disabled]="true"
                  [disableRipple]="true"
@@ -20,17 +20,19 @@
   >
     <mat-tab label="В наличии" class="prodact-list-search">
       <div class="find-result">
-        <products #productsInStock class="products-list" [productsCountOnPage]="productsOnPage"
+        <products #productsInStock class="products-list" *ngIf="selectedTab == 0"
+                  [productsCountOnPage]="productsOnPage"
                   [availability]="'in_stock'"
                   [search]="search"
                   [pageName]="'searchInStock'"
-                  #products></products>
+                  ></products>
       </div>
     </mat-tab>
     <mat-tab label="Под заказ" class="products-list-search">
       <div class="find-result">
 
-      <products #productsToOrder class="products-list" [productsCountOnPage]="productsOnPage" [pageName]="pageName"
+      <products #productsToOrder class="products-list" *ngIf="selectedTab == 1"
+                [productsCountOnPage]="productsOnPage"
                 [availability]="'available_to_order'"
                 [pageName]="'searchToOrder'"
                 [search]="search"
