@@ -285,7 +285,9 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     if (this.validate()) {
       this.setOrderFields();
-      this.createPreorder();
+      if (this.productsToOrder?.length != 0) {
+        this.createPreorder();
+      }
       this.setCertificatesOrderInfo();
       this.setProductsToOrders();
 
@@ -372,11 +374,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
     let urlId = '';
 
 
-    if (this.productsToOrder.length > 0) {
-      params.email = this.order.email;
-    } else {
-      params.email = this.preorder.email;
-    }
+    params.email = this.order.email ? this.order.email : this.preorder.email
 
     let certificateToUse: Certificate[] = this.cartService.getGiftCardsFromStorage();
 
@@ -559,11 +557,11 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     let fullPrice = 0;
 
-    if (this.order.fullPrice) {
+    if (this.productsInStock.length > 0 || this.productsToOrder.length > 0) {
       fullPrice += this.order.fullPrice;
     }
 
-    if (this.preorder.fullPrice) {
+    if (this.productsToOrder.length > 0 && this.productsInStock.length > 0) {
       fullPrice += this.preorder.fullPrice;
     }
 

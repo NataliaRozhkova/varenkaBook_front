@@ -1,6 +1,8 @@
 <div>
     <div class="slider">
-        <slider [slidesArray]="sliderImages" [initialSlider]="initialSlider"></slider>
+<!--        <slider [slidesArray]="sliderImages" [initialSlider]="initialSlider"></slider>-->
+        <img src="{{imagesSrc[initialSlider]}}" class="mainImage" >
+
     </div>
     <div class="shop-info">{{textAbout}}</div>
     <products [productsCountOnPage]="12"

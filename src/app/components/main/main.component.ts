@@ -27,6 +27,11 @@ export class MainComponent implements OnInit{
     })
   ]
 
+  imagesSrc: string[] = [
+      '/assets/main-slider/cover_rgb_web_2800x1200.jpg',
+      '/assets/main-slider/adult cover_1440x600px copy.jpg'
+  ]
+
   initialSlider: number;
 
   textAbout: string = '';

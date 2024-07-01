@@ -51,7 +51,8 @@ export const environment = {
       link: "https://maps.app.goo.gl/A3UH8zztL7Xuj2y56"
     },
   instagram: 'https://www.instagram.com/varenka_books?igsh=MTQ0aG90Y3Q3amNoZA==',
-  telegram: 'https://t.me/varenka_books_bot',
+  telegram: 'https://t.me/varenka_books',
+
   email: 'varenka.books@gmail.com',
   legalInfo: 'Empresário em Nome Individual, Daria Dombrova, Número fiscal 313 283 834',
   certificateImage: '../../../assets/certificates/certificate_vertical.png'
