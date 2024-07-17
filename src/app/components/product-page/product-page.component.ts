@@ -14,7 +14,7 @@ import {
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
 import {AgeCategory, Genre} from "../../model/product";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, ParamMap} from "@angular/router";
 import {ProductsListComponent} from "../products/products-list.component";
 import {InformationService} from "../../services/information.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InformationService} from "../../services/information.service";
-import {Subject} from "rxjs";
+import {Subject, takeUntil} from "rxjs";
 import {environment} from "../../../environments/environment";
 
 @Component({
@@ -12,6 +12,7 @@ export class InfoComponent implements OnInit, OnDestroy{
 
   addressLink: string;
   shopAddress : string;
+  textAbout:string = "";
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -22,10 +23,19 @@ export class InfoComponent implements OnInit, OnDestroy{
     this.addressLink = environment.shopAddress.link;
   }
 
-  ngOnInit(): void {
+
+  ngOnInit() {
+
+    this.informationService.getFrontParams().pipe(
+      takeUntil(this.destroySubject),
+    )
+      .subscribe(
+      (res: any) => {
+        this.textAbout = res.results.find ((value:any) =>  value.name == 'text-about')?.value;
+
+    })
+
   }
-
-
 
   ngOnDestroy() {
     this.destroySubject.next();

@@ -3,6 +3,8 @@
   <div *ngFor="let ord of orderNumbers">
     <h1>Заказ №{{ord}} успешно создан</h1>
   </div>
+
+  <div class="text-info">Детали заказа отправлены на почту. <br/> Если письмо не пришло, проверьте папку спам.</div>
 </div>
 
 <div  class="cancel" *ngIf="result == 'cancel'">

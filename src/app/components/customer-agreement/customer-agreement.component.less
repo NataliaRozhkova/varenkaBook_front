@@ -1,14 +1,54 @@
 :host {
   flex: 1;
 
+  ol {
+     list-style: none;
+     counter-reset: li;
+     padding-inline-start: 0;
+  }
+  li:before {
+     counter-increment: li;
+     content: counters(li, ".") ". ";
+  }
+
+  .not-numeric:before {
+     counter-increment: li;
+     content: "";
+     counter-reset: li;
+  }
+
   .contacts {
-    margin: 20px;
+    margin: 40px;
+
     span, a {
       margin: 0 20px 0 20px;
     }
-    .delivery-info {
+
+    .info {
       margin: 0 20px 0 20px;
       text-align: justify;
+      line-height: 25px;
+
+      .item {
+        margin-bottom: 40px;
+
+        .info-header {
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+
+        .uppercase {
+          text-transform: uppercase;
+          font-weight: bold;
+
+        }
+
+        .bold {
+          font-weight: bold;
+
+        }
+      }
+
     }
   }
 }

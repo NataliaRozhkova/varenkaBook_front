@@ -43,6 +43,7 @@ export class SliderComponent implements OnDestroy,  OnInit, AfterViewInit {
 
 
   initSlider() {
+
     setTimeout(() => {
       this.slider = new KeenSlider(this.sliderRef.nativeElement, {
         initial: this.initialSlider,

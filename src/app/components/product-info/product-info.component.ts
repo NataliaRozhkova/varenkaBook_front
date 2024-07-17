@@ -47,7 +47,6 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    this.viewSlider = window.innerWidth < 800;
 
     this.coverTypes = environment.coverTypes;
 
@@ -58,9 +57,9 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
       ),
       map((res: Product) => {
         this.product = res;
-        this.pageService.setTitle(this.product.author + " " + this.product.name)
+        this.pageService.setTitle(this.product.author + "; " + this.product.name + "; Цена: " + this.product.retailPriceEuro)
 
-        this.pageService.setMetaTagDescription(this.product.author + " " + this.product.name + " " + this.product.shortDescription)
+        this.pageService.setMetaTagDescription(this.product.author + "; " + this.product.name + "; " + this.product.shortDescription)
 
         if (this.product.productType.type  == 'games') {
             this.imageShadowStyle = {"box-shadow": "none"};
@@ -88,6 +87,7 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
 
 
         this.product.photos?.forEach((photo) => {
+
           this.allImages.push(new Slide({
             image: this.imageService.changeImageUrl(photo.photo),
             number: this.allImages.length,
@@ -95,6 +95,7 @@ export class ProductInfoComponent implements OnDestroy, OnInit, AfterViewInit {
           }));
         })
 
+    this.viewSlider = window.innerWidth < 800 && this.allImages.length > 1;
 
 
 

@@ -4,16 +4,16 @@
         <img src="{{imagesSrc[initialSlider]}}" class="mainImage" >
 
     </div>
-    <div class="shop-info">{{textAbout}}</div>
-    <products [productsCountOnPage]="12"
-              [productType]="'book'"
-              [pageName]="'main'"
-              [showPagination]="false"></products>
+    <!--     <div class="shop-info">{{textAbout}}</div>-->
+       <products [productsCountOnPage]="12"
+                 [productType]="'book'"
+                 [pageName]="'main'"
+                 [showPagination]="false"></products>
 
-    <div class="books-link" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">
-    <div class="books-link-text">
-      Смотреть все
-    </div>
-    </div>
-    <certificate-list></certificate-list>
-</div>
+       <div class="books-link" (click)="navigate('/books')" routerLinkActive="active" ariaCurrentWhenActive="page">
+       <div class="books-link-text">
+         Смотреть все
+       </div>
+       </div>
+       <certificate-list></certificate-list>
+   </div>

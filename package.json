@@ -36,6 +36,7 @@
     "ngx-pagination": "^6.0.3",
     "ngx-stripe": "^15.8.1",
     "rxjs": "^7.8.1",
+    "sitemap-generator": "^8.5.1",
     "tslib": "^2.3.0",
     "typescript-json-serializer": "^6.0.1",
     "xmlbuilder": "^15.1.1",
@@ -52,6 +53,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "ngx-sitemap": "^1.0.0",
     "typescript": "~4.9.4"
   }
 }
