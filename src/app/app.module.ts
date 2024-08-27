@@ -75,9 +75,11 @@ import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy
 import {InfoComponent} from "./components/info/info.component";
 import {CertificateCartItemComponent} from "./components/cart/certificate-cart-item/certificate-cart-item.component";
 import {ProductBackInfoComponent} from "./components/product-back-info/product-back-info.component";
+import {CountryChooseComponent} from "./components/county-choose/country-choose.component";
 
 const appRoutes: Routes = [
   {path: 'contacts', component: ContactsComponent},
+  {path: 'country', component: CountryChooseComponent},
   {path: 'info', component: InfoComponent},
   {path: 'delivery-info', component: DeliveryInfoComponent},
   {path: 'product-back-info', component: ProductBackInfoComponent},
@@ -151,7 +153,8 @@ const routerOptions: ExtraOptions = {
     PrivacyPolicyComponent,
     InfoComponent,
     CertificateCartItemComponent,
-    ProductBackInfoComponent
+    ProductBackInfoComponent,
+    CountryChooseComponent
   ],
   imports: [
     BrowserModule,

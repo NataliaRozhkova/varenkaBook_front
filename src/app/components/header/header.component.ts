@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
     this.menuActive = this.screenWidth > 550;
+
     this.setMenuInitState();
 
     let contentElement = document.getElementById('content');

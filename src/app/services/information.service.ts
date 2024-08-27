@@ -18,7 +18,7 @@ export class InformationService {
 
   getFrontParams() {
     if (!this.frontParams) {
-      this.frontParams = this.http.get('api/front_params/', '').pipe(
+      this.frontParams = this.http.get('api/front_params/', {'limit': 100}).pipe(
         shareReplay(1)
       );
     }

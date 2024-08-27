@@ -6,21 +6,20 @@
     <div class="text-info">
       <a href="{{addressLink}}" target="_blank">{{shopAddress}}</a>
     </div>
-    <div class="text-info">Время работы:</div>
-    <div class="text-info">Вт – Сб: 10:00-13:00/15:00-19:00</div>
-    <div class="text-info">Вс – Пн: выходные дни</div>
+    <div class="text-info" [innerHTML] = "worktime"> </div>
+
   </div>
   <div class="info-item">
 
     <h2>Телефон</h2>
-    <div class="text-info">+351 938 135 157 (NOS)</div>
+    <div class="text-info" >{{phone}} </div>
   </div>
   <div class="info-item">
 
     <h2>email</h2>
 
     <div class="text-info">
-      <a href="mailto:varenka.books@gmail.com">varenka.books@gmail.com</a>
+      <a href="mailto:varenka.books@gmail.com" >{{email}}</a>
     </div>
   </div>
 

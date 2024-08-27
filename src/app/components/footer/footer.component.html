@@ -8,15 +8,9 @@
 
       <div >
         <a href="{{addressLink}}" target="_blank">
-          <div class="text-info">Rua do Almada 448</div>
-          <div class="text-info">Porto, 4050-034</div>
-          <div class="text-info">Portugal</div>
+          <div class="text-info" [innerHTML] = "shopInfo"> </div>
+
         </a>
-
-        <div class="text-info">Время работы:</div>
-        <div class="text-info">Вт – Сб: 10:00-13:00/15:00-19:00</div>
-        <div class="text-info">Вс – Пн: выходные дни</div>
-
       </div>
       <div>
         <a href="mailto:varenka.books@gmail.com">varenka.books@gmail.com</a>
@@ -39,10 +33,10 @@
 
     </div>
     <div class="footer-item">
-      <div class="text-info">Empresário em Nome Individual</div>
-      <div class="text-info">Daria Dombrova</div>
-      <div class="text-info">Número fiscal 313 283 834</div>
-      <div class="text-info">+351 938 135 157 (NÓS)</div>
+      <div class="text-info" [innerHTML] = "ownerinfo"> </div>
+
+
+
       <div class="media-links">
         <a href="{{instagram}}" target="_blank">
           <img src="../../../assets/icons/instagram.png" class="media-icon" >
