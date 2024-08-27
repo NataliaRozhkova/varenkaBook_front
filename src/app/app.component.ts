@@ -13,19 +13,14 @@ import {MatDialog} from "@angular/material/dialog";
 export class AppComponent implements  OnInit{
   title = 'varenka_front';
 
-  country: string;
 
-  @ViewChild('countryDialog') myDialog = {} as TemplateRef<string>;
-  private countryDialog: any;
 
   constructor(private pageService: PageService,
               private cookieService: CookieService,
               private router: Router,
-              public dialog: MatDialog,
 
   ) {
 
-    this.country = this.cookieService.get('country');
   }
 
 
@@ -43,44 +38,6 @@ export class AppComponent implements  OnInit{
     this.pageService.setMetaTagBase();
     this.pageService.setBaseTitle();
 
-    console.log("************************")
-    console.log(this.cookieService.get('country'))
-    console.log("************************")
-
-    // let countryChoose = this.cookieService.get('country');
-
-    if (this.country) {
-    this.showCountryDialog(true)
-    } else {
-      console.log("go to main")
-    }
-
-
-  }
-
-  showCountryDialog($event: boolean) {
-
-    if ($event) {
-      this.countryDialog = this.dialog.open(this.myDialog,
-        {
-          data: 123, height: '50px', width: '90%',
-          scrollStrategy: new NoopScrollStrategy(),
-          disableClose: true,
-          position:{top: '30px'}
-
-
-        });
-      this.countryDialog.disableClose = true;
-
-    } else  {
-      this.closePanel();
-    }
-
-
-  }
-
-  closePanel() {
-    this.dialog.closeAll()
   }
 
 }
