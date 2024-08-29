@@ -10,6 +10,8 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
+RUN npm cache clean --force
+RUN rm -rf node_modules
 RUN npm install  -g npm@latest
 
 # Generate the build of the application
