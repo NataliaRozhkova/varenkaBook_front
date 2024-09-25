@@ -31,6 +31,6 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/local/app/dist/varenka_front /usr/share/nginx/html
 
  # Expose port 80
-EXPOSE 3000  443
+EXPOSE 80  443
 
 
