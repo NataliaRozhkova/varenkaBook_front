@@ -1,10 +1,18 @@
-import {ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit, AfterContentChecked, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  AfterContentChecked,
+  ViewChild,
+  AfterContentInit
+} from '@angular/core';
 import {ProductService} from "../../services/product.service";
 import {ActivatedRoute} from "@angular/router";
 import {map, Subject, switchMap, takeUntil} from "rxjs";
-import {Genre, Product} from "../../model/product";
 import {ProductsListComponent} from "../products/products-list.component";
-import {ThemePalette} from "@angular/material/core";
 import {Location} from '@angular/common';
 import {PagePosition, PageService} from "../../services/page.service";
 
@@ -79,7 +87,6 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
   ngOnDestroy() {
     this.destroySubject.next();
 
-
     this.pageService.setPagePosition({
           pageName: this.selectedTab == 0 ? 'searchInStock' : 'searchToOrder',
           pagination: this.selectedTab == 0 ? this.productsInStock.page : this.productsToOrder.page,
@@ -92,6 +99,7 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
 
 
     ngAfterContentChecked() {
+      this.position = this.pageService.getPosition();
 
       if (this.content && this.position.pageName == this.pageName && this.content.scrollHeight >= this.position.pageHeight) {
 

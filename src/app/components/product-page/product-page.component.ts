@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild,
   ChangeDetectorRef,
-  ViewEncapsulation
+  ViewEncapsulation, AfterContentInit, AfterViewInit
 } from '@angular/core';
 import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {ProductService} from "../../services/product.service";
@@ -102,6 +102,8 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
     private router: Router,
     private pageService: PageService,
   ) {
+    this.position = this.pageService.getPosition();
+
   }
 
   ngOnInit() {
@@ -157,16 +159,17 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
 
   ngAfterContentChecked() {
 
-    if (this.content && this.position.pageName == this.pageName && this.content.scrollHeight >= this.position.pageHeight) {
+    if (this.content && this.position.pageName == this.pageName &&  this.content.scrollHeight >= this.position.pageHeight ) {
 
       this.content.scrollTop = this.position.scrollPosition;
       this.position = new PagePosition({});
         this.cdr.detectChanges();
-
     }
   }
 
   setPosition() {
+
+    this.position = this.pageService.getPosition();
 
     if (this.content && this.position.pageName == this.pageName) {
 
@@ -239,7 +242,7 @@ export class ProductPageComponent implements OnDestroy, OnInit, AfterContentChec
     this.destroySubject.next();
 
     this.pageService.setPagePosition({
-      pageName: this.productType,
+      pageName: this.pageName,
       pagination: this.products.page,
       scrollPosition: this.content?.scrollTop,
       ageCategorySelected: this.selectAge?.value,

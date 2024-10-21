@@ -106,6 +106,10 @@ html, body {
     text-align: center;
   }
 
+  .mat-mdc-button[disabled] {
+    color: #7e7e7e !important;
+  }
+
   .mat-mdc-select-panel {
     max-height: 100% !important;
 

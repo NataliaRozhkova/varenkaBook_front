@@ -126,7 +126,7 @@ export class ProductsListComponent implements OnDestroy, OnInit {
     }
 
     if (this.ageCategory) {
-      this.filters.age_category = this.ageCategory;
+      this.filters.age_category = [this.ageCategory];
     } else {
       delete this.filters['age_category'];
     }
@@ -155,16 +155,14 @@ export class ProductsListComponent implements OnDestroy, OnInit {
             this.page = $event;
             this.loading = false;
             if (this.content && this.position.pageName == this.pageName) {
-                  this.content.scrollTop = this.position.scrollPosition;
+              // this.content.scrollTop = this.position.scrollPosition;
+              // this.content.scrollTop = 50;
             }
 
           }, err => {
             this.loading = false;
           }
         )
-
-
-
   }
 
 
