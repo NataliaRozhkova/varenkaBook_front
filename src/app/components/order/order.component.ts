@@ -870,7 +870,7 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
 
     this.dialogRef = this.dialog.open(this.myDialog,
       {
-        data: 123, height: '400px', width: '250px',
+        // data: 123, height: '400px', width: '250px',
       });
     if (this.canDeactivatePage) {
       this.dialog.closeAll()

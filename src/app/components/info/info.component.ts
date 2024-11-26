@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InformationService} from "../../services/information.service";
 import {Subject, takeUntil} from "rxjs";
 import {environment} from "../../../environments/environment";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'info',
@@ -13,6 +14,7 @@ export class InfoComponent implements OnInit, OnDestroy{
   addressLink: string;
   shopAddress : string;
   textAbout:string = "";
+  textAbout2:string = "";
 
   private destroySubject: Subject<void> = new Subject();
 
@@ -32,6 +34,7 @@ export class InfoComponent implements OnInit, OnDestroy{
       .subscribe(
       (res: any) => {
         this.textAbout = res.results.find ((value:any) =>  value.name == 'text-about')?.value;
+        this.textAbout2 = res.results.find ((value:any) =>  value.name == 'text-about2')?.value;
 
     })
 

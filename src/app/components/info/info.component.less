@@ -12,10 +12,49 @@
     }
   }
 
-  .shop-info  {
+  .shop-info, .shop-info-bottom  {
         margin: 0 20px 0 20px;
         text-align: justify;
         line-height: 25px;
 
   }
+
+    .shop-info-bottom {
+          margin-top: 30px
+
+    }
+
+
+  .image-about {
+    float: left;
+    height: 30vw;
+    margin: 25px;
+    max-height: 350px
+  }
+
+    .image-about-bottom {
+      float: right;
+      height: 35vw;
+      margin: 15px;
+    max-height: 400px
+
+    }
+
+      @media (max-width: 600px) {
+
+        .image-about, .image-about-bottom  {
+            float: none;
+          height: 100%;
+
+
+        }
+        .block {
+            display: flex;
+                flex-direction: column;
+                height: 100%;
+                align-items: center;
+
+        }
+
+      }
 }
