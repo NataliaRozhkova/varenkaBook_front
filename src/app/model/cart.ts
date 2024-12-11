@@ -15,6 +15,8 @@ export class OrderPriceValue {
   discountPrice: number;
   promoPrice: number;
   toPay: number;
+  paidByCertificate: number;
+
 }
 
 export class CartRequest {

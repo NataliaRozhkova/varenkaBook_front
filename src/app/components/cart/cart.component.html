@@ -53,25 +53,26 @@
       <h3>Стоимость товаров в наличии</h3>
 
       <div class="cost-row">
-        <div>Товары ({{getProductsInStock().length }}шт):</div>
+        <div>Товары ({{ getProductsCount(getProductsInStock()) }}шт):</div>
         <div class="separate"></div>
         <div class="count">{{ordersPriceValues.usualOrder.fullPrice | number : '1.2-2' | currency: "EUR"}}</div>
       </div>
       <div *ngIf="ordersPriceValues.usualOrder.fullPrice > ordersPriceValues.usualOrder.discountPrice" class="cost-row">
         <div>Скидка по акции:</div>
-        <div class="separate"></div>
+        <div class="separate"></div>AAAAA
         <div class="count discount-count">-{{productService.roundPrice(ordersPriceValues.usualOrder.fullPrice - ordersPriceValues.usualOrder.discountPrice) | number : '1.2-2' | currency: "EUR" }}</div>
-      </div>
-      <div *ngIf="giftCardsDiscount > 0" class="cost-row">
-        <div>Подарочные сертификаты</div>
-        <div class="separate"></div>
-        <div class="count discount-count">-{{productService.roundPriceStr(giftCardsDiscount) | number : '1.2-2'| currency: "EUR" }}</div>
       </div>
       <div *ngIf="ordersPriceValues.usualOrder.discountPrice > ordersPriceValues.usualOrder.promoPrice" class="cost-row">
         <div>Скидка по промокоду:</div>
         <div class="separate"></div>
         <div class="count discount-count">-{{productService.roundPrice(ordersPriceValues.usualOrder.discountPrice - ordersPriceValues.usualOrder.promoPrice) | number : '1.2-2' | currency: "EUR"}}</div>
       </div>
+      <div *ngIf="ordersPriceValues.usualOrder.paidByCertificate > 0" class="cost-row">
+        <div>Подарочные сертификаты</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{ordersPriceValues.usualOrder.paidByCertificate | number : '1.2-2'| currency: "EUR" }}</div>
+      </div>
+
       <div class="cost-row total ">
         <div>
           Итого:
@@ -80,7 +81,7 @@
           <span *ngIf="ordersPriceValues.usualOrder.promoPrice < ordersPriceValues.usualOrder.fullPrice" class="full-cost">
             {{ordersPriceValues.usualOrder.fullPrice | number : '1.2-2' | currency: "EUR" }}
           </span>
-          {{ordersPriceValues.usualOrder.discountPrice | number : '1.2-2' | currency: "EUR"}} </div>
+          {{ordersPriceValues.usualOrder.toPay | number : '1.2-2' | currency: "EUR"}} </div>
       </div>
 
     </div>
@@ -88,24 +89,39 @@
       <h3>Стоимость товаров под заказ</h3>
 
       <div class="cost-row">
-        <div>Товары ({{getProductsToOrder().length }}шт):</div>
+        <div>Товары ({{ getProductsCount(getProductsToOrder()) }}шт):</div>
         <div class="separate"></div>
         <div class="count">{{ordersPriceValues.preorder.fullPrice| number : '1.2-2' | currency: "EUR"}}</div>
       </div>
       <div *ngIf="ordersPriceValues.preorder.fullPrice > ordersPriceValues.preorder.discountPrice" class="cost-row">
-        <div>Скидка по акции:</div>
+        <div>Скидка по акции:</div> getProductsCount
         <div class="separate"></div>
         <div class="count discount-count">-{{productService.roundPrice(ordersPriceValues.preorder.fullPrice - ordersPriceValues.preorder.discountPrice)| number : '1.2-2' | currency: "EUR"}}</div>
       </div>
+      <div *ngIf="ordersPriceValues.usualOrder.discountPrice > ordersPriceValues.usualOrder.promoPrice" class="cost-row">
+        <div>Скидка по промокоду:</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{productService.roundPrice(ordersPriceValues.preorder.discountPrice - ordersPriceValues.preorder.promoPrice) | number : '1.2-2' | currency: "EUR"}}</div>
+      </div>
+      <div *ngIf="ordersPriceValues.preorder.paidByCertificate > 0" class="cost-row">
+        <div>Подарочные сертификаты</div>
+        <div class="separate"></div>
+        <div class="count discount-count">-{{ordersPriceValues.preorder.paidByCertificate | number : '1.2-2'| currency: "EUR" }}</div>
+      </div>
+
       <div class="cost-row total ">
         <div>
           Итого:
         </div>
         <div class="count">
-          <span *ngIf="ordersPriceValues.preorder.promoPrice < ordersPriceValues.preorder.fullPrice" class="full-cost">
-            {{ordersPriceValues.preorder.fullPrice| number : '1.2-2' | currency: "EUR"}}
+<!--          <span *ngIf="ordersPriceValues.preorder.promoPrice < ordersPriceValues.preorder.fullPrice" class="full-cost">-->
+<!--            {{ordersPriceValues.preorder.fullPrice| number : '1.2-2' | currency: "EUR"}}-->
+<!--          </span>-->
+<!--          {{ordersPriceValues.preorder.toPay | number : '1.2-2' | currency: "EUR"}}</div>-->
+        <span *ngIf="ordersPriceValues.usualOrder.promoPrice < ordersPriceValues.usualOrder.fullPrice" class="full-cost">
+            {{ordersPriceValues.preorder.fullPrice | number : '1.2-2' | currency: "EUR" }}
           </span>
-          {{ordersPriceValues.preorder.discountPrice| number : '1.2-2' | currency: "EUR"}}</div>
+        {{ordersPriceValues.preorder.toPay | number : '1.2-2' | currency: "EUR"}} </div>
       </div>
 
     </div>
@@ -126,6 +142,7 @@
 
           {{ordersPriceValues.certificatesOrder.toPay| number : '1.2-2' | currency: "EUR"}}</div>
       </div>
+
 
     </div>
     <div class="buttons">

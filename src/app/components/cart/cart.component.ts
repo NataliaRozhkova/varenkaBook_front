@@ -129,6 +129,13 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     return this.products.filter((cart) => cart.product?.availability?.status == 'available_to_order')
   }
 
+  getProductsCount( products: CartItem[]  ) : number {
+        let count = 0;
+        products.forEach(p  => {count += p.count})
+
+        return count;
+  }
+
 
   continueShopping() {
     this.router.navigate(['books'])
@@ -158,7 +165,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
     if (this.giftCard) {
 
-      if (this.getProductsInStock().length > 0) {
+      if (this.getProductsInStock().length > 0 || this.getProductsToOrder().length > 0) {
         this.cartService.getPromocodeInfo(this.giftCard.trim()).pipe(
           takeUntil(this.destroySubject),
         ).subscribe(
@@ -295,6 +302,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       takeUntil(this.destroySubject)
     ).subscribe((resp) => {
       this.ordersPriceValues = resp;
+      console.log( this.ordersPriceValues )
     })
 
   }

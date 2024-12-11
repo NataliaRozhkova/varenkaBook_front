@@ -72,7 +72,8 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
     this.route.queryParams?.pipe(
       takeUntil(this.destroySubject),
     ).subscribe((params: any) => {
-      this.search = params.query;
+      this.selectedTab = params.tab ? params.tab : 0;
+      this.search = params.query.replace("%20", " ");
       this.find(false);
     });
 
@@ -115,6 +116,10 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
         this.pageService.setBasePosition();
     }
 
+    setQueryParams() {
+        this.location.replaceState("/search?query=" + this.search + "&tab=" + this.selectedTab);
+    }
+
 
   find(setBasePosition: boolean) {
 
@@ -126,7 +131,7 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
       this.productsInStock?.change(0);
       this.productsToOrder?.change(0);
 
-    this.location.replaceState("/search?query=" + this.search);
+    this.setQueryParams() ;
 
   }
 }

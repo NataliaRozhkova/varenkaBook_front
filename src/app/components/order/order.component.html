@@ -325,6 +325,12 @@
           <div></div>
           <div>{{preorder.discountPrice | number : '1.2-2' }}</div>
         </div>
+        <div class="table-header" *ngIf="order.promoCode">
+          <div>Итого c учетом промокода</div>
+          <div></div>
+          <div></div>
+          <div>{{preorder.promoPrice | number : '1.2-2'}}</div>
+        </div>
         <div class="table-header" *ngIf="preorder.payForDelivery">
           <div>Доставка</div>
           <div></div>

@@ -529,7 +529,8 @@ export class OrderComponent implements OnDestroy, OnInit, ComponentCanDeactivate
       this.preorder.jointOrder = this.order.id;
     }
 
-    this.preorder.promoCode = null;
+    this.preorder.promoCode  = this.promoCode;
+;
   }
 
   setProductsToOrders() {

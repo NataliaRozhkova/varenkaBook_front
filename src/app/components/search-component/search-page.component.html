@@ -12,7 +12,7 @@
   </div>
 
 
-  <mat-tab-group (selectedTabChange)="setBasePosition();"
+  <mat-tab-group (selectedTabChange)="setBasePosition();setQueryParams()"
                  [(selectedIndex)]="selectedTab"
                  [@.disabled]="true"
                  [disableRipple]="true"
