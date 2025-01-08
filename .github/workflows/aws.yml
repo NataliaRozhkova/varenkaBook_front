@@ -1,0 +1,23 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Deploy to EC2
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+      run: |
+        echo "$PRIVATE_KEY" > admin-varenka.pem && chmod 600 admin-varenka.pem
+        ssh -o StrictHostKeyChecking=no -i admin-varenka.pem ${USER}@${HOST} '
+        echo "Current directory: $(pwd)"
+        echo "Listing home directory:"
+        ls -la .
