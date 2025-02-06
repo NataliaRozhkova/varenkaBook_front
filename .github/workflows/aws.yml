@@ -21,7 +21,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i admin-varenka.pem ${USER}@${HOST} << EOF
         echo "Current directory: \$(pwd)"
         echo "Listing home directory:"
-          sudo docker build -t varenka-compose-front:$(date +%Y%m%d%H%M) https://github.com/NataliaRozhkova/varenkaBook_front
+          sudo docker build -t varenka-compose-front:$(date +%Y%m%d%H%M) https://github.com/NataliaRozhkova/varenkaBook_front#master
           sudo docker ps
        
         EOF
