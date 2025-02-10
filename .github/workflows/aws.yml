@@ -21,7 +21,11 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i admin-varenka.pem ${USER}@${HOST} << EOF
         echo "Current directory: \$(pwd)"
         echo "Listing home directory:"
-          sudo docker build -t varenka-compose-front:$(date +%Y%m%d%H%M) https://github.com/NataliaRozhkova/varenkaBook_front.git
+          #sudo docker build -t varenka-compose-front:$(date +%Y%m%d%H%M) https://github.com/NataliaRozhkova/varenkaBook_front.git
           sudo docker ps
+          curl -O https://github.com/NataliaRozhkova/varenkaBook_front/blob/master/update_version.sh
+          chmod +x update_front_version.sh
+          ./update_version.sh  FRONT_VERSION $(date +%Y%m%d%H%M) 
+          cat .env
        
         EOF
