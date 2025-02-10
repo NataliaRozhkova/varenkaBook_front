@@ -24,8 +24,8 @@ jobs:
           #sudo docker build -t varenka-compose-front:$(date +%Y%m%d%H%M) https://github.com/NataliaRozhkova/varenkaBook_front.git
           sudo docker ps
           curl -O https://github.com/NataliaRozhkova/varenkaBook_front/blob/master/update_version.sh
-          chmod +x update_front_version.sh
-          ./update_version.sh  FRONT_VERSION $(date +%Y%m%d%H%M) 
+          chmod +x update_version.sh
+          sudo ./update_version.sh  FRONT_VERSION $(date +%Y%m%d%H%M) 
           cat .env
        
         EOF
