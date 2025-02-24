@@ -29,6 +29,8 @@
       </div>
     </mat-tab>
     <mat-tab label="Под заказ" class="products-list-search">
+
+      <div class="delivery-warning">{{deliveryWarningText}}</div>
       <div class="find-result">
 
       <products #productsToOrder class="products-list" *ngIf="selectedTab == 1"

@@ -9,6 +9,8 @@
     </div>
 
     <h2 *ngIf="getProductsToOrder().length > 0">Под заказ</h2>
+    <div class="delivery-warning">{{deliveryWarningText}}</div>
+
     <div *ngFor="let pr of getProductsToOrder()" class="products">
       <cart-item [product]="pr.product" [count]="pr.count"></cart-item>
     </div>

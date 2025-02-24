@@ -5,6 +5,7 @@ import {CartCertificatetItem, CartItem, CartService} from "../../services/cart.s
 import {Certificate, PromoCode} from "../../model/promo";
 import {ProductService} from "../../services/product.service";
 import {CartCertificateItem, CartCodeItem, CartProductItem, CartRequest, OrdersPriceValues} from "../../model/cart";
+import {InformationService} from "../../services/information.service";
 
 @Component({
   selector: 'cart',
@@ -33,6 +34,7 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
 
   promocodDiscount: number = 0;
   giftCardsDiscount: number = 0;
+  deliveryWarningText: string = '';
 
 
   ordersPriceValues: OrdersPriceValues;
@@ -44,7 +46,8 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
     private cartService: CartService,
     private router: Router,
     public productService: ProductService,
-  ) {
+    private informationService: InformationService,
+) {
     this.productsCount = this.cartService.getCartCount();
     this.products = this.cartService.getProducts();
     this.certificatesToOrder = this.cartService.getCertificates();
@@ -76,7 +79,15 @@ export class CartComponent implements OnDestroy, OnInit, AfterViewInit {
       takeUntil(this.destroySubject)
     ).subscribe((resp) => {
       this.ordersPriceValues = resp;
-    })
+    });
+
+    this.informationService.getFrontParams().pipe(
+      takeUntil(this.destroySubject),
+    )
+      .subscribe(
+        (res: any) => {
+              this.deliveryWarningText = res.results.find ((value:any) =>  value.name == 'deliveryWarningText')?.value;
+        })
 
 
   }
