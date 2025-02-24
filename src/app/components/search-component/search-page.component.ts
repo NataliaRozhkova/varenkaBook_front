@@ -15,6 +15,7 @@ import {map, Subject, switchMap, takeUntil} from "rxjs";
 import {ProductsListComponent} from "../products/products-list.component";
 import {Location} from '@angular/common';
 import {PagePosition, PageService} from "../../services/page.service";
+import {InformationService} from "../../services/information.service";
 
 @Component({
   selector: 'search-page',
@@ -45,13 +46,14 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
   position: PagePosition;
 
   pageName: string = 'searchInStock';
+  deliveryWarningText: string = '';
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
     private location: Location,
     private pageService: PageService,
-
+    private informationService: InformationService,
   ) {
   }
 
@@ -76,6 +78,14 @@ export class SearchPageComponent implements OnInit, OnDestroy, AfterContentCheck
       this.search = params.query.replace("%20", " ");
       this.find(false);
     });
+
+    this.informationService.getFrontParams().pipe(
+          takeUntil(this.destroySubject),
+        )
+          .subscribe(
+            (res: any) => {
+                  this.deliveryWarningText = res.results.find ((value:any) =>  value.name == 'deliveryWarningText')?.value;
+            })
 
     this.pageService.pageEvent.subscribe((event) => {
 
