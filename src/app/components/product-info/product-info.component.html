@@ -105,7 +105,7 @@
     </div>
     <button mat-button class="main-button to-cart"
             (click)="addToCart()"
-            [disabled]="countInCart >= product.countInStock && product.availability.status == 'in_stock'"
+            [disabled]="countInCart >= product.countInStock || product.availability.status != 'in_stock'"
     >В корзину
     </button>
 
