@@ -99,6 +99,8 @@
     <h1 class="product-name">{{product.name}}</h1>
 
     <div class="short-description" *ngIf="product.shortDescription" [innerHTML] = "product.shortDescription"></div>
+
+    <div class="price-warning">Цены в интернет-магазине могут отличаться от цен в физическом магазине</div>
     <div class="price">
 
       <span *ngIf="product.discount" class="discount"> {{product.retailPriceEuro + ' \u20AC'}}</span>
